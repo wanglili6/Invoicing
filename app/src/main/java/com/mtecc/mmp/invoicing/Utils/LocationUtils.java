@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
-import com.mtecc.mmp.invoicing.base.MyApplication;
 
 import java.util.List;
 

@@ -80,7 +80,6 @@ public class LoginActivity extends BaseActivity {
         //使用定位管理者获取定位坐标
         LocationUtils locationUtils = new LocationUtils(this);
         LogUtils.d(locationUtils.getLocationStr()+"---");
-
     }
 
 
