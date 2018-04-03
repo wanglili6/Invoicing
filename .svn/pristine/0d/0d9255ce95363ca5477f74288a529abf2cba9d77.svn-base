@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\wll\\ASWork\\Invoicing\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "D:\\wll\\ASWork\\Invoicing\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\wll\\ASWork\\Invoicing\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher_round.png",
+        "source": "D:\\wll\\ASWork\\Invoicing\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    }
+]
