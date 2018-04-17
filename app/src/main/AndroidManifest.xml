@@ -85,7 +85,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,6 +96,9 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.login.RegistrationSMSActivity" />
+        <activity android:name=".activity.login.RegistrationBaseInfoActivity" />
+        <activity android:name=".activity.incomeExpend.InComeExpendActivity"></activity>
     </application>
 
 </manifest>

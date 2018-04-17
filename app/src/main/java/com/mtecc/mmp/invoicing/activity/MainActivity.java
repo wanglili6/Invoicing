@@ -37,12 +37,12 @@ public class MainActivity extends BaseActivity {
     private String[] mTitles = {"首页", "管理", "库存", "统计", "我的"};
     /*未选择时的icon*/
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
-            R.mipmap.tab_contact_unselect, R.mipmap.tab_more_unselect, R.mipmap.tab_more_unselect};
+            R.mipmap.tab_home_unselect, R.mipmap.tab_management_unselect,
+            R.mipmap.tab_in_stock_unselect, R.mipmap.tab_statistics_unselect, R.mipmap.tab_my_unselect};
     /*选择时的icon*/
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
-            R.mipmap.tab_contact_select, R.mipmap.tab_more_select, R.mipmap.tab_more_select};
+            R.mipmap.tab_home_select, R.mipmap.tab_management_select,
+            R.mipmap.tab_in_stock_select, R.mipmap.tab_statistics_select, R.mipmap.tab_my_select};
     ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     ArrayList<Fragment> mFragments = new ArrayList<>();
 

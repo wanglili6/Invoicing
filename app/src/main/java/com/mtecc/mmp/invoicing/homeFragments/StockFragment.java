@@ -29,7 +29,7 @@ public class StockFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View inflate = inflater.inflate(R.layout.main_home_fragment, container, false);
+        final View inflate = inflater.inflate(R.layout.main_stock_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是库存的oncreate");
         initData();

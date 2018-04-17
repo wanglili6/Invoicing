@@ -4,15 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.LoginActivity;
+import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
+import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +29,46 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends Fragment {
-    @BindView(R.id.btn_ceshi)
-    Button btnCeshi;
+
+
+    @BindView(R.id.home_img_back_left)
+    ImageView homeImgBackLeft;
+    @BindView(R.id.home_tv_money)
+    TextView homeTvMoney;
+    @BindView(R.id.home_rl_income_expends)
+    RelativeLayout homeRlIncomeExpends;
+    @BindView(R.id.home_img_back_right)
+    ImageView homeImgBackRight;
+    @BindView(R.id.home_tv_income)
+    TextView homeTvIncome;
+    @BindView(R.id.home_tv_timer)
+    TextView homeTvTimer;
+    @BindView(R.id.home_tv_expend)
+    TextView homeTvExpend;
+    @BindView(R.id.home_pudchase)
+    TextView homePudchase;
+    @BindView(R.id.tv_purchase_num)
+    TextView tvPurchaseNum;
+    @BindView(R.id.home_pudchase_note)
+    TextView homePudchaseNote;
+    @BindView(R.id.tv_pudchase_note_num)
+    TextView tvPudchaseNoteNum;
+    @BindView(R.id.home_salse_return)
+    TextView homeSalseReturn;
+    @BindView(R.id.tv_salse_return_num)
+    TextView tvSalseReturnNum;
+    @BindView(R.id.home_sell)
+    TextView homeSell;
+    @BindView(R.id.tv_sell_num)
+    TextView tvSellNum;
+    @BindView(R.id.home_sell_note)
+    TextView homeSellNote;
+    @BindView(R.id.tv_sell_note_num)
+    TextView tvSellNoteNum;
+    @BindView(R.id.home_sell_salse_return)
+    TextView homeSellSalseReturn;
+    @BindView(R.id.tv_sell_salse_return_num)
+    TextView tvSellSalseReturnNum;
     Unbinder unbinder;
 
     @Nullable
@@ -34,7 +76,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View inflate = inflater.inflate(R.layout.main_home_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
-        LogUtils.i("这是首页的oncreate");
         initData();
 
         return inflate;
@@ -45,23 +86,13 @@ public class HomeFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
-        btnCeshi.setText("首页");
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @OnClick({R.id.btn_ceshi})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_ceshi:
-                startActivity(new Intent(getContext(), LoginActivity.class));
-                break;
-
-        }
     }
 
 
@@ -73,6 +104,68 @@ public class HomeFragment extends Fragment {
             LogUtils.i(isVisibleToUser + "====刷新页面");
         } else {
             LogUtils.i(isVisibleToUser + "====不显示页面");
+        }
+    }
+
+    @OnClick({R.id.home_img_back_left, R.id.home_rl_income_expends, R.id.home_img_back_right, R.id.home_pudchase, R.id.home_pudchase_note, R.id.home_salse_return, R.id.home_sell, R.id.home_sell_note, R.id.home_sell_salse_return})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.home_img_back_left:
+                //左边箭头
+                String timer = homeTvTimer.getText().toString().trim();
+                if (!TextUtils.isEmpty(timer)) {
+                    if (timer.equals("本日")) {
+                        homeTvTimer.setText("本年");
+                    } else if (timer.equals("本年")) {
+                        homeTvTimer.setText("本月");
+                    } else if (timer.equals("本月")) {
+                        homeTvTimer.setText("本周");
+                    } else if (timer.equals("本周")) {
+                        homeTvTimer.setText("本日");
+                    }
+                } else {
+                    Toast.makeText(getContext(), "统计时间错误!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.home_rl_income_expends:
+                //收支结余
+                startActivity(new Intent(getActivity(), InComeExpendActivity.class));
+                break;
+            case R.id.home_img_back_right:
+                //右边箭头
+                String tvtimer = homeTvTimer.getText().toString().trim();
+                if (!TextUtils.isEmpty(tvtimer)) {
+                    if (tvtimer.equals("本日")) {
+                        homeTvTimer.setText("本周");
+                    } else if (tvtimer.equals("本周")) {
+                        homeTvTimer.setText("本月");
+                    } else if (tvtimer.equals("本月")) {
+                        homeTvTimer.setText("本年");
+                    } else if (tvtimer.equals("本年")) {
+                        homeTvTimer.setText("本日");
+                    }
+                } else {
+                    Toast.makeText(getContext(), "统计时间错误!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.home_pudchase:
+                //采购单
+                break;
+            case R.id.home_pudchase_note:
+                //采购订单
+                break;
+            case R.id.home_salse_return:
+                //采购退货单
+                break;
+            case R.id.home_sell:
+                //销售单
+                break;
+            case R.id.home_sell_note:
+                //销售订单
+                break;
+            case R.id.home_sell_salse_return:
+                //销售退货单
+                break;
         }
     }
 }
