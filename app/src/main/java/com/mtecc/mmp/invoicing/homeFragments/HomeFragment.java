@@ -15,8 +15,13 @@ import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.Utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +75,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.tv_sell_salse_return_num)
     TextView tvSellSalseReturnNum;
     Unbinder unbinder;
-
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,12 +120,26 @@ public class HomeFragment extends Fragment {
                 String timer = homeTvTimer.getText().toString().trim();
                 if (!TextUtils.isEmpty(timer)) {
                     if (timer.equals("本日")) {
+                        int yearData = DataTimerUtils.getYearData();
+                        LogUtils.d("本年:--" + yearData);
                         homeTvTimer.setText("本年");
                     } else if (timer.equals("本年")) {
+                        int monthData = DataTimerUtils.getMonthData();
+                        LogUtils.d("本月:--" + monthData);
                         homeTvTimer.setText("本月");
                     } else if (timer.equals("本月")) {
+                        format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        //获取本周开始第一天
+                        Date timesWeekmorning = DataTimerUtils.getTimesWeekmorning();
+                        String weekmorning = format.format(timesWeekmorning);
+                        //获取本周结束的最后一天
+                        Date timesWeeknight = DataTimerUtils.getTimesWeeknight();
+                        String weekNight = format.format(timesWeeknight);
+                        LogUtils.d("本周开始的日期:--" + weekmorning + "-----本周结束的日期" + weekNight);
                         homeTvTimer.setText("本周");
                     } else if (timer.equals("本周")) {
+                        String todayhData = DataTimerUtils.getTodayhData();
+                        LogUtils.d("today:--" + todayhData);
                         homeTvTimer.setText("本日");
                     }
                 } else {
@@ -136,12 +155,26 @@ public class HomeFragment extends Fragment {
                 String tvtimer = homeTvTimer.getText().toString().trim();
                 if (!TextUtils.isEmpty(tvtimer)) {
                     if (tvtimer.equals("本日")) {
+                        format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        //获取本周开始第一天
+                        Date timesWeekmorning = DataTimerUtils.getTimesWeekmorning();
+                        String weekmorning = format.format(timesWeekmorning);
+                        ////获取本周结束的最后一天
+                        Date timesWeeknight = DataTimerUtils.getTimesWeeknight();
+                        String weekNight = format.format(timesWeeknight);
+                        LogUtils.d("本周开始的日期:--" + weekmorning + "-----本周结束的日期" + weekNight);
                         homeTvTimer.setText("本周");
                     } else if (tvtimer.equals("本周")) {
+                        int monthData = DataTimerUtils.getMonthData();
+                        LogUtils.d("本月:--" + monthData);
                         homeTvTimer.setText("本月");
                     } else if (tvtimer.equals("本月")) {
+                        int yearData = DataTimerUtils.getYearData();
+                        LogUtils.d("本年:--" + yearData);
                         homeTvTimer.setText("本年");
                     } else if (tvtimer.equals("本年")) {
+                        String todayhData = DataTimerUtils.getTodayhData();
+                        LogUtils.d("today:--" + todayhData);
                         homeTvTimer.setText("本日");
                     }
                 } else {

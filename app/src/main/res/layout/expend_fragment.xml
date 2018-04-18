@@ -4,11 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_ceshi"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/income_smart_refesh_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="采购支出" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:scrollbars="none"
+            android:id="@+id/expend_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
 </LinearLayout>

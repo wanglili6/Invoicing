@@ -11,16 +11,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.SegmentTabLayout;
-import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.incomeExpend.adapter.SwitchoverAdapter;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.fragment.ExpendFragment;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.fragment.IncomeFragment;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
-import com.mtecc.mmp.invoicing.base.bean.TabEntity;
 
 import java.util.ArrayList;
 
@@ -57,7 +53,6 @@ public class InComeExpendActivity extends BaseActivity {
     ViewPager incomeSwitchOverVp;
     private String[] mTitles = {"销售收入", "采购支出"};
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     public void widgetClick(View v) {
@@ -137,7 +132,7 @@ public class InComeExpendActivity extends BaseActivity {
 
             }
         });
-        incomeSwitchOverVp.setCurrentItem(1);
+        incomeSwitchOverVp.setCurrentItem(0);
     }
 
     @OnClick(R.id.rl_back)

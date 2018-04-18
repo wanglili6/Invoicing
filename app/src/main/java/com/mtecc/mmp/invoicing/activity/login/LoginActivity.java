@@ -35,7 +35,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
-
+        loginUserName.setText("1");
+        loginUserPwd.setText("1");
     }
 
     @Override
@@ -78,7 +79,8 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_register:
-                startActivity(new Intent(this, RegistrationSMSActivity.class));
+//                startActivity(new Intent(this, RegistrationSMSActivity.class));
+                startActivity(new Intent(this, RegisrationPWDActivity.class));
                 break;
         }
     }

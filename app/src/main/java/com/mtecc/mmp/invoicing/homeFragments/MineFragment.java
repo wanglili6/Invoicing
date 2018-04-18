@@ -22,8 +22,7 @@ import butterknife.Unbinder;
  */
 
 public class MineFragment extends Fragment {
-    @BindView(R.id.btn_ceshi)
-    Button btnCeshi;
+
     Unbinder unbinder;
 
     @Nullable
@@ -53,7 +52,7 @@ public class MineFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
-        btnCeshi.setText("我的");
+
     }
 
     @Override
@@ -62,13 +61,5 @@ public class MineFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btn_ceshi})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_ceshi:
-               LogUtils.d("测试:--","这是我的");
-                break;
 
-        }
-    }
 }
