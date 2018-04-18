@@ -100,7 +100,16 @@
         <activity android:name=".activity.login.RegistrationBaseInfoActivity" />
         <activity android:name=".activity.incomeExpend.InComeExpendActivity" />
         <activity android:name=".activity.login.RegisrationPWDActivity" />
-        <activity android:name=".activity.personMsg.PersonMsgActivity"></activity>
+        <activity android:name=".activity.baseinfoMsg.PersonMsgActivity" />
+        <activity android:name=".activity.baseinfoMsg.CompanyMsgActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SettingPwdActivity" />
+        <activity android:name=".activity.shop.ShopManagementActivity" />
+        <activity android:name=".activity.shop.ShopListActivity" />
+        <activity android:name=".activity.shop.ShopSeeActivity" />
+        <activity android:name=".activity.employee.EmployeeListActivity" />
+        <activity android:name=".activity.employee.EmployeeManagemnetActivity" />
+        <activity android:name=".activity.employee.EmployeeSeeActivity"></activity>
     </application>
 
 </manifest>

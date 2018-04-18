@@ -44,15 +44,50 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_name"
+                            android:id="@+id/employee_see_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/color_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="用户名"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/employee_see_login_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -79,15 +114,15 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_age"
+                            android:id="@+id/employee_see_age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -114,15 +149,15 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_sex"
+                            android:id="@+id/employee_see_sex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -149,15 +184,15 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_phone"
+                            android:id="@+id/employee_see_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -184,15 +219,15 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_code"
+                            android:id="@+id/employee_see_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -200,77 +235,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/color_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="邮箱"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
-
-                        <TextView
-                            android:id="@+id/person_msg_emily"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                           
-                            android:textColor="@color/text_color"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/color_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="地址"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
-
-                        <TextView
-                            android:id="@+id/person_msg_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                           
-                            android:textColor="@color/text_color"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/person_msg_rl_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -280,23 +244,104 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="企业信息"
+                        android:text="员工状态"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@mipmap/next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp">
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/employee_see_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/color_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="所属店铺"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/employee_see_shop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/color_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="员工角色"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/employee_see_role"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
             </LinearLayout>
+
+            <include layout="@layout/edit_delete_layout" />
         </LinearLayout>
     </ScrollView>
 

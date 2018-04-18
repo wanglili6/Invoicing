@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.baseinfoMsg.PersonMsgActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.baseinfoMsg.CompanyMsgActivity">
 
     <include layout="@layout/base_title" />
 
@@ -37,22 +37,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="真实姓名"
+                        android:text="公司名称"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_name"
+                            android:id="@+id/company_msg_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -72,22 +72,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="年龄"
+                        android:text="营业执照号"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_age"
+                            android:id="@+id/company_msg_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -107,22 +107,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="性别"
+                        android:text="企业法人"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_sex"
+                            android:id="@+id/company_msg_faren"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -142,22 +142,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="手机号"
+                        android:text="有效期至"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_phone"
+                            android:id="@+id/company_msg_vaild_until"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -177,22 +177,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="身份证号"
+                        android:text="经营状态"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_code"
+                            android:id="@+id/company_msg_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -212,22 +212,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="邮箱"
+                        android:text="经营地址"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_emily"
+                            android:id="@+id/company_msg_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                         
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -247,55 +247,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="地址"
+                        android:text="经营范围"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
 
                         <TextView
-                            android:id="@+id/person_msg_address"
+                           
+                            android:id="@+id/company_msg_range"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/person_msg_rl_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/color_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_centerVertical="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="企业信息"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@mipmap/next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

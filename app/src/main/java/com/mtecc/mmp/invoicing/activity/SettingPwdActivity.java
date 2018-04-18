@@ -1,7 +1,6 @@
-package com.mtecc.mmp.invoicing.activity.login;
+package com.mtecc.mmp.invoicing.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,13 +10,15 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
-import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisrationPWDActivity extends BaseActivity {
+/**
+ * 修改密码
+ */
+public class SettingPwdActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -33,16 +34,16 @@ public class RegisrationPWDActivity extends BaseActivity {
     RelativeLayout rlSelect;
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
-    @BindView(R.id.registration_user_name)
-    EditText registrationUserName;
-    @BindView(R.id.textView3)
-    TextView textView3;
-    @BindView(R.id.registration_pwd)
-    EditText registrationPwd;
-    @BindView(R.id.registration_agin_pwd)
-    EditText registrationAginPwd;
-    @BindView(R.id.tv_registration)
-    TextView tvRegistration;
+    @BindView(R.id.setting_pwd_old)
+    EditText settingPwdOld;
+    @BindView(R.id.setting_pwd_new)
+    EditText settingPwdNew;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.setting_pwd_again)
+    EditText settingPwdAgain;
+    @BindView(R.id.setting_pwd_amend)
+    TextView settingPwdAmend;
 
     @Override
     public void widgetClick(View v) {
@@ -52,7 +53,7 @@ public class RegisrationPWDActivity extends BaseActivity {
     @Override
     public void initParms(Bundle parms) {
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText("设置用户名和密码");
+        tvTitle.setText("修改密码");
     }
 
     @Override
@@ -62,7 +63,7 @@ public class RegisrationPWDActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_regisration_pwd;
+        return R.layout.activity_setting_pwd;
     }
 
     @Override
@@ -80,18 +81,14 @@ public class RegisrationPWDActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_back, R.id.tv_registration})
+    @OnClick({R.id.rl_back, R.id.setting_pwd_amend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
-            case R.id.tv_registration:
-                Intent intent = new Intent(this, RegistrationBaseInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.BASE_INFO_TYPE, InvoicingConstants.regis);
-                intent.putExtras(bundle);
-                startActivity(intent);
+            case R.id.setting_pwd_amend:
+                //TODO:修改密码
                 break;
         }
     }

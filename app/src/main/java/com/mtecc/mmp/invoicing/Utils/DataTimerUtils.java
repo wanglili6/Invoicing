@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.Utils;
+package com.mtecc.mmp.invoicing.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

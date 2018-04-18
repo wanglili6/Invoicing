@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.Utils;
+package com.mtecc.mmp.invoicing.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

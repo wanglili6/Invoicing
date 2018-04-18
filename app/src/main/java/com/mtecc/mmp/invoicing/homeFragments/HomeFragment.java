@@ -15,13 +15,11 @@ import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.Utils.DataTimerUtils;
+import com.mtecc.mmp.invoicing.utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
-import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

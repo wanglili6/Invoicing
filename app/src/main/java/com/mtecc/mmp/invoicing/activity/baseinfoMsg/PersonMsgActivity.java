@@ -1,23 +1,21 @@
-package com.mtecc.mmp.invoicing.activity.login;
+package com.mtecc.mmp.invoicing.activity.baseinfoMsg;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
-import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisrationPWDActivity extends BaseActivity {
+public class PersonMsgActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -33,16 +31,22 @@ public class RegisrationPWDActivity extends BaseActivity {
     RelativeLayout rlSelect;
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
-    @BindView(R.id.registration_user_name)
-    EditText registrationUserName;
-    @BindView(R.id.textView3)
-    TextView textView3;
-    @BindView(R.id.registration_pwd)
-    EditText registrationPwd;
-    @BindView(R.id.registration_agin_pwd)
-    EditText registrationAginPwd;
-    @BindView(R.id.tv_registration)
-    TextView tvRegistration;
+    @BindView(R.id.person_msg_name)
+    TextView personMsgName;
+    @BindView(R.id.person_msg_age)
+    TextView personMsgAge;
+    @BindView(R.id.person_msg_sex)
+    TextView personMsgSex;
+    @BindView(R.id.person_msg_phone)
+    TextView personMsgPhone;
+    @BindView(R.id.person_msg_code)
+    TextView personMsgCode;
+    @BindView(R.id.person_msg_emily)
+    TextView personMsgEmily;
+    @BindView(R.id.person_msg_address)
+    TextView personMsgAddress;
+    @BindView(R.id.person_msg_rl_more)
+    RelativeLayout personMsgRlMore;
 
     @Override
     public void widgetClick(View v) {
@@ -52,7 +56,7 @@ public class RegisrationPWDActivity extends BaseActivity {
     @Override
     public void initParms(Bundle parms) {
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText("设置用户名和密码");
+        tvTitle.setText("个人信息");
     }
 
     @Override
@@ -62,7 +66,7 @@ public class RegisrationPWDActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_regisration_pwd;
+        return R.layout.activity_person_msg;
     }
 
     @Override
@@ -80,17 +84,15 @@ public class RegisrationPWDActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_back, R.id.tv_registration})
+    @OnClick({R.id.rl_back, R.id.person_msg_rl_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
-            case R.id.tv_registration:
-                Intent intent = new Intent(this, RegistrationBaseInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.BASE_INFO_TYPE, InvoicingConstants.regis);
-                intent.putExtras(bundle);
+            case R.id.person_msg_rl_more:
+                Intent intent = new Intent();
+                intent.setClass(this,CompanyMsgActivity.class);
                 startActivity(intent);
                 break;
         }
