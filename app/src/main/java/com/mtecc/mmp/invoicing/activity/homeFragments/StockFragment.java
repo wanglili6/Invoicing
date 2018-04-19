@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.homeFragments;
+package com.mtecc.mmp.invoicing.activity.homeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

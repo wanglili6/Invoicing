@@ -13,11 +13,11 @@ import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.adapter.MyPagerAdapter;
 import com.mtecc.mmp.invoicing.base.bean.TabEntity;
-import com.mtecc.mmp.invoicing.homeFragments.HomeFragment;
-import com.mtecc.mmp.invoicing.homeFragments.ManangerFragment;
-import com.mtecc.mmp.invoicing.homeFragments.MineFragment;
-import com.mtecc.mmp.invoicing.homeFragments.StatisticsFragment;
-import com.mtecc.mmp.invoicing.homeFragments.StockFragment;
+import com.mtecc.mmp.invoicing.activity.homeFragments.HomeFragment;
+import com.mtecc.mmp.invoicing.activity.homeFragments.ManangerFragment;
+import com.mtecc.mmp.invoicing.activity.homeFragments.MineFragment;
+import com.mtecc.mmp.invoicing.activity.homeFragments.StatisticsFragment;
+import com.mtecc.mmp.invoicing.activity.homeFragments.StockFragment;
 import com.mtecc.mmp.invoicing.views.ViewPagerSlide;
 
 import java.util.ArrayList;

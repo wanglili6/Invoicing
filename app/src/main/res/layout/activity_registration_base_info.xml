@@ -8,6 +8,7 @@
     <include layout="@layout/base_title" />
 
     <ScrollView
+        android:layout_weight="100"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadeScrollbars="true"
@@ -170,6 +171,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg">
+
                         <Spinner
                             android:id="@+id/register_spinner_psex"
                             android:layout_width="match_parent"
@@ -566,18 +568,19 @@
                         android:layout_gravity="center"
                         android:layout_weight="0.4"
                         android:gravity="center"
-                        android:text="经营范围"
+                        android:text="公司状态"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/register_et_status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg"
-                        android:hint="请输入经营范围"
+                        android:hint="请输入公司状态"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -633,40 +636,42 @@
                         android:layout_gravity="center"
                         android:layout_weight="0.4"
                         android:gravity="center"
-                        android:text="公司状态"
+                        android:text="经营范围"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/register_et_status"
+                        android:id="@+id/register_et_range"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg"
-                        android:hint="请输入公司状态"
+                        android:hint="请输入经营范围"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/register_tv_register"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp"
-                android:background="@mipmap/login_btn"
-                android:gravity="center"
-                android:text="注册"
-                android:textColor="#ffffff"
-                android:textSize="16sp" />
+
         </LinearLayout>
     </ScrollView>
-
+    <TextView
+        android:id="@+id/register_tv_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/login_btn"
+        android:gravity="center"
+        android:text="注册"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.homeFragments;
+package com.mtecc.mmp.invoicing.activity.homeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,10 +18,10 @@ import butterknife.Unbinder;
 
 /**
  * Created by wll on 2017/12/9.
- * 管理
+ * 统计
  */
 
-public class ManangerFragment extends Fragment {
+public class StatisticsFragment extends Fragment {
     @BindView(R.id.btn_ceshi)
     Button btnCeshi;
     Unbinder unbinder;
@@ -29,9 +29,9 @@ public class ManangerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View inflate = inflater.inflate(R.layout.main_mananger_fragment, container, false);
+        final View inflate = inflater.inflate(R.layout.main_statistics_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
-        LogUtils.i("这是管理的oncreate");
+        LogUtils.i("这是统计的oncreate");
         initData();
 
         return inflate;
@@ -53,7 +53,7 @@ public class ManangerFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
-        btnCeshi.setText("管理");
+        btnCeshi.setText("统计");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ManangerFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_ceshi:
-               LogUtils.d("测试:--","这是管理");
+               LogUtils.d("测试:--","这是统计");
                 break;
 
         }

@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:layout_margin="10dp"
+    android:layout_weight="100"
     android:background="@drawable/login_btn_bg"
-    android:padding="10dp"
-  >
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="0dp"

@@ -8,6 +8,10 @@ package com.mtecc.mmp.invoicing.base;
 public class InvoicingConstants {
     //基础地址
     public static final String BASE_URL = "";
+    //用户信息
+    public static final String USER_PWD = "userPwd";
+
+
     //跳转基础信息界面的type
     public static final String BASE_INFO_TYPE = "baseInfoType";
     public static final String regis = "regis";//regis--注册;amend--修改

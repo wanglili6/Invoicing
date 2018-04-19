@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.homeFragments;
+package com.mtecc.mmp.invoicing.activity.homeFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -130,9 +130,7 @@ public class MineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                Intent in = new Intent(getActivity(), LoginActivity.class);
-                startActivity(in);
-                getActivity().finish();
+
             }
         });
 
@@ -140,7 +138,9 @@ public class MineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-
+                Intent in = new Intent(getActivity(), LoginActivity.class);
+                startActivity(in);
+                getActivity().finish();
             }
         });
     }
