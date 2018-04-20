@@ -28,6 +28,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/color_white">
@@ -88,17 +89,25 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xian_color" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <ExpandableListView
             android:id="@+id/commodity_list_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:childDivider="@null"
+            android:divider="@null"
+            android:groupIndicator="@null"
             android:scrollbars="none">
 
-        </android.support.v7.widget.RecyclerView>
+        </ExpandableListView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

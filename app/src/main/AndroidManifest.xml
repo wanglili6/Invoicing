@@ -152,7 +152,15 @@
             android:name=".activity.employee.EmployeeSeeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.comodity.CommodityListActivity"></activity>
+        <activity
+            android:name=".activity.comodity.CommodityListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.SaoMaActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.comodity.AddBatchActivity"></activity>
     </application>
 
 </manifest>

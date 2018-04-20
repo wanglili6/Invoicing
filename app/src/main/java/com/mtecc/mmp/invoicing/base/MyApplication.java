@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.footer.FalsifyFooter;
 import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.header.FalsifyHeader;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -80,6 +81,8 @@ public class MyApplication extends Application {
                 .configLog2FileLevel(LogLevel.TYPE_VERBOSE)
                 .configLogFileEngine(new LogFileEngineFactory());
         context();
+        //初始化zxinger二维码
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
 

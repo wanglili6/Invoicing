@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.comodity;
+package com.mtecc.mmp.invoicing.activity.comodity.bean;
 
 import java.util.List;
 

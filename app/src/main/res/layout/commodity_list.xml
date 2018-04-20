@@ -31,6 +31,7 @@
         android:background="@color/xian_color" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rl_list"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

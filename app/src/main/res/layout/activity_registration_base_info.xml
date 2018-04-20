@@ -5,12 +5,10 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <include layout="@layout/base_title" />
-
     <ScrollView
-        android:layout_weight="100"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="100"
         android:fadeScrollbars="true"
         android:focusableInTouchMode="true">
 
@@ -658,9 +656,11 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/base_title" />
+
     <TextView
         android:id="@+id/register_tv_register"
         android:layout_width="match_parent"
