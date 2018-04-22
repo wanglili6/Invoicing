@@ -40,7 +40,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
     public void onBindViewHolder(ImgListAdapter.ShopViewHolder holder, final int position) {
         final String imgUrl = mList.get(position);
         if (TextUtils.isEmpty(imgUrl)) {
-            holder.imgAdd.setBackgroundResource(R.mipmap.add_img);
+            holder.imgAdd.setImageResource(R.mipmap.add_img);
         } else {
             Glide.with(mContext)
                     .load(imgUrl)
@@ -78,6 +78,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
 
     public static interface IImgOnClickListerner {
         public void onImgClick(int position, String imgUrl);
+
     }
 
     public void setiImgOnClickListerner(IImgOnClickListerner iImgOnClickListerner) {

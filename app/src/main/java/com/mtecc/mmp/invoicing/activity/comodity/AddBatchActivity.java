@@ -14,12 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,10 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
-import com.bumptech.glide.Glide;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.BatchListAdapter;
-import com.mtecc.mmp.invoicing.activity.comodity.adapter.ImgListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
@@ -77,13 +70,14 @@ public class AddBatchActivity extends BaseActivity {
     RelativeLayout rlTitleBg;
     @BindView(R.id.add_batch_list_view)
     ListView addBatchListView;
-    private List<String> picPathlist = new ArrayList<>();
     private Uri photoUri;
     private String picPath;
     private String picName;
     private List<BatchBean> mlist;
     private BatchListAdapter batchListAdapter;
     private int onClickPosiion;
+    List<String> newPathlist;
+    List<BatchBean> newlist;
 
     @Override
     public void widgetClick(View v) {
@@ -97,14 +91,21 @@ public class AddBatchActivity extends BaseActivity {
         mlist = new ArrayList<>();
         BatchBean batchBean = new BatchBean();
         batchBean.setBatchName("");
+        List<String> imgUrlList = new ArrayList<>();
+        imgUrlList.add("");
+        batchBean.setImgUrl(imgUrlList);
         mlist.add(batchBean);
         batchListAdapter = new BatchListAdapter(this, mlist);
         addBatchListView.setAdapter(batchListAdapter);
         batchListAdapter.notifyDataSetChanged();
         batchListAdapter.setiImgOnClickListerner(new BatchListAdapter.IBatchImgOnClickListerner() {
             @Override
-            public void onBatchImgClick(int position,int pos, String imgUrl) {
+            public void onBatchImgClick(int position, int pos, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
                 LogUtils.d("点击图片" + position + imgUrl);
+                newPathlist = new ArrayList<>();
+                newlist = new ArrayList<>();
+                newlist.addAll(mList);
+                newPathlist.addAll(finalImgUrlList);
                 onClickPosiion = position;
                 picPhoto();
 
@@ -143,28 +144,26 @@ public class AddBatchActivity extends BaseActivity {
     }
 
     private void picPhoto() {
-        if (picPathlist.size() < 10) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
 //				requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-            } else {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //针对4.4以下
-                SimpleDateFormat timeStampFormat2 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-                String path = timeStampFormat2.format(new Date());
-                ContentValues values2 = new ContentValues();//和hashtable类似但是只能存基本数据类型不能存对象
-                values2.put(MediaStore.Images.Media.TITLE, path);
-                photoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values2);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                //启动照相机
-                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 2);
-            }
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
         } else {
-            Toast.makeText(this, "照片不能超过10张!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //针对4.4以下
+            SimpleDateFormat timeStampFormat2 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            String path = timeStampFormat2.format(new Date());
+            ContentValues values2 = new ContentValues();//和hashtable类似但是只能存基本数据类型不能存对象
+            values2.put(MediaStore.Images.Media.TITLE, path);
+            photoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values2);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            //启动照相机
+            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 2);
         }
+
     }
 
     @Override
@@ -203,12 +202,17 @@ public class AddBatchActivity extends BaseActivity {
                                 Bitmap bitmap = BitmapFactory.decodeStream(
                                         cr.openInputStream(uri), null, options);
                                 //压缩
+                                List<String> picPathlist = new ArrayList<>();
+                                picPathlist.addAll(newPathlist);
+
                                 picPath = CompressionPhotoUtils.compressImage(path, path, 50);
                                 picPathlist.add(picPath);
-                                mlist.remove(onClickPosiion);
                                 BatchBean element = new BatchBean();
                                 element.setImgUrl(picPathlist);
-                                mlist.add(onClickPosiion, element);
+                                newlist.set(onClickPosiion, element);
+                                mlist.clear();
+                                mlist.addAll(newlist);
+                                LogUtils.d("更换的数据" + onClickPosiion);
                                 batchListAdapter.notifyDataSetChanged();
                                 for (int i = 0; i < picPathlist.size(); i++) {
                                     LogUtils.d("选中的图片" + picPathlist.get(i));

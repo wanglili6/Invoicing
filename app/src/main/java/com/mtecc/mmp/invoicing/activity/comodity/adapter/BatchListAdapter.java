@@ -67,23 +67,26 @@ public class BatchListAdapter extends BaseAdapter {
         holder.commodityDialogEtName.setText(mList.get(position).getBatchName());
         holder.addBatchRecyclcerView.setLayoutManager(new GridLayoutManager(mContext, 3));
 
-        List<String> imgUrl = mList.get(position).getImgUrl();
-        if (imgUrl != null) {
-//            imgUrl.add(imgUrl.size(), "");
-        } else {
-            imgUrl = new ArrayList<>();
-            imgUrl.add(0, "");
-        }
-        ImgListAdapter imgListAdapter = new ImgListAdapter(mContext, imgUrl);
+        Object tag = holder.addBatchRecyclcerView.getTag();
+        List<String> imgUrlList = null;
+
+        imgUrlList = mList.get(position).getImgUrl();
+
+
+        ImgListAdapter imgListAdapter = new ImgListAdapter(mContext, imgUrlList);
         holder.addBatchRecyclcerView.setAdapter(imgListAdapter);
         imgListAdapter.notifyDataSetChanged();
 
+        final ViewHolder finalHolder = holder;
         imgListAdapter.setiImgOnClickListerner(new ImgListAdapter.IImgOnClickListerner() {
             @Override
             public void onImgClick(int pos, String imgUrl) {
                 LogUtils.d("点击图片" + pos + imgUrl);
+                if (mList.get(position).getImgUrl() != null) {
+                    LogUtils.d("点击图片" + mList.get(position).getImgUrl().size());
+                }
                 if (iBatchImgOnClickListerner != null) {
-                    iBatchImgOnClickListerner.onBatchImgClick(position,pos, imgUrl);
+                    iBatchImgOnClickListerner.onBatchImgClick(position, pos, imgUrl, mList.get(position).getImgUrl(), mList);
                 }
             }
         });
@@ -94,6 +97,9 @@ public class BatchListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 BatchBean batchBean = new BatchBean();
                 batchBean.setBatchName("");
+                List<String> imgUrlList = new ArrayList<>();
+                imgUrlList.add("");
+                batchBean.setImgUrl(imgUrlList);
                 mList.add(batchBean);
                 notifyDataSetChanged();
             }
@@ -115,7 +121,7 @@ public class BatchListAdapter extends BaseAdapter {
     }
 
     public static interface IBatchImgOnClickListerner {
-        public void onBatchImgClick(int position,int imgposition, String imgUrl);
+        public void onBatchImgClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList);
     }
 
     public void setiImgOnClickListerner(IBatchImgOnClickListerner iBatchImgOnClickListerner) {
