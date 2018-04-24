@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity;
+package com.mtecc.mmp.invoicing.activity.setting;
 
 import android.content.Context;
 import android.content.Intent;

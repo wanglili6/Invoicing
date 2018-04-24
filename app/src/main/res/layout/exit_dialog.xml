@@ -51,6 +51,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="是"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp" />
 
         <TextView
@@ -65,7 +66,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="否"
-            android:textColor="@color/colorPrimaryDark"
+
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

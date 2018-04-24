@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.setting.SettingActivity;
+import com.mtecc.mmp.invoicing.activity.baseinfoMsg.CompanyMsgActivity;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeListActivity;
-import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
-import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
-import com.mtecc.mmp.invoicing.activity.SettingActivity;
-import com.mtecc.mmp.invoicing.activity.baseinfoMsg.PersonMsgActivity;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
+import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
+import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +48,10 @@ public class MineFragment extends Fragment {
     RelativeLayout mineRlSetting;
     @BindView(R.id.mine_tv_exit)
     TextView mineTvExit;
+    @BindView(R.id.mine_tv_qy_name)
+    TextView mineTvQyName;
+    @BindView(R.id.mine_tv_user_name)
+    TextView mineTvUserName;
 
     @Nullable
     @Override
@@ -74,7 +80,10 @@ public class MineFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
-
+        String qyName = PreferencesUtils.getString(getContext(), InvoicingConstants.QY_NAME, "");
+        String userName = PreferencesUtils.getString(getContext(), InvoicingConstants.USER_NAME, "");
+        mineTvQyName.setText(qyName);
+        mineTvUserName.setText(userName);
     }
 
     @Override
@@ -89,7 +98,7 @@ public class MineFragment extends Fragment {
         switch (view.getId()) {
             case R.id.mine_rl_msg:
                 //查看基础信息
-                startActivity(new Intent(getContext(), PersonMsgActivity.class));
+                startActivity(new Intent(getContext(), CompanyMsgActivity.class));
                 break;
             case R.id.mine_rl_shop:
                 //TODO:店铺管理
@@ -100,7 +109,10 @@ public class MineFragment extends Fragment {
             case R.id.mine_rl_person:
                 //TODO:员工管理
                 Intent intentemployee = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString(InvoicingConstants.Employee_List_TYPE, InvoicingConstants.EMPLOYEE_ADD);
                 intentemployee.setClass(getContext(), EmployeeListActivity.class);
+                intentemployee.putExtras(bundle);
                 startActivity(intentemployee);
                 break;
             case R.id.mine_rl_setting:
@@ -119,6 +131,7 @@ public class MineFragment extends Fragment {
 
     /**
      * 退出
+     *
      * @param customizeDialogView
      * @param alertDialog
      */
@@ -138,6 +151,7 @@ public class MineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
+                PreferencesUtils.putString(getContext(), InvoicingConstants.USER_PWD, "");
                 Intent in = new Intent(getActivity(), LoginActivity.class);
                 startActivity(in);
                 getActivity().finish();

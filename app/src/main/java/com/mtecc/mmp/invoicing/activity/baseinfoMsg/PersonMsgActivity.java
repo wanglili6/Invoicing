@@ -3,6 +3,7 @@ package com.mtecc.mmp.invoicing.activity.baseinfoMsg;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,11 +11,16 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 个人信息
+ */
 public class PersonMsgActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
@@ -41,6 +47,8 @@ public class PersonMsgActivity extends BaseActivity {
     TextView personMsgPhone;
     @BindView(R.id.person_msg_code)
     TextView personMsgCode;
+    @BindView(R.id.person_msg_role)
+    TextView personMsgRole;
     @BindView(R.id.person_msg_emily)
     TextView personMsgEmily;
     @BindView(R.id.person_msg_address)
@@ -57,6 +65,70 @@ public class PersonMsgActivity extends BaseActivity {
     public void initParms(Bundle parms) {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("个人信息");
+        initPersonMsg();
+
+
+    }
+
+    /**
+     * 初始化用户信息
+     */
+    private void initPersonMsg() {
+        String name = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_NAME, "");
+        String phone = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_TEL_PHONE, "");
+        String address = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ADDRESS, "");
+        String cardNum = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_CARDNUM, "");
+        String email = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_EMAIL, "");
+        String role = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ROLE, "");
+        String age = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_AGE, "");
+        String sex = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_SEX, "");
+        if (TextUtils.isEmpty(name)) {
+            personMsgName.setText("暂无");
+        } else {
+            personMsgName.setText(name);
+        }
+
+        if (TextUtils.isEmpty(phone)) {
+            personMsgPhone.setText("暂无");
+        } else {
+            personMsgPhone.setText(phone);
+        }
+
+        if (TextUtils.isEmpty(address)) {
+            personMsgAddress.setText("暂无");
+        } else {
+            personMsgAddress.setText(address);
+        }
+        if (TextUtils.isEmpty(email)) {
+            personMsgEmily.setText("暂无");
+        } else {
+            personMsgEmily.setText(email);
+        }
+        if (TextUtils.isEmpty(role)) {
+            personMsgRole.setText("暂无");
+        } else {
+            personMsgRole.setText(role);
+        }
+        if (TextUtils.isEmpty(age)) {
+            personMsgAge.setText("暂无");
+        } else {
+            personMsgAge.setText(age);
+        }
+        if (TextUtils.isEmpty(cardNum)) {
+            personMsgCode.setText("暂无");
+        } else {
+            personMsgCode.setText(cardNum);
+        }
+        if (TextUtils.isEmpty(sex)) {
+
+            personMsgSex.setText("暂无");
+        } else {
+            if (sex.equals("1")) {
+                personMsgSex.setText("女");
+            } else if (sex.equals("0")) {
+                personMsgSex.setText("男");
+            }
+        }
     }
 
     @Override
@@ -92,7 +164,7 @@ public class PersonMsgActivity extends BaseActivity {
                 break;
             case R.id.person_msg_rl_more:
                 Intent intent = new Intent();
-                intent.setClass(this,CompanyMsgActivity.class);
+                intent.setClass(this, CompanyMsgActivity.class);
                 startActivity(intent);
                 break;
         }

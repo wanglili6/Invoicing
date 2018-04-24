@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -102,13 +103,25 @@ public class AddBatchActivity extends BaseActivity {
             @Override
             public void onBatchImgClick(int position, int pos, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
                 LogUtils.d("点击图片" + position + imgUrl);
-                newPathlist = new ArrayList<>();
-                newlist = new ArrayList<>();
-                newlist.addAll(mList);
-                newPathlist.addAll(finalImgUrlList);
-                onClickPosiion = position;
-                picPhoto();
+                if (TextUtils.isEmpty(imgUrl)) {
+                    newPathlist = new ArrayList<>();
+                    newlist = new ArrayList<>();
+                    newlist.addAll(mList);
+                    newPathlist.addAll(finalImgUrlList);
+                    onClickPosiion = position;
+                    picPhoto();
+                } else {
+                    showToast("放大图片");
+                }
 
+
+            }
+
+        });
+        batchListAdapter.setiDelOnClickListerner(new BatchListAdapter.IBatchDelImgOnClickListerner() {
+            @Override
+            public void onBatchDelClick(int pos, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
+                showToast("删除图片");
             }
         });
 

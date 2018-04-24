@@ -81,21 +81,13 @@ public class ShopSeeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_back, R.id.see_edit, R.id.see_delete})
+    @OnClick({R.id.rl_back,  R.id.see_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
-            case R.id.see_edit:
-                //编辑店铺信息
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.SHOP_TYPE, InvoicingConstants.SHOP_EDIT);
-                intent.setClass(this, ShopManagementActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                break;
+
             case R.id.see_delete:
                 //删除
                 View customizeDialog = ShowDalogUtils.showCustomizeDialog(this, R.layout.exit_dialog);

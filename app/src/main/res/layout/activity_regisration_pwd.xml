@@ -56,7 +56,6 @@
                         android:layout_marginLeft="5dp"
                         android:background="@null"
                         android:hint="建议使用手机号"
-                        android:inputType="phone"
                         android:textColor="#000000"
                         android:textSize="16sp" />
                 </LinearLayout>

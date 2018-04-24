@@ -5,6 +5,8 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
+    <include layout="@layout/base_title" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,9 +22,11 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_info_person_msg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -558,7 +562,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="0dp"
@@ -570,18 +575,27 @@
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
-                    <EditText
-                        android:id="@+id/register_et_status"
+                    <RelativeLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/login_btn_bg"
-                        android:hint="请输入公司状态"
-                        android:padding="8dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Switch
+                            android:id="@+id/register_switch_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="20dp"
+                            android:switchMinWidth="60dp"
+                            android:switchPadding="10dp"
+                            android:textOff="开"
+                            android:textOn="关"
+                            android:thumb="@drawable/thumb_selector"
+                            android:track="@drawable/switch_selector"
+                            android:typeface="normal" />
+                    </RelativeLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -594,15 +608,27 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="45dp"
-                        android:layout_gravity="center"
                         android:layout_weight="0.4"
-                        android:gravity="center"
-                        android:text="有效期至:"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="有效期至"
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textColor="@color/text_red"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/register_tv_valid_until"
@@ -659,7 +685,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <include layout="@layout/base_title" />
 
     <TextView
         android:id="@+id/register_tv_register"

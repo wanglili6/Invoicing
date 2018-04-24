@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeSeeActivity;
+import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
 import com.mtecc.mmp.invoicing.activity.shop.ShopSeeActivity;
 
 import java.util.List;
@@ -25,9 +26,9 @@ import butterknife.ButterKnife;
 
 public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapter.EmployeeViewHolder> {
     private Context mContext;
-    private List<String> mList;
+    private List<EmployeeListBean.DataBean> mList;
 
-    public EmployeeListAdapter(Context mContext, List<String> mList) {
+    public EmployeeListAdapter(Context mContext, List<EmployeeListBean.DataBean> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -40,7 +41,12 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     @Override
     public void onBindViewHolder(EmployeeListAdapter.EmployeeViewHolder holder, int position) {
-        holder.employeeTvName.setText(mList.get(position));
+        EmployeeListBean.DataBean dataBean = mList.get(position);
+        holder.employeeTvName.setText(dataBean.getUsername() + "(" + dataBean.getRole() + ")");
+        holder.employeeTvCode.setText(dataBean.getCardnum());
+        holder.employeeTvPhone.setText(dataBean.getTelphone());
+        holder.employeeTvStatus.setText(dataBean.getEmpstate());
+        holder.employeeTvShop.setText(dataBean.getEmpstate());
         holder.shopListLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

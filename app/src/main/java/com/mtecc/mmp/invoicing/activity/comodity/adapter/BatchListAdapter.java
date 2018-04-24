@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class BatchListAdapter extends BaseAdapter {
     private Context mContext;
     private List<BatchBean> mList;
     IBatchImgOnClickListerner iBatchImgOnClickListerner;
+    IBatchDelImgOnClickListerner iBatchDelOnClickListerner;
 
     public BatchListAdapter(Context mContext, List<BatchBean> mList) {
         this.mContext = mContext;
@@ -65,7 +67,13 @@ public class BatchListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.commodityDialogEtName.setText(mList.get(position).getBatchName());
-        holder.addBatchRecyclcerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        DisplayMetrics dm2 = mContext.getResources().getDisplayMetrics();
+        LogUtils.d("width-display :" + dm2.widthPixels);
+        if (dm2.widthPixels <= 1080) {
+            holder.addBatchRecyclcerView.setLayoutManager(new GridLayoutManager(mContext, 2));
+        } else {
+            holder.addBatchRecyclcerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        }
 
         Object tag = holder.addBatchRecyclcerView.getTag();
         List<String> imgUrlList = null;
@@ -87,6 +95,15 @@ public class BatchListAdapter extends BaseAdapter {
                 }
                 if (iBatchImgOnClickListerner != null) {
                     iBatchImgOnClickListerner.onBatchImgClick(position, pos, imgUrl, mList.get(position).getImgUrl(), mList);
+                }
+            }
+        });
+
+        imgListAdapter.setiIImgDelOnClickListerner(new ImgListAdapter.IImgDelOnClickListerner() {
+            @Override
+            public void onDelClick(int pos, String imgUrl) {
+                if (iBatchDelOnClickListerner != null) {
+                    iBatchDelOnClickListerner.onBatchDelClick(position, pos, imgUrl, mList.get(position).getImgUrl(), mList);
                 }
             }
         });
@@ -128,7 +145,15 @@ public class BatchListAdapter extends BaseAdapter {
         this.iBatchImgOnClickListerner = iBatchImgOnClickListerner;
     }
 
-    public IBatchImgOnClickListerner getiImgOnClickListerner() {
-        return iBatchImgOnClickListerner;
+    public static interface IBatchDelImgOnClickListerner {
+        public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList);
+    }
+
+    public void setiDelOnClickListerner(IBatchDelImgOnClickListerner iBatchDelOnClickListerner) {
+        this.iBatchDelOnClickListerner = iBatchDelOnClickListerner;
+    }
+
+    public IBatchDelImgOnClickListerner getiBatchDelOnClickListerner() {
+        return iBatchDelOnClickListerner;
     }
 }

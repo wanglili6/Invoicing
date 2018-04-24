@@ -11,7 +11,9 @@
     <color name="color_black">#000000</color>
     <color name="text_black_color">#222222</color>
     <color name="text_color">#333333</color>
+    <color name="text_gray_color">#939393</color>
     <color name="text_red">#fa0505</color>
+    <color name="text_hint_red">#88cc0000</color>
     <color name="text_money_color">#FE4401</color>
     <color name="text_surplus_color">#3485E4</color>
     <color name="xian_color">#d7d7d7</color>

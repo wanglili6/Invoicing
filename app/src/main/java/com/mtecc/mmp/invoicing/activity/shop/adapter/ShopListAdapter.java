@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.shop.ShopSeeActivity;
+import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ import butterknife.ButterKnife;
 
 public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopViewHolder> {
     private Context mContext;
-    private List<String> mList;
+    private List<ShopListBean.DataBean> mList;
 
-    public ShopListAdapter(Context mContext, List<String> mList) {
+    public ShopListAdapter(Context mContext, List<ShopListBean.DataBean> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -39,7 +40,17 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopVi
 
     @Override
     public void onBindViewHolder(ShopListAdapter.ShopViewHolder holder, int position) {
-        holder.shopTvName.setText(mList.get(position));
+        ShopListBean.DataBean dataBean = mList.get(position);
+        holder.shopTvName.setText(dataBean.getShopname());
+        holder.shopTvCode.setText(dataBean.getShopnum()+"");
+        holder.shopTvTimer.setText(dataBean.getCreatedate());
+        holder.shopTvCreateMan.setText(dataBean.getCreateman());
+        String shopstate = dataBean.getShopstate();
+        if (shopstate.equals("0")) {
+            holder.shopTvStatus.setText("正常");
+        } else {
+            holder.shopTvStatus.setText("注销");
+        }
         holder.shopListLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +76,10 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopVi
         TextView shopTvCode;
         @BindView(R.id.shop_tv_status)
         TextView shopTvStatus;
+        @BindView(R.id.shop_tv_timer)
+        TextView shopTvTimer;
+        @BindView(R.id.shop_tv_creat_man)
+        TextView shopTvCreateMan;
         @BindView(R.id.shop_list_ll)
         LinearLayout shopListLl;
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.mtecc.mmp.invoicing.R;
@@ -24,6 +25,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
     private Context mContext;
     private List<String> mList;
     IImgOnClickListerner iImgOnClickListerner;
+    IImgDelOnClickListerner iImgDelOnClickListerner;
 
     public ImgListAdapter(Context mContext, List<String> mList) {
         this.mContext = mContext;
@@ -41,7 +43,10 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
         final String imgUrl = mList.get(position);
         if (TextUtils.isEmpty(imgUrl)) {
             holder.imgAdd.setImageResource(R.mipmap.add_img);
+            holder.imgDel.setVisibility(View.GONE);
+
         } else {
+            holder.imgDel.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(imgUrl)
                     .centerCrop()
@@ -57,6 +62,15 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
                 }
             }
         });
+
+        holder.imgDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iImgDelOnClickListerner != null) {
+                    iImgDelOnClickListerner.onDelClick(position, imgUrl);
+                }
+            }
+        });
     }
 
 
@@ -67,6 +81,8 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
 
 
     static class ShopViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.img_del)
+        RelativeLayout imgDel;
         @BindView(R.id.img_add)
         ImageView imgAdd;
 
@@ -87,5 +103,18 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
 
     public IImgOnClickListerner getiImgOnClickListerner() {
         return iImgOnClickListerner;
+    }
+
+    public static interface IImgDelOnClickListerner {
+        public void onDelClick(int position, String imgUrl);
+
+    }
+
+    public void setiIImgDelOnClickListerner(IImgDelOnClickListerner iImgDelOnClickListerner) {
+        this.iImgOnClickListerner = iImgOnClickListerner;
+    }
+
+    public IImgDelOnClickListerner getiImgDelOnClickListerner() {
+        return iImgDelOnClickListerner;
     }
 }

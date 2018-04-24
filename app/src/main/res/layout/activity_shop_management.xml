@@ -120,6 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_shop_status"
                 android:focusableInTouchMode="true"
                 android:focusable="true"
                 android:layout_width="match_parent"
@@ -152,23 +153,27 @@
                         android:textColor="@color/text_red"
                         android:textSize="14sp" />
                 </LinearLayout>
-
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg">
-                    <Spinner
-                        android:id="@+id/shop_spinner_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="8dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
+                    <Switch
+                        android:id="@+id/shop_spinner_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:switchMinWidth="60dp"
+                        android:switchPadding="10dp"
+                        android:textOff="开"
+                        android:textOn="关"
+                        android:thumb="@drawable/thumb_selector"
+                        android:track="@drawable/switch_selector"
+                        android:typeface="normal" />
                 </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -220,7 +225,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/setting_pwd_amend"
+                android:id="@+id/shop_commit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
