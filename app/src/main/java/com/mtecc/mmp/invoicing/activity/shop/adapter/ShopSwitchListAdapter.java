@@ -67,6 +67,7 @@ public class ShopSwitchListAdapter extends BaseAdapter {
         holder.shopTvName.setText(dataBean.getShopname());
         holder.shopTvCode.setText(dataBean.getShopnum() + "");
         holder.shopTvTimer.setText(dataBean.getCreatedate());
+        holder.shopTvCount.setText(dataBean.getMancount() + "");
         holder.shopTvCreateMan.setText(dataBean.getCreateman());
         String shopstate = dataBean.getShopstate();
         if (shopstate.equals("0")) {
@@ -74,18 +75,7 @@ public class ShopSwitchListAdapter extends BaseAdapter {
         } else {
             holder.shopTvStatus.setText("注销");
         }
-        holder.shopEmployee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentemployee = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.Employee_List_TYPE, InvoicingConstants.SHOP_Employee);
-                bundle.putString("shopId", dataBean.getShopid() + "");
-                intentemployee.setClass(mContext, EmployeeListActivity.class);
-                intentemployee.putExtras(bundle);
-                mContext.startActivity(intentemployee);
-            }
-        });
+
         return convertView;
     }
 
@@ -93,7 +83,7 @@ public class ShopSwitchListAdapter extends BaseAdapter {
         @BindView(R.id.shop_img)
         ImageView shopImg;
         @BindView(R.id.img_employee)
-        ImageView shopEmployee;
+        LinearLayout shopEmployee;
         @BindView(R.id.shop_tv_name)
         TextView shopTvName;
         @BindView(R.id.shop_tv_code)
@@ -102,6 +92,8 @@ public class ShopSwitchListAdapter extends BaseAdapter {
         TextView shopTvStatus;
         @BindView(R.id.shop_tv_timer)
         TextView shopTvTimer;
+        @BindView(R.id.shop_tv_count)
+        TextView shopTvCount;
         @BindView(R.id.shop_tv_creat_man)
         TextView shopTvCreateMan;
         @BindView(R.id.shop_list_ll)

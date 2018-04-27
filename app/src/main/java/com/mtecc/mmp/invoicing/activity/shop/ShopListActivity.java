@@ -6,9 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,8 +25,6 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
-import com.mtecc.mmp.invoicing.activity.shop.adapter.ShopListAdapter;
 import com.mtecc.mmp.invoicing.activity.shop.adapter.ShopSwitchListAdapter;
 import com.mtecc.mmp.invoicing.activity.shop.bean.ShopAddBean;
 import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
@@ -119,6 +116,29 @@ public class ShopListActivity extends BaseActivity {
         requestNetShopList(pagenum + "", limit, cid + "", "");
 
 
+        View view1 = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.send_customize);
+        showDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, view1);
+        showDialog.dismiss();
+
+    }
+
+    @Override
+    public View bindView() {
+        return null;
+    }
+
+    @Override
+    public int bindLayout() {
+        return R.layout.activity_shop_list;
+    }
+
+    @Override
+    public void initView(View view) {
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setListener() {
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -140,32 +160,37 @@ public class ShopListActivity extends BaseActivity {
             }
         });
 
-        View view1 = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.send_customize);
-        showDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, view1);
-        showDialog.dismiss();
+        shopListRecyclerView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                String title = menu.getMenuItem(index).getTitle();
+                ShopListBean.DataBean dataBean = mList.get(position);
+                if (title.equals("编辑")) {
+                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.edit_dialog);
+                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, customizeDialog);
+                    editClick(customizeDialog, alertDialog, dataBean);
 
-    }
+                } else if (title.equals("删除")) {
+                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.exit_dialog);
+                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, customizeDialog);
+                    dialogClick(customizeDialog, alertDialog, dataBean);
+                }
+                return false;
+            }
+        });
 
-    @Override
-    public View bindView() {
-        return null;
-    }
-
-    @Override
-    public int bindLayout() {
-        return R.layout.activity_shop_list;
-    }
-
-    @Override
-    public void initView(View view) {
-        ButterKnife.bind(this);
-        //设置recycleView的布局管理器
-//        shopListRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    }
-
-    @Override
-    public void setListener() {
-
+        shopListRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShopListBean.DataBean dataBean = mList.get(position);
+                Intent intentemployee = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("shopId", dataBean.getShopid() + "");
+                intentemployee.setClass(ShopListActivity.this, ShopEmployeeActivity.class);
+                intentemployee.putExtras(bundle);
+                startActivity(intentemployee);
+            }
+        });
     }
 
     @Override
@@ -203,24 +228,7 @@ public class ShopListActivity extends BaseActivity {
         adapter = new ShopSwitchListAdapter(this, mList);
         shopListRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        shopListRecyclerView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                String title = menu.getMenuItem(index).getTitle();
-                ShopListBean.DataBean dataBean = mList.get(position);
-                if (title.equals("编辑")) {
-                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.edit_dialog);
-                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, customizeDialog);
-                    editClick(customizeDialog, alertDialog, dataBean);
 
-                } else if (title.equals("删除")) {
-                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.exit_dialog);
-                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopListActivity.this, false, customizeDialog);
-                    dialogClick(customizeDialog, alertDialog, dataBean);
-                }
-                return true;
-            }
-        });
     }
 
     @OnClick({R.id.rl_back, R.id.iv_bar_search, R.id.tv_search, R.id.iv_serch, R.id.img_select})
@@ -254,7 +262,6 @@ public class ShopListActivity extends BaseActivity {
             case R.id.img_select:
                 //点击加号
                 Intent intent = new Intent();
-                Bundle bundle = new Bundle();
                 intent.setClass(this, ShopManagementActivity.class);
                 startActivity(intent);
                 break;
@@ -262,6 +269,8 @@ public class ShopListActivity extends BaseActivity {
     }
 
     /**
+     * 店铺信息
+     *
      * @param page
      * @param limit
      * @param cid
@@ -299,16 +308,10 @@ public class ShopListActivity extends BaseActivity {
                             if (shopListBean != null) {
                                 List<ShopListBean.DataBean> dataList = shopListBean.getData();
                                 if (dataList != null) {
-                                    if (dataList.size() == 0) {
-                                        llList.setVisibility(View.GONE);
-                                        tvError.setVisibility(View.VISIBLE);
-                                        showToast("暂无数据!");
-                                    } else {
-                                        mList.addAll(dataList);
-                                        adapter.notifyDataSetChanged();
-                                        llList.setVisibility(View.VISIBLE);
-                                        tvError.setVisibility(View.GONE);
-                                    }
+                                    mList.addAll(dataList);
+                                    adapter.notifyDataSetChanged();
+                                    llList.setVisibility(View.VISIBLE);
+                                    tvError.setVisibility(View.GONE);
 
                                 } else {
                                     llList.setVisibility(View.GONE);

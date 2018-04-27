@@ -7,18 +7,30 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
+import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeAddBean;
+import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +38,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class EmployeeManagemnetActivity extends BaseActivity {
-
+    List<String> sexspinnerNameList = new ArrayList<>();
+    List<String> sexspinnervalueList = new ArrayList<>();
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_back)
@@ -37,12 +51,20 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     RelativeLayout rlBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.tv_left_select)
+    TextView tvLeftSelect;
+    @BindView(R.id.img_left_select)
+    ImageButton imgLeftSelect;
+    @BindView(R.id.rl_right_left)
+    RelativeLayout rlRightLeft;
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.img_select)
     ImageButton imgSelect;
     @BindView(R.id.rl_select)
     RelativeLayout rlSelect;
+    @BindView(R.id.ll_right)
+    LinearLayout llRight;
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
     @BindView(R.id.employee_et_pname)
@@ -55,12 +77,14 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     EditText employeeEtPphone;
     @BindView(R.id.employee_pcode)
     EditText employeePcode;
-    @BindView(R.id.employee_spinner_status)
-    Spinner employeeSpinnerStatus;
-    @BindView(R.id.employee_spinner_shop)
-    Spinner employeeSpinnerShop;
-    @BindView(R.id.employee_spinner_role)
-    Spinner employeeSpinnerRole;
+    @BindView(R.id.shop_spinner_status)
+    Switch shopSpinnerStatus;
+    @BindView(R.id.ll_shop_status)
+    LinearLayout llShopStatus;
+    @BindView(R.id.employee_emily)
+    EditText employeeEmily;
+    @BindView(R.id.employee_address)
+    EditText employeeAddress;
     @BindView(R.id.textView)
     TextView textView;
     @BindView(R.id.employee_et_name)
@@ -68,13 +92,10 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     @BindView(R.id.employee_et_pwd)
     EditText employeeEtPwd;
     @BindView(R.id.employee_et_again_pwd)
-    EditText employeeEtAgainPWd;
+    EditText employeeEtAgainPwd;
     @BindView(R.id.employee_tv_register)
     TextView employeeTvRegister;
-    List<String> statusspinnerNameList = new ArrayList<>();
-    List<String> statusspinnervalueList = new ArrayList<>();
-    List<String> sexspinnerNameList = new ArrayList<>();
-    List<String> sexspinnervalueList = new ArrayList<>();
+
 
     private String employeeType = "";
     private String name = "";//姓名
@@ -82,14 +103,17 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     private String sex = "";//性别
     private String phone = "";//手机号
     private String code = "";//身份证号
-    private String status = "";//状态
-    private String shop = "";//所属店铺
-    private String role = "";//角色
+    private String status = "0";//状态
+    private String address = "";//地址
+    private String eamil = "";//邮箱
     private String userName = "";//用户名
     private String userPwd = "";//密码
     private String againPwd = "";//确认密码
 
     private AlertDialog alertDialog;
+    private int cid = 0;
+    private AlertDialog showDialog;
+    private EmployeeListBean.DataBean selectDataBean;
 
     @Override
     public void widgetClick(View v) {
@@ -100,31 +124,59 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     public void initParms(Bundle parms) {
         parms = getIntent().getExtras();
         ivBack.setVisibility(View.VISIBLE);
-        statusspinnerNameList.clear();
-        statusspinnervalueList.clear();
-        statusspinnerNameList.add("请选择");
-        statusspinnerNameList.add("正常");
-        statusspinnerNameList.add("注销");
-        statusspinnervalueList.add("0");
-        statusspinnervalueList.add("1");
-        statusspinnervalueList.add("2");
         sexspinnerNameList.clear();
         sexspinnervalueList.clear();
         sexspinnerNameList.add("请选择");
         sexspinnerNameList.add("男");
         sexspinnerNameList.add("女");
-        sexspinnerNameList.add("其他");
+        sexspinnervalueList.add("-1");
         sexspinnervalueList.add("0");
         sexspinnervalueList.add("1");
-        sexspinnervalueList.add("2");
-        sexspinnervalueList.add("3");
         employeeType = parms.getString(InvoicingConstants.EMPLOYEE_TYPE);
+        cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0);
         if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_ADD)) {
             tvTitle.setText("添加员工");
+            llShopStatus.setVisibility(View.GONE);
 
         } else if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_EDIT)) {
             tvTitle.setText("编辑员工");
+            selectDataBean = (EmployeeListBean.DataBean) parms.getSerializable(InvoicingConstants.EMPLOYEE_userId);
+            llShopStatus.setVisibility(View.VISIBLE);
+            if (selectDataBean != null) {
+                String username = selectDataBean.getUsername();
+                employeeEtPname.setText(username + "");
+                employeeEtPnum.setText(selectDataBean.getUserage() + "");
+                employeeEtPphone.setText(selectDataBean.getTelphone() + "");
+                employeePcode.setText(selectDataBean.getCardnum() + "");
+                employeeEmily.setText(selectDataBean.getEmail() + "");
+                employeeAddress.setText(selectDataBean.getAddress() + "");
+                employeeEtName.setText(selectDataBean.getLogname() + "");
+                employeeEtPwd.setText(selectDataBean.getPassword() + "");
+                if (selectDataBean.getEmpstate().equals("0")) {
+                    shopSpinnerStatus.setChecked(true);
+                } else {
+                    shopSpinnerStatus.setChecked(false);
+                }
+                employeeEtAgainPwd.setText("");
+            } else {
+
+                showToast("数据错误!");
+            }
+
+            shopSpinnerStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        status = "0";
+                    } else {
+                        status = "";
+                    }
+                }
+            });
         }
+        View view1 = ShowDalogUtils.showCustomizeDialog(EmployeeManagemnetActivity.this, R.layout.send_customize);
+        showDialog = ShowDalogUtils.showDialog(EmployeeManagemnetActivity.this, false, view1);
+        showDialog.dismiss();
     }
 
     @Override
@@ -149,14 +201,10 @@ public class EmployeeManagemnetActivity extends BaseActivity {
 
     @Override
     public void doBusiness(Context mContext) {
-        ArrayAdapter mstatusAdapter = new ArrayAdapter<String>(this, R.layout.registration_sex_item, statusspinnerNameList);
-        employeeSpinnerStatus.setAdapter(mstatusAdapter);
-        mstatusAdapter.notifyDataSetChanged();
-        employeeSpinnerStatus.setSelection(0);
+
         ArrayAdapter msexAdapter = new ArrayAdapter<String>(this, R.layout.registration_sex_item, sexspinnerNameList);
         employeeSpinnerPsex.setAdapter(msexAdapter);
         msexAdapter.notifyDataSetChanged();
-        employeeSpinnerStatus.setSelection(0);
         employeeSpinnerPsex.setSelection(0);
         setSpinner();
     }
@@ -165,25 +213,12 @@ public class EmployeeManagemnetActivity extends BaseActivity {
      * spinner的点击事件
      */
     private void setSpinner() {
-        //员工状态
-        employeeSpinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                status = statusspinnervalueList.get(position);
-                LogUtils.d(statusspinnerNameList.get(position) + "-----" + statusspinnervalueList.get(position));
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //性别
         employeeSpinnerPsex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sex = sexspinnervalueList.get(position);
-                LogUtils.d(statusspinnerNameList.get(position) + "-----" + statusspinnervalueList.get(position));
             }
 
             @Override
@@ -193,21 +228,6 @@ public class EmployeeManagemnetActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.rl_back, R.id.employee_tv_register})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_back:
-                View exitView = ShowDalogUtils.showCustomizeDialog(this, R.layout.exit_dialog);
-                AlertDialog dialog = ShowDalogUtils.showDialog(this, false, exitView);
-                exitClick(exitView, dialog);
-                break;
-            case R.id.employee_tv_register:
-                View view1 = ShowDalogUtils.showCustomizeDialog(this, R.layout.send_customize);
-                alertDialog = ShowDalogUtils.showDialog(this, false, view1);
-                judgmentValueIsEmpty();
-                break;
-        }
-    }
 
     /**
      * 判断值是否为空---必填
@@ -217,10 +237,11 @@ public class EmployeeManagemnetActivity extends BaseActivity {
         age = employeeEtPnum.getText().toString().trim();
         phone = employeeEtPphone.getText().toString().trim();
         code = employeePcode.getText().toString().trim();
+        eamil = employeeEmily.getText().toString().trim();
+        address = employeeAddress.getText().toString().trim();
         userName = employeeEtName.getText().toString().trim();
         userPwd = employeeEtPwd.getText().toString().trim();
-        againPwd = employeeEtAgainPWd.getText().toString().trim();
-
+        againPwd = employeeEtAgainPwd.getText().toString().trim();
         if (TextUtils.isEmpty(name) || name.equals("")) {
             showToast("员工姓名不能为空!");
             alertDialog.dismiss();
@@ -246,21 +267,8 @@ public class EmployeeManagemnetActivity extends BaseActivity {
             alertDialog.dismiss();
             return;
         }
-        if (TextUtils.isEmpty(status) || status.equals("0")) {
-            showToast("员工状态不能为空!");
-            alertDialog.dismiss();
-            return;
-        }
-        if (TextUtils.isEmpty(shop) || shop.equals("")) {
-            showToast("所属店铺不能为空!");
-            alertDialog.dismiss();
-            return;
-        }
-        if (TextUtils.isEmpty(role) || role.equals("")) {
-            showToast("角色不能为空!");
-            alertDialog.dismiss();
-            return;
-        }
+
+
         if (TextUtils.isEmpty(userName) || userName.equals("")) {
             showToast("员工用户名不能为空!");
             alertDialog.dismiss();
@@ -286,10 +294,37 @@ public class EmployeeManagemnetActivity extends BaseActivity {
 
         //TODO:提交逻辑
         if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_ADD)) {
-
-            finish();
+            EmployeeAddBean employeeAddBean = new EmployeeAddBean();
+            employeeAddBean.setCid(cid);
+            employeeAddBean.setUsername(name);
+            employeeAddBean.setLogname(userName);
+            employeeAddBean.setCardnum(code);
+            employeeAddBean.setPassword(userPwd);
+            employeeAddBean.setSex(sex);
+            employeeAddBean.setEmail(eamil);
+            employeeAddBean.setAddress(address);
+            employeeAddBean.setTelphone(phone);
+            employeeAddBean.setUserage(age);
+            Gson gson = new Gson();
+            String addJson = gson.toJson(employeeAddBean);
+            requestNetAddEmployee(addJson);
         } else if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_EDIT)) {
-            finish();
+            EmployeeAddBean employeeAddBean = new EmployeeAddBean();
+            employeeAddBean.setCid(cid);
+            employeeAddBean.setUserid(selectDataBean.getUserid());
+            employeeAddBean.setLogname(userName);
+            employeeAddBean.setEmpstate(status);
+            employeeAddBean.setCardnum(code);
+            employeeAddBean.setPassword(userPwd);
+            employeeAddBean.setUsername(name);
+            employeeAddBean.setSex(sex);
+            employeeAddBean.setEmail(eamil);
+            employeeAddBean.setAddress(address);
+            employeeAddBean.setTelphone(phone);
+            employeeAddBean.setUserage(age);
+            Gson gson = new Gson();
+            String editJson = gson.toJson(employeeAddBean);
+            requestNetAddEmployee(editJson);
         }
 
     }
@@ -321,5 +356,139 @@ public class EmployeeManagemnetActivity extends BaseActivity {
 
             }
         });
+    }
+
+
+    @OnClick({R.id.rl_back, R.id.employee_tv_register})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_back:
+                View exitView = ShowDalogUtils.showCustomizeDialog(this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(this, false, exitView);
+                exitClick(exitView, dialog);
+                break;
+//            case R.id.ll_shop:
+//                //店铺
+//                Intent intentemployee = new Intent();
+//                intentemployee.setClass(EmployeeManagemnetActivity.this, SelectShopListActivity.class);
+//                startActivityForResult(intentemployee, 1);
+//                break;
+//            case R.id.ll_role:
+//                //角色
+//                Intent roleintent = new Intent(EmployeeManagemnetActivity.this, RoleListActivity.class);
+//                Bundle rolebundle = new Bundle();
+//                rolebundle.putString(InvoicingConstants.role_TYPE, InvoicingConstants.role_select);
+//                roleintent.putExtras(rolebundle);
+//                startActivityForResult(roleintent, 2);
+//                break;
+            case R.id.employee_tv_register:
+                View view1 = ShowDalogUtils.showCustomizeDialog(this, R.layout.send_customize);
+                alertDialog = ShowDalogUtils.showDialog(this, false, view1);
+                judgmentValueIsEmpty();
+                break;
+        }
+    }
+
+
+    /**
+     * 添加用户
+     */
+    private void requestNetAddEmployee(String addJosn) {
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.employeeAdd_URL;
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + addJosn);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("userBean", addJosn)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e.toString());
+                            Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息EmployeeManagemnetActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("添加员工成功!");
+                                    finish();
+                                } else {
+                                    showToast("添加员工失败!");
+                                }
+                            } else {
+                                Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                            Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 编辑用户
+     */
+    private void requestNetEditEmployee(String addJosn) {
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.employeeEdit_URL;
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + addJosn);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("userBean", addJosn)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e.toString());
+                            Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息EmployeeManagemnetActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("添加员工成功!");
+                                    finish();
+                                } else {
+                                    showToast("添加员工失败!");
+                                }
+                            } else {
+                                Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                            Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

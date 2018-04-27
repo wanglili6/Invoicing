@@ -160,7 +160,11 @@
             android:name=".activity.SaoMaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.comodity.AddBatchActivity"></activity>
+        <activity android:name=".activity.comodity.AddBatchActivity" />
+        <activity android:name=".activity.employee.SelectEmployeeListActivity" />
+        <activity android:name=".activity.shop.SelectShopListActivity" />
+        <activity android:name=".activity.role.RoleListActivity" />
+        <activity android:name=".activity.shop.ShopEmployeeActivity"></activity>
     </application>
 
 </manifest>

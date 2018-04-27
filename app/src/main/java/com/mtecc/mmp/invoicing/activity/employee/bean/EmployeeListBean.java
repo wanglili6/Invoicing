@@ -1,12 +1,13 @@
 package com.mtecc.mmp.invoicing.activity.employee.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wll on 2018/4/24.
  */
 
-public class EmployeeListBean {
+public class EmployeeListBean implements Serializable {
 
     private List<DataBean> data;
 
@@ -18,7 +19,7 @@ public class EmployeeListBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * sex : 0
          * userage : 20
@@ -182,7 +183,7 @@ public class EmployeeListBean {
             this.role = role;
         }
 
-        public static class CidBean {
+        public static class CidBean implements Serializable {
             /**
              * address : 北京
              * clicence : 987654321
@@ -277,7 +278,7 @@ public class EmployeeListBean {
                 this.cname = cname;
             }
 
-            public static class EnddateBean {
+            public static class EnddateBean implements Serializable {
                 /**
                  * nanos : 0
                  * time : 1524412800000
@@ -384,7 +385,7 @@ public class EmployeeListBean {
             }
         }
 
-        public static class CreatdateBean {
+        public static class CreatdateBean implements Serializable {
             /**
              * nanos : 0
              * time : 1524126502000

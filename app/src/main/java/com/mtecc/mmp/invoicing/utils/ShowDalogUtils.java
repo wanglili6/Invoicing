@@ -50,7 +50,7 @@ public class ShowDalogUtils {
         int heightPixels = metric.heightPixels;     // 屏幕宽度（像素）
         Rect frame = new Rect();
         window.getDecorView().getWindowVisibleDisplayFrame(frame);
-        mPopWindow.showAtLocation(view, Gravity.NO_GRAVITY, width, heightPixels / y_shang);
+        mPopWindow.showAtLocation(view, Gravity.BOTTOM, width, 0);
         //点击其他地方消失
         mPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -106,6 +106,30 @@ public class ShowDalogUtils {
         Window window = dialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.gravity = Gravity.CENTER;
+        lp.width = (int) (width * 0.95);//宽高可设置具体大小
+        lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(touchout);
+        return dialog;
+    }
+
+
+    /**
+     * @param touchout   是否允许点击外部消失
+     * @param context
+     * @param dialogView
+     * @return
+     */
+    public static AlertDialog showDialog(Context context, boolean touchout, View dialogView, int gravity) {
+        AlertDialog.Builder customizeDialog = new AlertDialog.Builder(context);
+        customizeDialog.setView(dialogView);
+        final AlertDialog dialog = customizeDialog.show();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.gravity = gravity;
         lp.width = (int) (width * 0.95);//宽高可设置具体大小
         lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(lp);

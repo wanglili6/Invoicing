@@ -28,9 +28,35 @@ public class InvoicingConstants {
     public static final String shopDel_URL = "/app/shopmanage/delete.htm";
     //店铺员工列表
     public static final String manlistfortable_URL = "/app/shopmanage/manlistfortable.htm";
+    //店铺添加员工
+    public static final String bindMan_URL = "/app/shopmanage/bindMan.htm";
+    //店铺删除员工
+    public static final String unbindMan_URL = "/app/shopmanage/unbindMan.htm";
+    //获取角色列表
+    public static final String manlistforRole_URL = "/app/shopmanage/manlistforRole.htm";
+    //分配角色
+    public static final String bindRole_URL = "/app/shopmanage/bindRole.htm";
+
 
     //公司员工列表
     public static final String employee_listfortable_URL = "/app/employee/listfortable.htm";
+
+    //获取公司下面所有可用员工
+    public static final String manlistforcompany_URL = "/app/shopmanage/manlistforcompany.htm";
+
+
+    //角色列表
+    public static final String roleList_URL = "/app/rolemanage/listfortable.htm";
+    //添加角色
+    public static final String roleAdd_URL = "/app/rolemanage/Add.htm";
+    public static final String roleEdit_URL = "/app/rolemanage/Edit.htm";
+    public static final String roleDelete_URL = "/app/rolemanage/delete.htm";
+
+    //添加员工
+    public static final String employeeAdd_URL = "/app/employee/Add.htm";
+    //编辑员工
+    public static final String employeeEdit_URL = "/app/employee/Edit.htm";
+    public static final String employeedelete_URL = "/app/employee/delete.htm";
 
 
     //用户信息
@@ -67,10 +93,21 @@ public class InvoicingConstants {
     //跳转员工列表的type
     public static final String Employee_List_TYPE = "Employee_List_TYPE";
     public static final String SHOP_Employee = "SHOP_Employee";//shopEmployee--店铺员工
-    public static final String EmployeeAdd = "EmployeeAdd";//edit--编辑
+    public static final String companyEmployeeAdd = "companyEmployeeAdd";//公司员工列表
+
+    // 跳转角色列表的type
+    public static final String role_TYPE = "role_TYPE";
+    public static final String role_select = "role_select";//选择角色
+    public static final String role_see = "role_see";//查看角色
+
+
+    public static final String shopEmployeeSelect = "shopEmployeeSelect";//店铺所有员工
+    public static final String shopId = "shopId";//店铺员工id
+    public static final String selectuserid = "selectuserid";//店铺员工id
 
     // 跳转添加员工界面的type
     public static final String EMPLOYEE_TYPE = "employeeType";
+    public static final String EMPLOYEE_userId = "EMPLOYEE_userId";//编辑员工id
     public static final String EMPLOYEE_ADD = "employeeadd";//add--添加
     public static final String EMPLOYEE_EDIT = "employeeedit";//edit--编辑
 

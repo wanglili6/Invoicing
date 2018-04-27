@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
+import com.mtecc.mmp.invoicing.activity.role.adapter.RoleListAdapter;
 import com.mtecc.mmp.invoicing.activity.setting.SettingActivity;
 import com.mtecc.mmp.invoicing.activity.baseinfoMsg.CompanyMsgActivity;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeListActivity;
@@ -93,7 +95,7 @@ public class MineFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.mine_rl_msg, R.id.mine_rl_shop, R.id.mine_rl_person, R.id.mine_rl_setting, R.id.mine_tv_exit})
+    @OnClick({R.id.mine_rl_role, R.id.mine_rl_msg, R.id.mine_rl_shop, R.id.mine_rl_person, R.id.mine_rl_setting, R.id.mine_tv_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mine_rl_msg:
@@ -110,10 +112,18 @@ public class MineFragment extends Fragment {
                 //TODO:员工管理
                 Intent intentemployee = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.Employee_List_TYPE, InvoicingConstants.EMPLOYEE_ADD);
+                bundle.putString(InvoicingConstants.Employee_List_TYPE, InvoicingConstants.companyEmployeeAdd);
                 intentemployee.setClass(getContext(), EmployeeListActivity.class);
                 intentemployee.putExtras(bundle);
                 startActivity(intentemployee);
+                break;
+            case R.id.mine_rl_role:
+                //角色管理
+                Intent roleintent = new Intent(getContext(), RoleListActivity.class);
+                Bundle rolebundle = new Bundle();
+                rolebundle.putString(InvoicingConstants.role_TYPE, InvoicingConstants.role_see);
+                roleintent.putExtras(rolebundle);
+                startActivity(roleintent);
                 break;
             case R.id.mine_rl_setting:
                 //设置界面

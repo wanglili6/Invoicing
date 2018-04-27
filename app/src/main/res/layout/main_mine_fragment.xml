@@ -122,6 +122,35 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/mine_rl_role"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/role_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="角色管理"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/next" />
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/mine_rl_setting"
             android:layout_width="match_parent"
             android:layout_height="45dp"

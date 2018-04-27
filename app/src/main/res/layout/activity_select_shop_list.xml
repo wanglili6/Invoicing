@@ -14,8 +14,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="100">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/ll_list"
@@ -30,14 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
+                <ListView
                     android:id="@+id/shop_list_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:scrollbars="none">
 
-                </android.support.v7.widget.RecyclerView>
+                </ListView>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

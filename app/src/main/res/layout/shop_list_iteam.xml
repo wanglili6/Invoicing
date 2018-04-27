@@ -22,6 +22,7 @@
             android:scaleType="centerCrop" />
 
         <LinearLayout
+            android:id="@+id/img_employee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -103,6 +104,30 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
+                            android:text="店铺人数:"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/shop_tv_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
                             android:text="创建人:"
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
@@ -142,14 +167,17 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/img_employee"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
-                    android:background="@mipmap/employee_shop" />
+                    android:drawablePadding="5dp"
+                    android:drawableTop="@mipmap/employee_shop"
+                    android:text="店铺人员"
+                    android:textColor="#1296DB"
+                    android:textSize="14sp" />
             </RelativeLayout>
 
         </LinearLayout>

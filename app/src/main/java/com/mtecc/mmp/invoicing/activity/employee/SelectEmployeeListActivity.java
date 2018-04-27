@@ -3,13 +3,12 @@ package com.mtecc.mmp.invoicing.activity.employee;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.employee.adapter.EmployeeListAdapter;
+import com.mtecc.mmp.invoicing.activity.employee.adapter.SelectEmployeeListAdapter;
 import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
@@ -37,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class EmployeeListActivity extends BaseActivity {
+public class SelectEmployeeListActivity extends BaseActivity {
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_back)
@@ -62,20 +61,25 @@ public class EmployeeListActivity extends BaseActivity {
     ImageButton imgSelect;
     @BindView(R.id.rl_serch_bar)
     LinearLayout rlSerchBar;
-
     @BindView(R.id.tv_search)
     TextView tvSearch;
     @BindView(R.id.tv_error)
     TextView tvError;
     @BindView(R.id.shop_list_recycler_view)
-    RecyclerView shopListRecyclerView;
+    ListView shopListRecyclerView;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.tv_select_names)
+    TextView tvSelectNames;
+    @BindView(R.id.tv_select_sure)
+    TextView tvSelectSure;
+    private String employee_list_type = "";
     private int pagenum = 1;
     List<EmployeeListBean.DataBean> mList = new ArrayList<>();
-    private EmployeeListAdapter adapter;
+    private SelectEmployeeListAdapter adapter;
+    private String shopId;
     private String cid;
-    private boolean isPause = false;
+    private List<EmployeeListBean.DataBean> shopEmployeeList;
 
     @Override
     public void widgetClick(View v) {
@@ -84,20 +88,40 @@ public class EmployeeListActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
+        parms = getIntent().getExtras();
+        shopEmployeeList = (List<EmployeeListBean.DataBean>) parms.getSerializable(InvoicingConstants.shopEmployeeSelect);
+        shopId =  parms.getString(InvoicingConstants.shopId);
         ivBack.setVisibility(View.VISIBLE);
         imgSelect.setVisibility(View.VISIBLE);
         imgSelect.setBackgroundResource(R.mipmap.add_select);
         cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0) + "";
-        parms = getIntent().getExtras();
-        if (parms != null) {
-            //全部员工
-            tvTitle.setText("员工列表");
-            requestNetEmployeeList(pagenum + "", cid);
-            adapter = new EmployeeListAdapter(this, mList);
-            shopListRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+        //全部员工
+        tvTitle.setText("员工列表");
+        requestNetEmployeeList(pagenum + "", cid);
+        shopListRecyclerView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        adapter = new SelectEmployeeListAdapter(this, mList, shopListRecyclerView, shopEmployeeList,tvSelectNames,tvSelectSure,shopId);
+        shopListRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        }
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1500);
+                mList.clear();
+                pagenum = 1;
+                requestNetEmployeeList(pagenum + "", cid);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadmore(1500);
+                pagenum++;
+                requestNetEmployeeList(pagenum + "", cid);
+            }
+        });
 
 
     }
@@ -109,47 +133,19 @@ public class EmployeeListActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_employee_list;
+        return R.layout.activity_select_employee_list;
     }
 
     @Override
     public void initView(View view) {
         ButterKnife.bind(this);
         //设置recycleView的布局管理器
-        shopListRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void setListener() {
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(1500);
-                mList.clear();
-                pagenum = 1;
-
-                requestNetEmployeeList(pagenum + "", cid);
-
-
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadmore(1500);
-                pagenum++;
-
-                requestNetEmployeeList(pagenum + "", cid);
-
-
-            }
-        });
-
 
     }
-
 
     @Override
     public void doBusiness(Context mContext) {
@@ -181,16 +177,13 @@ public class EmployeeListActivity extends BaseActivity {
                 //点击加号
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.EMPLOYEE_TYPE, InvoicingConstants.EMPLOYEE_ADD);
+                bundle.putString(InvoicingConstants.EMPLOYEE_TYPE, InvoicingConstants.companyEmployeeAdd);
                 intent.setClass(this, EmployeeManagemnetActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
-
                 break;
         }
     }
-
 
     /**
      * 查看公司员工
@@ -199,7 +192,8 @@ public class EmployeeListActivity extends BaseActivity {
      * @param id
      */
     private void requestNetEmployeeList(String page, String id) {
-        String url = InvoicingConstants.BASE_URL + InvoicingConstants.employee_listfortable_URL;
+        String url = "";
+        url = InvoicingConstants.BASE_URL + InvoicingConstants.employee_listfortable_URL;
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + id);
         OkHttpUtils.post().tag(this)
@@ -212,7 +206,7 @@ public class EmployeeListActivity extends BaseActivity {
                     public void onError(Call call, Exception e, int id) {
                         try {
                             LogUtils.d("错误信息EmployeeListActivity" + e.toString());
-                            Toast.makeText(EmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectEmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         } catch (Exception e1) {
                             LogUtils.d("错误信息EmployeeListActivity" + e1.toString());
                         }
@@ -239,13 +233,13 @@ public class EmployeeListActivity extends BaseActivity {
                                 }
 
                             } else {
-                                Toast.makeText(EmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectEmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                             }
 
 
                         } catch (Exception e1) {
                             LogUtils.d("错误信息EmployeeListActivity" + e1.toString());
-                            Toast.makeText(EmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectEmployeeListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -253,18 +247,10 @@ public class EmployeeListActivity extends BaseActivity {
 
     }
 
-
     @Override
-    protected void onPause() {
-        super.onPause();
-        isPause = true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (isPause) {
-            smartRefreshLayout.autoRefresh();
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
