@@ -95,6 +95,8 @@ public class LoginActivity extends BaseActivity {
                     showToast("用户名或密码不能为空!");
                     return;
                 }
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
                 requestNetLogin(userName, userPwd);
                 break;
             case R.id.tv_register:

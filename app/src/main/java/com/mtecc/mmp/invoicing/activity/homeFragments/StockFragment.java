@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
@@ -25,6 +26,8 @@ public class StockFragment extends Fragment {
     @BindView(R.id.btn_ceshi)
     Button btnCeshi;
     Unbinder unbinder;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     @Nullable
     @Override
@@ -32,6 +35,7 @@ public class StockFragment extends Fragment {
         final View inflate = inflater.inflate(R.layout.main_stock_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是库存的oncreate");
+        tvTitle.setText("库存");
         initData();
 
         return inflate;
@@ -42,10 +46,10 @@ public class StockFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (isVisibleToUser){
-            LogUtils.i(isVisibleToUser+"====刷新页面");
-        }else {
-            LogUtils.i(isVisibleToUser+"====不显示页面");
+        if (isVisibleToUser) {
+            LogUtils.i(isVisibleToUser + "====刷新页面");
+        } else {
+            LogUtils.i(isVisibleToUser + "====不显示页面");
         }
     }
 
@@ -66,7 +70,7 @@ public class StockFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_ceshi:
-               LogUtils.d("测试:--","这是库存");
+                LogUtils.d("测试:--", "这是库存");
                 break;
 
         }

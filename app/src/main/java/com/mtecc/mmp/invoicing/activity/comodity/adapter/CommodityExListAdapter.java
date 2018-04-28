@@ -2,6 +2,8 @@ package com.mtecc.mmp.invoicing.activity.comodity.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,9 @@ import android.widget.Toast;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity;
+import com.mtecc.mmp.invoicing.activity.comodity.SeeCommodityActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityBean;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by wll on 2018/4/20.
+ * 这个是父子级关系
  */
 
 public class CommodityExListAdapter extends BaseExpandableListAdapter {
@@ -102,6 +107,8 @@ public class CommodityExListAdapter extends BaseExpandableListAdapter {
                 mContext.startActivity(intent);
             }
         });
+
+
         return convertView;
     }
 
@@ -129,12 +136,10 @@ public class CommodityExListAdapter extends BaseExpandableListAdapter {
         TextView commodityTvName;
         @BindView(R.id.commodity_tv_norm)
         TextView commodityTvNorm;
-        @BindView(R.id.commodity_tv_brands)
-        TextView commodityTvBrands;
         @BindView(R.id.commodity_tv_price)
         TextView commodityTvPrice;
         @BindView(R.id.commodity_list_img_batch)
-        ImageView commodityListImgBatch;
+        TextView commodityListImgBatch;
         @BindView(R.id.commodity_list_ll)
         LinearLayout commodityListLl;
 

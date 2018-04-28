@@ -29,12 +29,12 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/color_white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
@@ -66,12 +66,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/color_white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
@@ -83,32 +83,32 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
                 android:gravity="center"
-                android:text="商品类别:"
+                android:text="商品条形码:"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
 
             <EditText
-                android:id="@+id/commodity_dialog_et_type"
+                android:id="@+id/commodity_dialog_et_bar_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn_bg"
-                android:hint="请输入年龄"
+                android:hint="请输入条形码"
                 android:padding="8dp"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/color_white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
@@ -120,36 +120,37 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
                 android:gravity="center"
-                android:text="商品规格:"
+                android:text="商品编码:"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
 
             <EditText
-                android:id="@+id/commodity_dialog_et_guige"
+                android:id="@+id/commodity_dialog_et_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn_bg"
-                android:hint="请输入年龄"
+                android:hint="请输入编码"
                 android:padding="8dp"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/color_white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingRight="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -157,7 +158,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
                 android:gravity="center"
-                android:text="商品品牌:"
+                android:text="商品类型:"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 

@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity;
-import com.mtecc.mmp.invoicing.activity.employee.EmployeeSeeActivity;
-import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
-import com.mtecc.mmp.invoicing.activity.shop.ShopManagementActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +38,8 @@ public class ManangerFragment extends Fragment {
     RelativeLayout manageRlIncome;
     @BindView(R.id.manage_rl_expend)
     RelativeLayout manageRlExpend;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     @Nullable
     @Override
@@ -47,8 +47,8 @@ public class ManangerFragment extends Fragment {
         final View inflate = inflater.inflate(R.layout.main_mananger_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是管理的oncreate");
+        tvTitle.setText("管理");
         initData();
-
         return inflate;
     }
 

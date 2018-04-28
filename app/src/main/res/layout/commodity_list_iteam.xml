@@ -14,21 +14,24 @@
         android:padding="10dp">
 
         <ImageView
-            android:layout_gravity="center_vertical"
             android:id="@+id/commodity_img"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
             android:background="@mipmap/company_icon"
             android:scaleType="centerCrop" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/commodity_tv_name"
                     android:layout_width="wrap_content"
@@ -38,6 +41,28 @@
                     android:textColor="@color/text_black_color"
                     android:textSize="16sp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="编码:"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_tv_coding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="DP12345"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -49,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="规格:"
+                        android:text="规格/单位:"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
@@ -72,12 +97,58 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="品牌:"
+                        android:text="类型:"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/commodity_tv_brands"
+                        android:id="@+id/commodity_tv_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="123"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="保质期:"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_tv_shelf_life"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="123"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="类别:"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_tv_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -111,12 +182,16 @@
 
             </LinearLayout>
 
-            <ImageView
+            <TextView
+                android:textSize="14sp"
+                android:text="添加批次"
+                android:textColor="@color/text_money_color"
                 android:id="@+id/commodity_list_img_batch"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/batch"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:drawableTop="@mipmap/batch" />
         </RelativeLayout>
 
     </LinearLayout>

@@ -324,7 +324,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
             employeeAddBean.setUserage(age);
             Gson gson = new Gson();
             String editJson = gson.toJson(employeeAddBean);
-            requestNetAddEmployee(editJson);
+            requestNetEditEmployee(editJson);
         }
 
     }

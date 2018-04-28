@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
-    <include layout="@layout/base_title" />
-    <Button
-        android:id="@+id/btn_ceshi"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="测试版本" />
 
+    <include layout="@layout/base_title" />
+    <FrameLayout
+        android:id="@+id/new_fl_contans"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100">
+
+    </FrameLayout>
 
 </LinearLayout>

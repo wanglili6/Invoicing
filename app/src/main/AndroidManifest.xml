@@ -164,7 +164,11 @@
         <activity android:name=".activity.employee.SelectEmployeeListActivity" />
         <activity android:name=".activity.shop.SelectShopListActivity" />
         <activity android:name=".activity.role.RoleListActivity" />
-        <activity android:name=".activity.shop.ShopEmployeeActivity"></activity>
+        <activity android:name=".activity.shop.ShopEmployeeActivity" />
+        <activity android:name=".activity.comodity.SwipeActivity" />
+        <activity android:name=".activity.comodity.AddCommodityActivity" />
+        <activity android:name=".activity.comodity.SeeCommodityActivity" />
+        <activity android:name=".activity.comodity.SeeImgActivity" />
     </application>
 
 </manifest>

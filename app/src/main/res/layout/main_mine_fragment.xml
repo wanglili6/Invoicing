@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_weight="100"
         android:orientation="vertical">
-
+        <include layout="@layout/base_title" />
         <RelativeLayout
             android:id="@+id/mine_rl_msg"
             android:layout_width="match_parent"

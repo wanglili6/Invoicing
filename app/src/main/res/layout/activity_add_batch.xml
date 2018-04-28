@@ -8,13 +8,33 @@
     tools:context="com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity">
 
     <include layout="@layout/base_title" />
+<ScrollView
+    android:layout_weight="100"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.mtecc.mmp.invoicing.views.NoScrollListView
 
-    <ListView
         android:id="@+id/add_batch_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
         android:scrollbars="none">
 
-    </ListView>
+    </com.mtecc.mmp.invoicing.views.NoScrollListView>
+</ScrollView>
+
+
+    <TextView
+        android:id="@+id/commodity_tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/login_btn"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 </LinearLayout>

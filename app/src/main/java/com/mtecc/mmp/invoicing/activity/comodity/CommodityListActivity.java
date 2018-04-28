@@ -10,14 +10,18 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.CommodityExListAdapter;
+import com.mtecc.mmp.invoicing.activity.comodity.adapter.CommodityListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityBean;
+import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -77,7 +81,7 @@ public class CommodityListActivity extends BaseActivity {
     @BindView(R.id.commodity_list_tv_price)
     TextView commodityListTvPrice;
     @BindView(R.id.commodity_list_recycle_view)
-    ExpandableListView commodityListRecycleView;
+    ListView commodityListRecycleView;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
 
@@ -94,33 +98,17 @@ public class CommodityListActivity extends BaseActivity {
         tvTitle.setText("商品列表");
         imgSelect.setBackgroundResource(R.mipmap.add_select);
         imgLeftSelect.setBackgroundResource(R.mipmap.filter);
-        List<CommodityBean> mList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            List<String> nameList = new ArrayList<>();
-            CommodityBean commodityBean = new CommodityBean();
-            commodityBean.setTitle("分类" + i);
-            for (int j = 0; j < 5; j++) {
-                nameList.add("商品" + i + j);
-            }
-            commodityBean.setNameList(nameList);
-            mList.add(commodityBean);
+
+            nameList.add("商品" + i);
+
         }
-        CommodityExListAdapter adapter = new CommodityExListAdapter(this, mList);
+        CommodityListAdapter adapter = new CommodityListAdapter(this, nameList);
         commodityListRecycleView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        //默认展开
-        for (int i = 0; i < mList.size(); i++) {
-            commodityListRecycleView.expandGroup(i);
-        }
-        //设置点击不回缩
-        commodityListRecycleView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                return true;
-            }
-        });
+
     }
 
     @Override
@@ -169,7 +157,7 @@ public class CommodityListActivity extends BaseActivity {
             case R.id.img_commodity_list_saoma:
                 Intent intent = new Intent();
                 intent.setClass(this, SaoMaActivity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.img_left_select:
                 //筛选
@@ -179,6 +167,12 @@ public class CommodityListActivity extends BaseActivity {
                 break;
             case R.id.img_select:
                 //增加商品
+
+                Intent roleintent = new Intent(this, AddCommodityActivity.class);
+                Bundle rolebundle = new Bundle();
+                rolebundle.putString(InvoicingConstants.COMMODITY_TYPE, InvoicingConstants.COMMODITY_ADD);
+                roleintent.putExtras(rolebundle);
+                startActivity(roleintent);
                 break;
 
         }
@@ -191,6 +185,7 @@ public class CommodityListActivity extends BaseActivity {
 
     /**
      * 对话框的初始化以及点击事件
+     *
      * @param customizeDialogView
      * @param dialog
      */
@@ -198,9 +193,8 @@ public class CommodityListActivity extends BaseActivity {
         TextView tvSure = customizeDialogView.findViewById(R.id.tv_sure);
         TextView tvDiss = customizeDialogView.findViewById(R.id.tv_diss);
         final EditText commodityDialogEtName = customizeDialogView.findViewById(R.id.commodity_dialog_et_name);
-        final EditText commodityDialogEtType = customizeDialogView.findViewById(R.id.commodity_dialog_et_type);
-        final EditText commodityDialogEtguige = customizeDialogView.findViewById(R.id.commodity_dialog_et_guige);
-        final EditText commodityDialogEtpinpai = customizeDialogView.findViewById(R.id.commodity_dialog_et_pinpai);
+        final EditText commodityDialogEtBarCode = customizeDialogView.findViewById(R.id.commodity_dialog_et_bar_code);
+        final EditText commodityDialogEtCode = customizeDialogView.findViewById(R.id.commodity_dialog_et_code);
         tvDiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,9 +206,8 @@ public class CommodityListActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 String name = commodityDialogEtName.getText().toString().trim();
-                String type = commodityDialogEtType.getText().toString().trim();
-                String guige = commodityDialogEtguige.getText().toString().trim();
-                String pinpai = commodityDialogEtpinpai.getText().toString().trim();
+                String barCode = commodityDialogEtBarCode.getText().toString().trim();
+                String code = commodityDialogEtCode.getText().toString().trim();
                 //TODO:筛选请求
 
             }

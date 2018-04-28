@@ -111,4 +111,20 @@ public class InvoicingConstants {
     public static final String EMPLOYEE_ADD = "employeeadd";//add--添加
     public static final String EMPLOYEE_EDIT = "employeeedit";//edit--编辑
 
+
+    // 跳转添加商品界面的type
+    public static final String COMMODITY_TYPE = "COMMODITY_TYPE";
+    public static final String COMMODITY_Id = "COMMODITY_Id";//编辑商品id
+    public static final String COMMODITY_ADD = "COMMODITY_ADD";//add--添加
+    public static final String COMMODITY_EDIT = "COMMODITY_EDIT";//edit--编辑
+
+
+
+    // 跳转添加商品界面的type
+    public static final String BATCH_TYPE = "BATCH_TYPE";
+    public static final String BATCH_Add_list = "BATCH_Add_list";
+    public static final String BATCH_Id = "BATCH_Id";//编辑商品id
+    public static final String BATCH_ADD = "BATCH_ADD";//add--添加
+    public static final String BATCH_LIST = "BATCH_LIST";//list--从列表添加
+
 }

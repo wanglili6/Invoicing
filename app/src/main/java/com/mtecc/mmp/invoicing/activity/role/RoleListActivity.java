@@ -57,6 +57,9 @@ import okhttp3.Call;
 
 import static com.scwang.smartrefresh.layout.util.DensityUtil.dp2px;
 
+/**
+ * 角色管理
+ */
 public class RoleListActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)

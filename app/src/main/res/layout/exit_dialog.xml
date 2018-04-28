@@ -44,20 +44,6 @@
         android:gravity="center"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tv_sure"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="是"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="2px"
-            android:layout_height="match_parent"
-            android:background="@color/xian_color" />
 
         <TextView
             android:id="@+id/tv_diss"
@@ -67,6 +53,22 @@
             android:gravity="center"
             android:text="否"
 
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/xian_color" />
+
+
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="是"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

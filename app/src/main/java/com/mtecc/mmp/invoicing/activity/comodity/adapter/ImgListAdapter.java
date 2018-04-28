@@ -111,7 +111,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
     }
 
     public void setiIImgDelOnClickListerner(IImgDelOnClickListerner iImgDelOnClickListerner) {
-        this.iImgOnClickListerner = iImgOnClickListerner;
+        this.iImgDelOnClickListerner = iImgDelOnClickListerner;
     }
 
     public IImgDelOnClickListerner getiImgDelOnClickListerner() {

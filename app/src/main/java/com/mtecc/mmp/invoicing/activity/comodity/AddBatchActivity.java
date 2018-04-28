@@ -1,6 +1,7 @@
 package com.mtecc.mmp.invoicing.activity.comodity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,12 +11,18 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,8 +36,13 @@ import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.BatchListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
+import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
+import com.mtecc.mmp.invoicing.views.NoScrollListView;
 
+import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +73,8 @@ public class AddBatchActivity extends BaseActivity {
     RelativeLayout rlRightLeft;
     @BindView(R.id.tv_select)
     TextView tvSelect;
+    @BindView(R.id.commodity_tv_commit)
+    TextView CommondityTvCommit;
     @BindView(R.id.img_select)
     ImageButton imgSelect;
     @BindView(R.id.rl_select)
@@ -70,7 +84,7 @@ public class AddBatchActivity extends BaseActivity {
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
     @BindView(R.id.add_batch_list_view)
-    ListView addBatchListView;
+    NoScrollListView addBatchListView;
     private Uri photoUri;
     private String picPath;
     private String picName;
@@ -79,6 +93,7 @@ public class AddBatchActivity extends BaseActivity {
     private int onClickPosiion;
     List<String> newPathlist;
     List<BatchBean> newlist;
+    private String batchType;
 
     @Override
     public void widgetClick(View v) {
@@ -87,16 +102,25 @@ public class AddBatchActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
+        parms = getIntent().getExtras();
+        batchType = parms.getString(InvoicingConstants.BATCH_TYPE);
+        mlist = new ArrayList<>();
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("添加批次");
-        mlist = new ArrayList<>();
         BatchBean batchBean = new BatchBean();
-        batchBean.setBatchName("");
+        batchBean.setBatchstartTimer("");
+        batchBean.setBatchcarType("");
+        batchBean.setBatchcode("");
+        batchBean.setBatchnum("");
+        batchBean.setBatchlShouji("");
+        batchBean.setBatchjHuojia("");
+        batchBean.setBatchpfajia("");
+        batchBean.setBatchtimer("");
         List<String> imgUrlList = new ArrayList<>();
         imgUrlList.add("");
         batchBean.setImgUrl(imgUrlList);
         mlist.add(batchBean);
-        batchListAdapter = new BatchListAdapter(this, mlist);
+        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit, batchType);
         addBatchListView.setAdapter(batchListAdapter);
         batchListAdapter.notifyDataSetChanged();
         batchListAdapter.setiImgOnClickListerner(new BatchListAdapter.IBatchImgOnClickListerner() {
@@ -111,7 +135,21 @@ public class AddBatchActivity extends BaseActivity {
                     onClickPosiion = position;
                     picPhoto();
                 } else {
-                    showToast("放大图片");
+                    ArrayList<String> imgUrlList = new ArrayList<String>();
+                    for (int i = 0; i < finalImgUrlList.size(); i++) {
+                        if (!TextUtils.isEmpty(finalImgUrlList.get(i))) {
+                            imgUrlList.add(finalImgUrlList.get(i));
+                        }
+                    }
+                    Intent intent = new Intent();
+                    intent.setClass(AddBatchActivity.this, SwipeActivity.class);
+                    intent.putStringArrayListExtra("imagelist", imgUrlList);
+                    intent.putExtra("position", pos + "");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AddBatchActivity.this).toBundle());
+                    } else {
+                        startActivity(intent);
+                    }
                 }
 
 
@@ -120,11 +158,37 @@ public class AddBatchActivity extends BaseActivity {
         });
         batchListAdapter.setiDelOnClickListerner(new BatchListAdapter.IBatchDelImgOnClickListerner() {
             @Override
-            public void onBatchDelClick(int pos, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
-                showToast("删除图片");
+            public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
+                View exitView = ShowDalogUtils.showCustomizeDialog(AddBatchActivity.this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(AddBatchActivity.this, false, exitView);
+                exitClick(exitView, dialog, position, imgposition, finalImgUrlList, mlist);
+
             }
         });
 
+        batchListAdapter.setiAddBatchOnClickListerner(new BatchListAdapter.IAddBatchOnClickListerner() {
+            @Override
+            public void onAddBatchClick(List<BatchBean> mList) {
+                Intent intent = new Intent();
+                intent.putExtra(InvoicingConstants.BATCH_Add_list, (Serializable) mList);
+                intent.setClass(AddBatchActivity.this, AddCommodityActivity.class);
+                setResult(12, intent);
+                finish();
+
+            }
+        });
+
+    }
+
+    /**
+     * 删除本地文件
+     */
+
+    public void myDeleteFile(String filePath) {
+        File f = new File(filePath);
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
     @Override
@@ -134,6 +198,12 @@ public class AddBatchActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
+        // 设置contentFeature,可使用切换动画
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        Transition explode = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
+        getWindow().setEnterTransition(explode);
+        // 设置contentFeature,可使用切换动画
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         return R.layout.activity_add_batch;
     }
 
@@ -152,8 +222,63 @@ public class AddBatchActivity extends BaseActivity {
 
     }
 
+    /**
+     * 是否返回
+     *
+     * @param exitView
+     * @param dialog
+     * @param position
+     * @param imgposition
+     * @param finalImgUrlList
+     * @param mlist
+     */
+    private void exitClick(View exitView, final AlertDialog dialog, final int position, final int imgposition, final List<String> finalImgUrlList, final List<BatchBean> mlist) {
+        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
+        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
+        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
+        contactTV.setText("是否删除当前图片?");
+        dissTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        sureTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showToast("已删除图片");
+                newPathlist = new ArrayList<>();
+                newlist = new ArrayList<>();
+                newlist.addAll(mlist);
+                newPathlist.addAll(finalImgUrlList);
+                myDeleteFile(newPathlist.get(imgposition));
+                newPathlist.remove(imgposition);
+                onClickPosiion = position;
+                BatchBean element = new BatchBean();
+                element.setBatchstartTimer(newlist.get(onClickPosiion).getBatchstartTimer());
+                element.setBatchnum(newlist.get(onClickPosiion).getBatchnum());
+                element.setBatchlShouji(newlist.get(onClickPosiion).getBatchlShouji());
+                element.setBatchjHuojia(newlist.get(onClickPosiion).getBatchjHuojia());
+                element.setBatchpfajia(newlist.get(onClickPosiion).getBatchpfajia());
+                element.setBatchcarType(newlist.get(onClickPosiion).getBatchcarType());
+                element.setBatchcode(newlist.get(onClickPosiion).getBatchcode());
+                element.setBatchtimer(newlist.get(onClickPosiion).getBatchtimer());
+                element.setImgUrl(newPathlist);
+                newlist.set(onClickPosiion, element);
+                AddBatchActivity.this.mlist.clear();
+                AddBatchActivity.this.mlist.addAll(newlist);
+                LogUtils.d("更换的数据" + onClickPosiion);
+                batchListAdapter.notifyDataSetChanged();
+
+            }
+        });
+    }
+
     @OnClick(R.id.rl_back)
     public void onViewClicked() {
+        finish();
     }
 
     private void picPhoto() {
@@ -221,6 +346,7 @@ public class AddBatchActivity extends BaseActivity {
                                 picPath = CompressionPhotoUtils.compressImage(path, path, 50);
                                 picPathlist.add(picPath);
                                 BatchBean element = new BatchBean();
+                                element.setBatchstartTimer(newlist.get(onClickPosiion).getBatchstartTimer());
                                 element.setImgUrl(picPathlist);
                                 newlist.set(onClickPosiion, element);
                                 mlist.clear();

@@ -169,8 +169,6 @@ public class RegisrationPWDActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(RegisrationPWDActivity.this, LoginActivity.class);
-                startActivity(intent);
                 finish();
 
             }

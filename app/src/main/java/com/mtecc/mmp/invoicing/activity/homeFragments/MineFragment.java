@@ -14,12 +14,11 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
-import com.mtecc.mmp.invoicing.activity.role.adapter.RoleListAdapter;
-import com.mtecc.mmp.invoicing.activity.setting.SettingActivity;
 import com.mtecc.mmp.invoicing.activity.baseinfoMsg.CompanyMsgActivity;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeListActivity;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
+import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
+import com.mtecc.mmp.invoicing.activity.setting.SettingActivity;
 import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
@@ -54,6 +53,8 @@ public class MineFragment extends Fragment {
     TextView mineTvQyName;
     @BindView(R.id.mine_tv_user_name)
     TextView mineTvUserName;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     @Nullable
     @Override
@@ -61,6 +62,7 @@ public class MineFragment extends Fragment {
         final View inflate = inflater.inflate(R.layout.main_mine_fragment, container, false);
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是我的的oncreate");
+        tvTitle.setText("我的信息");
         initData();
 
         return inflate;
