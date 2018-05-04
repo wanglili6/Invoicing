@@ -10,13 +10,15 @@
     <include layout="@layout/base_title" />
 
     <ScrollView
-        android:layout_weight="100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="100">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -42,11 +44,11 @@
                 android:background="@color/xian_color" />
 
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -62,28 +64,33 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/commodity_dialog_et_name"
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg"
-                    android:focusable="false"
-                    android:hint="请输入批次日期"
-                    android:padding="8dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/commodity_see_et_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -100,29 +107,33 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/commodity_dialog_et_num"
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg"
-                    android:hint="请输入批号"
-                    android:padding="8dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/commodity_see_et_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
             </LinearLayout>
 
 
-
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -138,27 +149,32 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/commodity_dialog_et_lshoujia"
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg"
-                    android:hint="请输入零售价"
-                    android:padding="8dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/commodity_see_et_lshoujia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -174,27 +190,32 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/commodity_dialog_et_jhuojia"
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg"
-                    android:hint="请输入进货价"
-                    android:padding="8dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/commodity_see_et_jhuojia"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -210,23 +231,29 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
-
-                <EditText
-                    android:id="@+id/commodity_dialog_et_pfjia"
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_btn_bg"
-                    android:hint="请输入批发价"
-                    android:padding="8dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/commodity_see_et_pfjia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
             </LinearLayout>
+
             <com.mtecc.mmp.invoicing.views.NoScrollListView
 
-                android:id="@+id/add_batch_list_view"
+                android:id="@+id/see_batch_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@null"
