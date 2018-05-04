@@ -1,15 +1,20 @@
 package com.mtecc.mmp.invoicing.activity.comodity.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,8 +25,11 @@ import android.widget.Toast;
 import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
+import com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicBean;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
+import com.mtecc.mmp.invoicing.utils.UseSystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +44,21 @@ import butterknife.ButterKnife;
 public class BatchListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<BatchBean> mList;
+    private List<BatchPicBean> mList;
     private TextView commondityTvCommit;
-    private String batchType;
     IBatchImgOnClickListerner iBatchImgOnClickListerner;
     IBatchDelImgOnClickListerner iBatchDelOnClickListerner;
     IAddBatchOnClickListerner iAddBatchOnClickListerner;
+    private final UseSystemUtils userSystemutils;
 
-    public BatchListAdapter(Context mContext, List<BatchBean> mList, TextView commondityTvCommit, String batchType) {
+    public BatchListAdapter(Context mContext, List<BatchPicBean> mList, TextView commondityTvCommit) {
         this.mContext = mContext;
         this.mList = mList;
-        this.batchType = batchType;
         this.commondityTvCommit = commondityTvCommit;
+        userSystemutils = new UseSystemUtils(mContext);
 
     }
+
 
     @Override
     public int getCount() {
@@ -70,7 +79,7 @@ public class BatchListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.add_batch_list_iteam, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.add_batch_pic_list_itdream, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -84,20 +93,14 @@ public class BatchListAdapter extends BaseAdapter {
             holder.addBatchRecyclcerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         }
 
-        Object tag = holder.addBatchRecyclcerView.getTag();
         List<String> imgUrlList = null;
 
         imgUrlList = mList.get(position).getImgUrl();
-        holder.commodityDialogEtName.setTag(position);
-        holder.commodityDialogEtNum.setTag(position);
-        holder.commodityDialogEtLshoujia.setTag(position);
-        holder.commodityDialogEtJhuojia.setTag(position);
-        holder.commodityDialogEtPfjia.setTag(position);
         holder.commodityDialogEtType.setTag(position);
         holder.commodityDialogEtCode.setTag(position);
         holder.commodityDialogEtTimer.setTag(position);
         final ViewHolder finalHolder = holder;
-        holder.commodityDialogEtName.addTextChangedListener(new TextWatcher() {
+        holder.commodityDialogEtType.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -105,76 +108,8 @@ public class BatchListAdapter extends BaseAdapter {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtName.getTag();
-                mList.get(pos).setBatchstartTimer(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        holder.commodityDialogEtNum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtNum.getTag();
-                mList.get(pos).setBatchnum(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        holder.commodityDialogEtLshoujia.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtLshoujia.getTag();
-                mList.get(pos).setBatchlShouji(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        holder.commodityDialogEtJhuojia.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtJhuojia.getTag();
-                mList.get(pos).setBatchjHuojia(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        holder.commodityDialogEtPfjia.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtPfjia.getTag();
-                mList.get(pos).setBatchpfajia(s + "");
+                int pos = (int) finalHolder.commodityDialogEtType.getTag();
+                mList.get(pos).setBatchcarType(s + "");
             }
 
             @Override
@@ -218,13 +153,27 @@ public class BatchListAdapter extends BaseAdapter {
         });
 
 
-        holder.commodityDialogEtName.setText(mList.get(position).getBatchstartTimer());
+        holder.commodityDialogEtType.setText(mList.get(position).getBatchcarType());
         holder.commodityDialogEtTimer.setText(mList.get(position).getBatchtimer());
-        holder.commodityDialogEtNum.setText(mList.get(position).getBatchnum());
-        holder.commodityDialogEtLshoujia.setText(mList.get(position).getBatchlShouji());
-        holder.commodityDialogEtJhuojia.setText(mList.get(position).getBatchjHuojia());
-        holder.commodityDialogEtPfjia.setText(mList.get(position).getBatchpfajia());
         holder.commodityDialogEtCode.setText(mList.get(position).getBatchcode());
+        holder.commodityDialogEtType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View selectView = ShowDalogUtils.showCustomizeDialog(mContext, R.layout.selelct_type_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(mContext, false, selectView);
+                selectClick(selectView, dialog, finalHolder.commodityDialogEtType);
+            }
+        });
+
+
+        holder.commodityDialogEtTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userSystemutils.useSystemTimeNoHms(finalHolder.commodityDialogEtTimer);
+            }
+        });
+
         ImgListAdapter imgListAdapter = new ImgListAdapter(mContext, imgUrlList);
         holder.addBatchRecyclcerView.setAdapter(imgListAdapter);
         imgListAdapter.notifyDataSetChanged();
@@ -255,12 +204,14 @@ public class BatchListAdapter extends BaseAdapter {
         holder.batchImgAddIteam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BatchBean batchBean = new BatchBean();
-                batchBean.setBatchstartTimer("");
+                BatchPicBean BatchPicBean = new BatchPicBean();
+                BatchPicBean.setBatchcarType("");
+                BatchPicBean.setBatchcode("");
+                BatchPicBean.setBatchtimer("");
                 List<String> imgUrlList = new ArrayList<>();
                 imgUrlList.add("");
-                batchBean.setImgUrl(imgUrlList);
-                mList.add(batchBean);
+                BatchPicBean.setImgUrl(imgUrlList);
+                mList.add(BatchPicBean);
                 notifyDataSetChanged();
 
 
@@ -283,49 +234,78 @@ public class BatchListAdapter extends BaseAdapter {
         commondityTvCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<BatchBean> mBatchList = new ArrayList<BatchBean>();
+                List<BatchPicBean> mBatchList = new ArrayList<BatchPicBean>();
                 List<String> mBatchinimgList = new ArrayList<String>();
                 for (int i = 0; i < mList.size(); i++) {
-                    BatchBean batchBean = mList.get(i);
-                    List<String> imgUrl = batchBean.getImgUrl();
+                    BatchPicBean BatchPicBean = mList.get(i);
+                    List<String> imgUrl = BatchPicBean.getImgUrl();
                     for (int i1 = 0; i1 < imgUrl.size(); i1++) {
                         String str = imgUrl.get(i1);
                         if (!TextUtils.isEmpty(str) && !str.equals("")) {
                             mBatchinimgList.add(str);
                         }
                     }
-                    BatchBean bean = new BatchBean();
-                    bean.setBatchstartTimer(batchBean.getBatchstartTimer());
+                    BatchPicBean bean = new BatchPicBean();
+                    bean.setBatchcarType(BatchPicBean.getBatchcarType());
+                    bean.setBatchtimer(BatchPicBean.getBatchtimer());
+                    bean.setBatchcode(BatchPicBean.getBatchcode());
                     bean.setImgUrl(mBatchinimgList);
                     mBatchList.add(bean);
-                    if (TextUtils.isEmpty(batchBean.getBatchstartTimer())) {
+                    if (TextUtils.isEmpty(BatchPicBean.getBatchtimer())) {
                         Toast.makeText(mContext, "不能提交批次日期为空的数据,请确认好数据!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
 
                 }
-                if (batchType.equals(InvoicingConstants.BATCH_ADD)) {
-                    //添加商品的时候添加
-                    if (iAddBatchOnClickListerner != null) {
-                        iAddBatchOnClickListerner.onAddBatchClick(mBatchList);
-                    }
-
-                } else if (batchType.equals(InvoicingConstants.BATCH_LIST)) {
-                    //从列表添加
-                    Gson gson = new Gson();
-                    String batchJson = gson.toJson(mList);
-                    LogUtils.d("批次管理" + batchJson);
+                if (iAddBatchOnClickListerner != null) {
+                    iAddBatchOnClickListerner.onAddBatchClick(mBatchList);
                 }
+
 
             }
         });
+
         return convertView;
     }
 
+    /**
+     * 选择类型
+     *
+     * @param selectView
+     * @param dialog
+     * @param commodityDialogEtType
+     */
+    private void selectClick(View selectView, final AlertDialog dialog, final EditText commodityDialogEtType) {
+        TextView tvYingye = selectView.findViewById(R.id.dialog_tv_yy);
+        TextView tvXk = selectView.findViewById(R.id.dialog_tv_xk);
+        TextView tvExit = selectView.findViewById(R.id.dialog_tv_exit);
+        tvExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        tvYingye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                commodityDialogEtType.setText("营业执照");
+            }
+        });
+
+        tvXk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                commodityDialogEtType.setText("许可证");
+            }
+        });
+    }
 
     public static interface IBatchImgOnClickListerner {
-        public void onBatchImgClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList);
+        public void onBatchImgClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList);
     }
 
     public void setiImgOnClickListerner(IBatchImgOnClickListerner iBatchImgOnClickListerner) {
@@ -333,7 +313,7 @@ public class BatchListAdapter extends BaseAdapter {
     }
 
     public static interface IBatchDelImgOnClickListerner {
-        public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList);
+        public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList);
     }
 
     public void setiDelOnClickListerner(IBatchDelImgOnClickListerner iBatchDelOnClickListerner) {
@@ -345,7 +325,7 @@ public class BatchListAdapter extends BaseAdapter {
     }
 
     public static interface IAddBatchOnClickListerner {
-        public void onAddBatchClick(List<BatchBean> mList);
+        public void onAddBatchClick(List<BatchPicBean> mPicimgList);
     }
 
     public void setiAddBatchOnClickListerner(IAddBatchOnClickListerner iAddBatchOnClickListerner) {
@@ -361,18 +341,8 @@ public class BatchListAdapter extends BaseAdapter {
         ImageView batchImgAddIteam;
         @BindView(R.id.batch_img_del_iteam)
         ImageView batchImgDelIteam;
-        @BindView(R.id.commodity_dialog_et_name)
-        EditText commodityDialogEtName;
-        @BindView(R.id.commodity_dialog_et_num)
-        EditText commodityDialogEtNum;
-        @BindView(R.id.commodity_dialog_et_lshoujia)
-        EditText commodityDialogEtLshoujia;
-        @BindView(R.id.commodity_dialog_et_jhuojia)
-        EditText commodityDialogEtJhuojia;
-        @BindView(R.id.commodity_dialog_et_pfjia)
-        EditText commodityDialogEtPfjia;
         @BindView(R.id.commodity_dialog_et_type)
-        Spinner commodityDialogEtType;
+        EditText commodityDialogEtType;
         @BindView(R.id.commodity_dialog_et_code)
         EditText commodityDialogEtCode;
         @BindView(R.id.commodity_dialog_et_timer)

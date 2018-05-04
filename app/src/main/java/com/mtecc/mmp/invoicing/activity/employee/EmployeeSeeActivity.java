@@ -94,8 +94,9 @@ public class EmployeeSeeActivity extends BaseActivity {
         selectDataBean = (EmployeeListBean.DataBean) parms.getSerializable(InvoicingConstants.selectuserid);
         if (type.equals(InvoicingConstants.companyEmployeeAdd)) {
             seeEdit.setVisibility(View.VISIBLE);
+            seeEdit.setText("删除");
         } else if (type.equals(InvoicingConstants.SHOP_Employee)) {
-            seeEdit.setVisibility(View.GONE);
+            seeEdit.setText("移除");
         }
         employeeSeeName.setText(selectDataBean.getUsername() + "");
         employeeSeeLoginName.setText(selectDataBean.getLogname() + "");
@@ -116,9 +117,9 @@ public class EmployeeSeeActivity extends BaseActivity {
         } else {
             employeeSeeStatus.setText("注销");
         }
-        employeeSeeShop.setText(selectDataBean.getShopname()+ "");
-        employeeSeeRole.setText(selectDataBean.getRole()+ "");
-        employeeSeeAddress.setText(selectDataBean.getAddress()+ "");
+        employeeSeeShop.setText(selectDataBean.getShopname() + "");
+        employeeSeeRole.setText(selectDataBean.getRole() + "");
+        employeeSeeAddress.setText(selectDataBean.getAddress() + "");
     }
 
     @Override

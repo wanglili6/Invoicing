@@ -14,11 +14,12 @@
         android:padding="10dp">
 
         <ImageView
+            android:layout_marginRight="5dp"
             android:id="@+id/commodity_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@mipmap/company_icon"
+            android:background="@mipmap/commodity"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
@@ -49,9 +50,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="8dp"
                         android:text="编码:"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
 
                     <TextView
@@ -60,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="DP12345"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -73,9 +74,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="8dp"
                         android:text="规格/单位:"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
 
                     <TextView
@@ -84,9 +85,10 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="DP12345"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -94,34 +96,12 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="类型:"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/commodity_tv_genre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="123"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="8dp"
                         android:text="保质期:"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
 
                     <TextView
@@ -130,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="123"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -142,7 +122,30 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="批次数量:"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_tv_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:padding="5dp"
+                        android:text="123"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
                         android:text="类别:"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -158,6 +161,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

@@ -76,7 +76,7 @@ public class CommodityListAdapter extends BaseAdapter {
             }
         });
 
-        holder.commodityListImgBatch.setOnClickListener(new View.OnClickListener() {
+        holder.commodityListLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //查看商品

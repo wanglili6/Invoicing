@@ -6,6 +6,42 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_shop_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="5dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/tv_shop_name"
+            android:background="@mipmap/shop_name_icon"
+            />
+        <TextView
+            android:id="@+id/tv_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="店铺名称"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/img_select_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/tv_shop_name"
+            android:background="@mipmap/shop_selelct_icon"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/color_white">
@@ -368,17 +404,17 @@
                         android:id="@+id/home_sell"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
                         android:background="@null"
                         android:clickable="true"
-                        android:layout_marginTop="10dp"
                         android:drawablePadding="5dp"
                         android:drawableTop="@mipmap/sell"
                         android:gravity="center"
                         android:text="销售订单"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -410,6 +446,8 @@
                         android:id="@+id/home_sell_note"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:background="@null"
                         android:clickable="true"
                         android:drawablePadding="5dp"
@@ -417,9 +455,7 @@
                         android:gravity="center"
                         android:text="销售历史"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -451,6 +487,8 @@
                         android:id="@+id/home_sell_salse_return"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:background="@null"
                         android:clickable="true"
                         android:drawablePadding="5dp"
@@ -458,9 +496,7 @@
                         android:gravity="center"
                         android:text="销售退货单"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

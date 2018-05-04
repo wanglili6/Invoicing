@@ -117,7 +117,7 @@ public class SeeCommodityActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_back, R.id.see_edit, R.id.see_delete})
+    @OnClick({R.id.rl_batch, R.id.rl_back, R.id.see_edit, R.id.see_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -131,6 +131,9 @@ public class SeeCommodityActivity extends BaseActivity {
                 startActivity(roleintent);
                 break;
             case R.id.see_delete:
+                break;
+            case R.id.rl_batch:
+                startActivity(new Intent(SeeCommodityActivity.this, BatchListActivity.class));
                 break;
         }
     }

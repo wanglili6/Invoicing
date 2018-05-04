@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,10 +15,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
-import com.mtecc.mmp.invoicing.activity.comodity.adapter.CommodityExListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.CommodityListAdapter;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityBean;
-import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;

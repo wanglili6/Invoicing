@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import com.mtecc.mmp.invoicing.activity.employee.EmployeeSeeActivity;
 import com.mtecc.mmp.invoicing.activity.employee.adapter.SelectEmployeedialogListAdapter;
 import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
 import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
+import com.mtecc.mmp.invoicing.activity.role.bean.RoleAddBean;
 import com.mtecc.mmp.invoicing.activity.role.bean.RoleBean;
 import com.mtecc.mmp.invoicing.activity.shop.adapter.RoleListFenPeiAdapter;
 import com.mtecc.mmp.invoicing.activity.shop.adapter.ShopEmployeeSwitchListAdapter;
@@ -45,11 +48,16 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,6 +113,9 @@ public class ShopEmployeeActivity extends BaseActivity {
     private String shopId = "";
     private RoleListFenPeiAdapter roleListFenPeiAdapter;
     private String userId = "";
+    private TagFlowLayout flowLayout;
+    private TagAdapter<RoleBean.DataBean> tagAdapter;
+    private String roleids;
 
     @Override
     public void widgetClick(View v) {
@@ -228,23 +239,59 @@ public class ShopEmployeeActivity extends BaseActivity {
      */
     private void bindRoleClick(View customizeDialog, final AlertDialog alertDialog, final EmployeeListBean.DataBean dataBean) {
         requestNetRoleList(cid + "");
-        ListView listView = customizeDialog.findViewById(R.id.role_list_view);
-        ImageView imgX = customizeDialog.findViewById(R.id.img_x_dialog);
-        imgX.setOnClickListener(new View.OnClickListener() {
+        flowLayout = customizeDialog.findViewById(R.id.role_flowlayout);
+        TextView tvDiss = customizeDialog.findViewById(R.id.tv_diss);
+        TextView tvSure = customizeDialog.findViewById(R.id.tv_sure);
+
+        tagAdapter = new TagAdapter<RoleBean.DataBean>(mRoleList) {
+            @Override
+            public View getView(FlowLayout parent, int position, RoleBean.DataBean bean) {
+                View view = LayoutInflater.from(ShopEmployeeActivity.this).inflate(R.layout.role_select_iteam, parent, false);
+                TextView tvRoleName = view.findViewById(R.id.tv_role_name);
+                tvRoleName.setText(bean.getUsergpname());
+                return view;
+            }
+
+        };
+
+        flowLayout.setAdapter(tagAdapter);
+        tagAdapter.notifyDataChanged();
+        Set<Integer> list = new HashSet<>();
+        String roleid = dataBean.getRoleid();
+        if (!TextUtils.isEmpty(roleid)) {
+            String[] split = roleid.split(",");
+            for (int i = 0; i < mRoleList.size(); i++) {
+                for (int i1 = 0; i1 < split.length; i1++) {
+                    if (split[i1].equals(mRoleList.get(i).getUsergpid() + "")) {
+                        list.add(i);
+                    }
+                }
+            }
+        }
+        tagAdapter.setSelectedList(list);
+        flowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
+            @Override
+            public void onSelected(Set<Integer> selectPosSet) {
+                LogUtils.i("选择的" + selectPosSet.toString());
+                roleids = "";
+                for (Integer integer : selectPosSet) {
+                    int usergpid = mRoleList.get(integer).getUsergpid();
+                    roleids = usergpid + "," + roleids;
+                }
+
+            }
+        });
+        tvDiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
             }
         });
-        roleListFenPeiAdapter = new RoleListFenPeiAdapter(ShopEmployeeActivity.this, mRoleList);
-        listView.setAdapter(roleListFenPeiAdapter);
-        roleListFenPeiAdapter.notifyDataSetChanged();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tvSure.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 alertDialog.dismiss();
-                RoleBean.DataBean dataBean1 = mRoleList.get(position);
-                requestNetSetRole(dataBean.getUserid() + "", dataBean1.getUsergpid() + "", shopId);
+                requestNetSetRole(dataBean.getUserid() + "", roleids, shopId);
             }
         });
 
@@ -287,9 +334,8 @@ public class ShopEmployeeActivity extends BaseActivity {
                 break;
             case R.id.img_select:
                 //点击加号
-                View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopEmployeeActivity.this, R.layout.add_select_employee_dialog);
-                AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopEmployeeActivity.this, false, customizeDialog);
-                SelectEmployeeClick(customizeDialog, alertDialog);
+                requestNetuserList(cid + "");
+
                 break;
         }
     }
@@ -301,7 +347,7 @@ public class ShopEmployeeActivity extends BaseActivity {
      * @param alertDialog
      */
     private void SelectEmployeeClick(View customizeDialog, final AlertDialog alertDialog) {
-        requestNetuserList(cid + "");
+
         ListView selectList = customizeDialog.findViewById(R.id.select_list_view);
         TextView tvnames = customizeDialog.findViewById(R.id.tv_select_names);
         TextView tvSure = customizeDialog.findViewById(R.id.tv_select_sure);
@@ -353,6 +399,7 @@ public class ShopEmployeeActivity extends BaseActivity {
                             EmployeeListBean employeeListBean = gson.fromJson(response, EmployeeListBean.class);
                             if (employeeListBean != null) {
                                 List<EmployeeListBean.DataBean> dataList = employeeListBean.getData();
+
                                 if (dataList != null) {
                                     mList.addAll(dataList);
                                     adapter.notifyDataSetChanged();
@@ -406,6 +453,7 @@ public class ShopEmployeeActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
+
                         try {
                             LogUtils.d("返回值信息ShopEmployeeActivity" + response.toString());
                             Gson gson = new Gson();
@@ -413,8 +461,11 @@ public class ShopEmployeeActivity extends BaseActivity {
                             if (employeeListBean != null) {
                                 List<EmployeeListBean.DataBean> dataList = employeeListBean.getData();
                                 if (dataList != null) {
+                                    mDislogList.clear();
                                     mDislogList.addAll(dataList);
-                                    adapter.notifyDataSetChanged();
+                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopEmployeeActivity.this, R.layout.add_select_employee_dialog);
+                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopEmployeeActivity.this, false, customizeDialog);
+                                    SelectEmployeeClick(customizeDialog, alertDialog);
                                 } else {
                                     showToast("暂无数据!");
                                 }
@@ -469,8 +520,9 @@ public class ShopEmployeeActivity extends BaseActivity {
                             if (roleBean != null) {
                                 List<RoleBean.DataBean> dataBeanList = roleBean.getData();
                                 if (dataBeanList != null) {
+                                    mRoleList.clear();
                                     mRoleList.addAll(dataBeanList);
-                                    roleListFenPeiAdapter.notifyDataSetChanged();
+                                    tagAdapter.notifyDataChanged();
                                 } else {
                                     Toast.makeText(ShopEmployeeActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
                                 }
@@ -487,15 +539,16 @@ public class ShopEmployeeActivity extends BaseActivity {
     /**
      * 分配角色
      */
-    private void requestNetSetRole(String userid, String groupid, String shopid) {
+    private void requestNetSetRole(String userid, String roleids, String shopid) {
         String url = InvoicingConstants.BASE_URL + InvoicingConstants.bindRole_URL;
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + shopId);
+        LogUtils.d("登陆的url" + roleids);
         OkHttpUtils
                 .post()
                 .tag(this)
                 .addParams("userid", userid)
-                .addParams("groupid", groupid)
+                .addParams("groupid", roleids)
                 .addParams("shopid", shopid)
                 .url(url)
                 .build()

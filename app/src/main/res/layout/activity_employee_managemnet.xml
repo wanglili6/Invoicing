@@ -603,21 +603,21 @@
 
             </LinearLayout>
 
-
+            <TextView
+                android:id="@+id/employee_tv_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@mipmap/login_btn"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/employee_tv_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@mipmap/login_btn"
-        android:gravity="center"
-        android:text="提交"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+
 </LinearLayout>

@@ -654,7 +654,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -667,7 +668,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
-                        android:text="批次管理"
+                        android:text="批次信息"
                         android:textColor="@color/text_color"
                         android:textSize="16sp" />
 
@@ -678,7 +679,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:background="@mipmap/add_batch"
+                        android:background="@mipmap/next"
                         android:clickable="true" />
 
                 </RelativeLayout>
@@ -688,63 +689,7 @@
                     android:layout_height="1px"
                     android:background="@color/xian_color" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/color_white"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="批次日期"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:background="@color/xian_color" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="批次文件附件"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:background="@color/xian_color" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="批次操作"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/xian_color" />
-
-                <com.mtecc.mmp.invoicing.views.NoScrollListView
-                    android:id="@+id/commodity_batch_list_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@null"
-                    android:scrollbars="none">
-
-                </com.mtecc.mmp.invoicing.views.NoScrollListView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

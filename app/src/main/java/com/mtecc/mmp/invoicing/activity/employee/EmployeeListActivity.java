@@ -76,6 +76,7 @@ public class EmployeeListActivity extends BaseActivity {
     private EmployeeListAdapter adapter;
     private String cid;
     private boolean isPause = false;
+    private String shop_id = "";
 
     @Override
     public void widgetClick(View v) {
@@ -88,6 +89,7 @@ public class EmployeeListActivity extends BaseActivity {
         imgSelect.setVisibility(View.VISIBLE);
         imgSelect.setBackgroundResource(R.mipmap.add_select);
         cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0) + "";
+        shop_id = PreferencesUtils.getString(this, InvoicingConstants.SHOP_ID, "");
         parms = getIntent().getExtras();
         if (parms != null) {
             //全部员工
@@ -128,7 +130,7 @@ public class EmployeeListActivity extends BaseActivity {
                 mList.clear();
                 pagenum = 1;
 
-                requestNetEmployeeList(pagenum + "", cid);
+                requestNetEmployeeList(pagenum + "", cid + "");
 
 
                 adapter.notifyDataSetChanged();
@@ -141,7 +143,7 @@ public class EmployeeListActivity extends BaseActivity {
                 refreshlayout.finishLoadmore(1500);
                 pagenum++;
 
-                requestNetEmployeeList(pagenum + "", cid);
+                requestNetEmployeeList(pagenum + "", cid + "");
 
 
             }
@@ -228,9 +230,20 @@ public class EmployeeListActivity extends BaseActivity {
                                 List<EmployeeListBean.DataBean> dataList = employeeListBean.getData();
                                 if (dataList != null) {
                                     mList.addAll(dataList);
-                                    adapter.notifyDataSetChanged();
-                                    shopListRecyclerView.setVisibility(View.VISIBLE);
-                                    tvError.setVisibility(View.GONE);
+                                    if (mList.size() != 0) {
+                                        if (dataList.size() == 0) {
+                                            showToast("没有更多数据!");
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                        shopListRecyclerView.setVisibility(View.VISIBLE);
+                                        tvError.setVisibility(View.GONE);
+                                    } else {
+                                        if (dataList.size() == 0) {
+                                            shopListRecyclerView.setVisibility(View.GONE);
+                                            tvError.setVisibility(View.VISIBLE);
+                                            showToast("暂无员工,请进行添加!");
+                                        }
+                                    }
 
                                 } else {
                                     shopListRecyclerView.setVisibility(View.GONE);

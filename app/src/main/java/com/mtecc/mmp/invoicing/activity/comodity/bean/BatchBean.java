@@ -13,10 +13,7 @@ public class BatchBean implements Serializable {
     String batchlShouji;//零售价
     String batchjHuojia;//进货价
     String batchpfajia;//批发价
-    String batchcarType;//证件类型
-    String batchcode;//证件号
-    String batchtimer;//有效期至
-    List<String> imgUrl;//证件地址
+    List<BatchPicBean> picList;//批发价
 
     public String getBatchstartTimer() {
         return batchstartTimer;
@@ -58,35 +55,16 @@ public class BatchBean implements Serializable {
         this.batchpfajia = batchpfajia;
     }
 
-    public String getBatchcarType() {
-        return batchcarType;
+    public List<BatchPicBean> getPicList() {
+        return picList;
     }
 
-    public void setBatchcarType(String batchcarType) {
-        this.batchcarType = batchcarType;
+    public void setPicList(List<BatchPicBean> picList) {
+        this.picList = picList;
     }
 
-    public String getBatchcode() {
-        return batchcode;
-    }
 
-    public void setBatchcode(String batchcode) {
-        this.batchcode = batchcode;
-    }
 
-    public String getBatchtimer() {
-        return batchtimer;
-    }
 
-    public void setBatchtimer(String batchtimer) {
-        this.batchtimer = batchtimer;
-    }
 
-    public List<String> getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(List<String> imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 }

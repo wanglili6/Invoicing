@@ -10,12 +10,16 @@ public class InvoicingConstants {
     public static final String BASE_URL = "http://192.168.1.144:8080/SSMSAPP";
     //登陆
     public static final String LOGIN_URL = "/app/login/toMain.htm";
+    //选择店铺
+    public static final String SELECT_SHOP_URL = "/app/chooseshop.htm";
     //验证重复注册用户名
     public static final String ValidateLogName_URL = "/app/login/validateLogName.htm";
     //注册
-    public static final String register_URL = "/app/changeCompanyInfo.htm";
+    public static final String register_URL = "/app/login/Regist.htm";
     //修改企业信息
     public static final String update_URL = "/app/changeCompanyInfo.htm";
+    //修改个人信息
+    public static final String CangePersonInfo_URL = "/app/changePersonInfo.htm";
     //修改密码
     public static final String changePwd_URL = "/app/changePwd.htm";
     //店铺列表
@@ -83,6 +87,9 @@ public class InvoicingConstants {
     public static final String QY_ADDRESS = "QY_ADDRESS";//地址
 
 
+    public static final String SHOP_ID = "SHOP_ID";//企业id
+
+
     //跳转基础信息界面的type
     public static final String BASE_INFO_TYPE = "baseInfoType";
     public static final String regis = "regis";//regis--注册;amend--修改
@@ -117,7 +124,6 @@ public class InvoicingConstants {
     public static final String COMMODITY_Id = "COMMODITY_Id";//编辑商品id
     public static final String COMMODITY_ADD = "COMMODITY_ADD";//add--添加
     public static final String COMMODITY_EDIT = "COMMODITY_EDIT";//edit--编辑
-
 
 
     // 跳转添加商品界面的type

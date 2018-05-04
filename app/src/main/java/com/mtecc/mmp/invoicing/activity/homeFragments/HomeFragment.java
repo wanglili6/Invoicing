@@ -4,22 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.MainActivity;
+import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
+import com.mtecc.mmp.invoicing.activity.login.adapter.SelectShopAdapter;
+import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
+import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,8 +84,15 @@ public class HomeFragment extends Fragment {
     TextView homeSellSalseReturn;
     @BindView(R.id.tv_sell_salse_return_num)
     TextView tvSellSalseReturnNum;
+    @BindView(R.id.tv_shop_name)
+    TextView tvShopName;
+    @BindView(R.id.img_select_dialog)
+    ImageView imgSelectDialog;
+    @BindView(R.id.rl_shop_name)
+    RelativeLayout rlShopName;
     Unbinder unbinder;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,6 +108,71 @@ public class HomeFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
+        final boolean isuseradmin = getActivity().getIntent().getBooleanExtra("isuseradmin", false);
+        if (isuseradmin) {
+            String name = getActivity().getIntent().getStringExtra("name");
+            tvShopName.setText(name);
+            imgSelectDialog.setVisibility(View.GONE);
+        } else {
+            String ishavemoreshop = getActivity().getIntent().getStringExtra("ishavemoreshop");
+            if (!TextUtils.isEmpty(ishavemoreshop)) {
+                if (ishavemoreshop.equals("1")) {
+                    imgSelectDialog.setVisibility(View.GONE);
+                    String shopname = getActivity().getIntent().getStringExtra("shopname");
+                    tvShopName.setText(shopname);
+                } else if (ishavemoreshop.equals("2")) {
+                    imgSelectDialog.setVisibility(View.VISIBLE);
+                    String shopname = getActivity().getIntent().getStringExtra("shopname");
+                    tvShopName.setText(shopname);
+                    final List<ShopSelectBean.ShoplistBean> shopList = (List<ShopSelectBean.ShoplistBean>) getActivity().getIntent().getSerializableExtra("shopList");
+                    rlShopName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            View customizeDialog = ShowDalogUtils.showCustomizeDialog(getContext(), R.layout.add_selectshop_dialog);
+                            AlertDialog alertDialog = ShowDalogUtils.showDialog(getContext(), false, customizeDialog);
+                            SelectEmployeeClick(customizeDialog, alertDialog, shopList, isuseradmin);
+                        }
+                    });
+
+                }
+
+            }
+        }
+
+    }
+
+    /**
+     * 选择店铺
+     *
+     * @param customizeDialog
+     * @param alertDialog
+     * @param shoplist
+     * @param isuseradmin
+     */
+    private void SelectEmployeeClick(View customizeDialog, final AlertDialog alertDialog, final List<ShopSelectBean.ShoplistBean> shoplist, final boolean isuseradmin) {
+        ListView selectList = customizeDialog.findViewById(R.id.select_list_view);
+        ImageView imgxDialog = customizeDialog.findViewById(R.id.img_x_dialog);
+        TextView tvselct = customizeDialog.findViewById(R.id.tv_select);
+        imgxDialog.setVisibility(View.VISIBLE);
+        tvselct.setText("切换店铺");
+        SelectShopAdapter selectShopList = new SelectShopAdapter(getContext(), shoplist, alertDialog, isuseradmin);
+        selectList.setAdapter(selectShopList);
+        selectShopList.notifyDataSetChanged();
+        selectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShopSelectBean.ShoplistBean shoplistBean = shoplist.get(position);
+                PreferencesUtils.putString(getContext(), InvoicingConstants.SHOP_ID, shoplistBean.getShopid() + "");
+                tvShopName.setText(shoplistBean.getShopname());
+                alertDialog.dismiss();
+            }
+        });
+        imgxDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
 
     }
 
@@ -126,7 +210,7 @@ public class HomeFragment extends Fragment {
                         LogUtils.d("本月:--" + monthData);
                         homeTvTimer.setText("本月");
                     } else if (timer.equals("本月")) {
-                        format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         //获取本周开始第一天
                         Date timesWeekmorning = DataTimerUtils.getTimesWeekmorning();
                         String weekmorning = format.format(timesWeekmorning);
@@ -153,7 +237,7 @@ public class HomeFragment extends Fragment {
                 String tvtimer = homeTvTimer.getText().toString().trim();
                 if (!TextUtils.isEmpty(tvtimer)) {
                     if (tvtimer.equals("本日")) {
-                        format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         //获取本周开始第一天
                         Date timesWeekmorning = DataTimerUtils.getTimesWeekmorning();
                         String weekmorning = format.format(timesWeekmorning);

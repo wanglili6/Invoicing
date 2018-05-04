@@ -8,12 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,22 +20,24 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
+import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.BatchListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
+import com.mtecc.mmp.invoicing.utils.UseSystemUtils;
 import com.mtecc.mmp.invoicing.views.NoScrollListView;
 
 import java.io.File;
@@ -85,15 +84,30 @@ public class AddBatchActivity extends BaseActivity {
     RelativeLayout rlTitleBg;
     @BindView(R.id.add_batch_list_view)
     NoScrollListView addBatchListView;
+    @BindView(R.id.commodity_dialog_et_name)
+    EditText commodityDialogEtName;
+    @BindView(R.id.commodity_dialog_et_num)
+    EditText commodityDialogEtNum;
+    @BindView(R.id.commodity_dialog_et_lshoujia)
+    EditText commodityDialogEtLshoujia;
+    @BindView(R.id.commodity_dialog_et_jhuojia)
+    EditText commodityDialogEtJhuojia;
+    @BindView(R.id.commodity_dialog_et_pfjia)
+    EditText commodityDialogEtPfjia;
     private Uri photoUri;
-    private String picPath;
-    private String picName;
-    private List<BatchBean> mlist;
+    private String name = "";
+    private String pihaoNum = "";
+    private String lshougj = "";
+    private String jhuojia = "";
+    private String pfajia = "";
+    private String picPath = "";
+    private String picName = "";
+    private List<BatchPicBean> mlist;
     private BatchListAdapter batchListAdapter;
-    private int onClickPosiion;
+    private int picPosiion;
     List<String> newPathlist;
-    List<BatchBean> newlist;
-    private String batchType;
+    List<BatchPicBean> newPiclist;
+    private UseSystemUtils useSystemUtils;
 
     @Override
     public void widgetClick(View v) {
@@ -102,37 +116,35 @@ public class AddBatchActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
-        parms = getIntent().getExtras();
-        batchType = parms.getString(InvoicingConstants.BATCH_TYPE);
+        useSystemUtils = new UseSystemUtils(this);
+
         mlist = new ArrayList<>();
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("添加批次");
-        BatchBean batchBean = new BatchBean();
-        batchBean.setBatchstartTimer("");
-        batchBean.setBatchcarType("");
-        batchBean.setBatchcode("");
-        batchBean.setBatchnum("");
-        batchBean.setBatchlShouji("");
-        batchBean.setBatchjHuojia("");
-        batchBean.setBatchpfajia("");
-        batchBean.setBatchtimer("");
+        BatchPicBean picBean = new BatchPicBean();
+        picBean.setBatchcode("");
+        picBean.setBatchcarType("");
+        picBean.setBatchtimer("");
         List<String> imgUrlList = new ArrayList<>();
         imgUrlList.add("");
-        batchBean.setImgUrl(imgUrlList);
-        mlist.add(batchBean);
-        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit, batchType);
+        picBean.setImgUrl(imgUrlList);
+        mlist.add(picBean);
+
+
+        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit);
         addBatchListView.setAdapter(batchListAdapter);
         batchListAdapter.notifyDataSetChanged();
+        //点击图片
         batchListAdapter.setiImgOnClickListerner(new BatchListAdapter.IBatchImgOnClickListerner() {
             @Override
-            public void onBatchImgClick(int position, int pos, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
+            public void onBatchImgClick(int position, int pos, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList) {
                 LogUtils.d("点击图片" + position + imgUrl);
                 if (TextUtils.isEmpty(imgUrl)) {
                     newPathlist = new ArrayList<>();
-                    newlist = new ArrayList<>();
-                    newlist.addAll(mList);
+                    newPiclist = new ArrayList<>();
+                    newPiclist.addAll(mList);
                     newPathlist.addAll(finalImgUrlList);
-                    onClickPosiion = position;
+                    picPosiion = position;
                     picPhoto();
                 } else {
                     ArrayList<String> imgUrlList = new ArrayList<String>();
@@ -158,7 +170,7 @@ public class AddBatchActivity extends BaseActivity {
         });
         batchListAdapter.setiDelOnClickListerner(new BatchListAdapter.IBatchDelImgOnClickListerner() {
             @Override
-            public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchBean> mList) {
+            public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList) {
                 View exitView = ShowDalogUtils.showCustomizeDialog(AddBatchActivity.this, R.layout.exit_dialog);
                 AlertDialog dialog = ShowDalogUtils.showDialog(AddBatchActivity.this, false, exitView);
                 exitClick(exitView, dialog, position, imgposition, finalImgUrlList, mlist);
@@ -168,12 +180,25 @@ public class AddBatchActivity extends BaseActivity {
 
         batchListAdapter.setiAddBatchOnClickListerner(new BatchListAdapter.IAddBatchOnClickListerner() {
             @Override
-            public void onAddBatchClick(List<BatchBean> mList) {
-                Intent intent = new Intent();
-                intent.putExtra(InvoicingConstants.BATCH_Add_list, (Serializable) mList);
-                intent.setClass(AddBatchActivity.this, AddCommodityActivity.class);
-                setResult(12, intent);
-                finish();
+            public void onAddBatchClick(List<BatchPicBean> mPicimgList) {
+                name = commodityDialogEtName.getText().toString().trim();
+                pihaoNum = commodityDialogEtNum.getText().toString().trim();
+                lshougj = commodityDialogEtLshoujia.getText().toString().trim();
+                jhuojia = commodityDialogEtJhuojia.getText().toString().trim();
+                pfajia = commodityDialogEtPfjia.getText().toString().trim();
+                BatchBean batchBean = new BatchBean();
+                batchBean.setBatchstartTimer(name);
+                batchBean.setBatchnum(pihaoNum);
+                batchBean.setBatchlShouji(lshougj);
+                batchBean.setBatchjHuojia(jhuojia);
+                batchBean.setBatchpfajia(pfajia);
+                batchBean.setPicList(mPicimgList);
+
+                //从列表添加
+                Gson gson = new Gson();
+                String batchJson = gson.toJson(batchBean);
+                LogUtils.d("批次管理" + batchJson);
+
 
             }
         });
@@ -232,7 +257,7 @@ public class AddBatchActivity extends BaseActivity {
      * @param finalImgUrlList
      * @param mlist
      */
-    private void exitClick(View exitView, final AlertDialog dialog, final int position, final int imgposition, final List<String> finalImgUrlList, final List<BatchBean> mlist) {
+    private void exitClick(View exitView, final AlertDialog dialog, final int position, final int imgposition, final List<String> finalImgUrlList, final List<BatchPicBean> mlist) {
         TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
         TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
         TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
@@ -250,36 +275,27 @@ public class AddBatchActivity extends BaseActivity {
                 dialog.dismiss();
                 showToast("已删除图片");
                 newPathlist = new ArrayList<>();
-                newlist = new ArrayList<>();
-                newlist.addAll(mlist);
+                newPiclist = new ArrayList<>();
+                newPiclist.addAll(mlist);
                 newPathlist.addAll(finalImgUrlList);
                 myDeleteFile(newPathlist.get(imgposition));
                 newPathlist.remove(imgposition);
-                onClickPosiion = position;
-                BatchBean element = new BatchBean();
-                element.setBatchstartTimer(newlist.get(onClickPosiion).getBatchstartTimer());
-                element.setBatchnum(newlist.get(onClickPosiion).getBatchnum());
-                element.setBatchlShouji(newlist.get(onClickPosiion).getBatchlShouji());
-                element.setBatchjHuojia(newlist.get(onClickPosiion).getBatchjHuojia());
-                element.setBatchpfajia(newlist.get(onClickPosiion).getBatchpfajia());
-                element.setBatchcarType(newlist.get(onClickPosiion).getBatchcarType());
-                element.setBatchcode(newlist.get(onClickPosiion).getBatchcode());
-                element.setBatchtimer(newlist.get(onClickPosiion).getBatchtimer());
+                picPosiion = position;
+                BatchPicBean element = new BatchPicBean();
+                element.setBatchcarType(newPiclist.get(picPosiion).getBatchcarType());
+                element.setBatchcode(newPiclist.get(picPosiion).getBatchcode());
+                element.setBatchtimer(newPiclist.get(picPosiion).getBatchtimer());
                 element.setImgUrl(newPathlist);
-                newlist.set(onClickPosiion, element);
+                newPiclist.set(picPosiion, element);
                 AddBatchActivity.this.mlist.clear();
-                AddBatchActivity.this.mlist.addAll(newlist);
-                LogUtils.d("更换的数据" + onClickPosiion);
+                AddBatchActivity.this.mlist.addAll(newPiclist);
+                LogUtils.d("更换的数据" + picPosiion);
                 batchListAdapter.notifyDataSetChanged();
 
             }
         });
     }
 
-    @OnClick(R.id.rl_back)
-    public void onViewClicked() {
-        finish();
-    }
 
     private void picPhoto() {
 
@@ -333,25 +349,21 @@ public class AddBatchActivity extends BaseActivity {
                             // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
                             if (path.endsWith("jpg") || path.endsWith("png")) {
                                 picPath = path;
-                                //压缩照片
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inJustDecodeBounds = false;
-                                options.inSampleSize = 8;
-                                Bitmap bitmap = BitmapFactory.decodeStream(
-                                        cr.openInputStream(uri), null, options);
                                 //压缩
                                 List<String> picPathlist = new ArrayList<>();
                                 picPathlist.addAll(newPathlist);
 
                                 picPath = CompressionPhotoUtils.compressImage(path, path, 50);
                                 picPathlist.add(picPath);
-                                BatchBean element = new BatchBean();
-                                element.setBatchstartTimer(newlist.get(onClickPosiion).getBatchstartTimer());
-                                element.setImgUrl(picPathlist);
-                                newlist.set(onClickPosiion, element);
+                                BatchPicBean bean = new BatchPicBean();
+                                bean.setBatchcarType(newPiclist.get(picPosiion).getBatchcarType());
+                                bean.setBatchcode(newPiclist.get(picPosiion).getBatchcode());
+                                bean.setBatchtimer(newPiclist.get(picPosiion).getBatchtimer());
+                                bean.setImgUrl(picPathlist);
+                                newPiclist.set(picPosiion, bean);
                                 mlist.clear();
-                                mlist.addAll(newlist);
-                                LogUtils.d("更换的数据" + onClickPosiion);
+                                mlist.addAll(newPiclist);
+                                LogUtils.d("更换的数据" + picPosiion);
                                 batchListAdapter.notifyDataSetChanged();
                                 for (int i = 0; i < picPathlist.size(); i++) {
                                     LogUtils.d("选中的图片" + picPathlist.get(i));
@@ -370,4 +382,49 @@ public class AddBatchActivity extends BaseActivity {
     }
 
 
+
+
+    @OnClick({R.id.rl_back, R.id.commodity_dialog_et_name})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_back:
+                View exitView = ShowDalogUtils.showCustomizeDialog(this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(this, false, exitView);
+                exitClick(exitView, dialog);
+                break;
+            case R.id.commodity_dialog_et_name:
+
+                useSystemUtils.useSystemTimeNoHms(commodityDialogEtName);
+                break;
+        }
+    }
+    /**
+     * 是否返回
+     *
+     * @param exitView
+     * @param dialog
+     */
+    private void exitClick(View exitView, final AlertDialog dialog) {
+        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
+        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
+        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
+        contactTV.setText("是否离开当前页面?");
+        dissTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        sureTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //TODO:返回页面
+                finish();
+
+
+            }
+        });
+    }
 }

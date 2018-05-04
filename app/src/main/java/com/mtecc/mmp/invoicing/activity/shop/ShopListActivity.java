@@ -98,6 +98,8 @@ public class ShopListActivity extends BaseActivity {
     private AwayKetBordUtils awayKetBordUtils;
     private AlertDialog showDialog;
     private String shopid = "";
+    private String SHOP_ID = "";
+    private boolean isPause = false;
 
     @Override
     public void widgetClick(View v) {
@@ -113,7 +115,8 @@ public class ShopListActivity extends BaseActivity {
         awayKetBordUtils = new AwayKetBordUtils(this, getWindow());
         mList.clear();
         cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0);
-        requestNetShopList(pagenum + "", limit, cid + "", "");
+        SHOP_ID = PreferencesUtils.getString(this, InvoicingConstants.SHOP_ID, "");
+        requestNetShopList(pagenum + "", limit, cid + "", "", SHOP_ID);
 
 
         View view1 = ShowDalogUtils.showCustomizeDialog(ShopListActivity.this, R.layout.send_customize);
@@ -121,6 +124,7 @@ public class ShopListActivity extends BaseActivity {
         showDialog.dismiss();
 
     }
+
 
     @Override
     public View bindView() {
@@ -145,7 +149,7 @@ public class ShopListActivity extends BaseActivity {
                 refreshlayout.finishRefresh(1500);
                 mList.clear();
                 pagenum = 1;
-                requestNetShopList(pagenum + "", limit, cid + "", "");
+                requestNetShopList(pagenum + "", limit, cid + "", "", SHOP_ID);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -155,7 +159,7 @@ public class ShopListActivity extends BaseActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadmore(1500);
                 pagenum++;
-                requestNetShopList(pagenum + "", limit, cid + "", "");
+                requestNetShopList(pagenum + "", limit, cid + "", "", SHOP_ID);
 
             }
         });
@@ -249,7 +253,7 @@ public class ShopListActivity extends BaseActivity {
                 mList.clear();
                 shopname = etSerch.getText().toString().trim();
                 pagenum = 1;
-                requestNetShopList(pagenum + "", limit, cid + "", shopname);
+                requestNetShopList(pagenum + "", limit, cid + "", shopname, SHOP_ID);
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.iv_serch:
@@ -276,7 +280,7 @@ public class ShopListActivity extends BaseActivity {
      * @param cid
      * @param shopname
      */
-    private void requestNetShopList(String page, String limit, String cid, String shopname) {
+    private void requestNetShopList(String page, String limit, String cid, String shopname, String shopid) {
         String url = InvoicingConstants.BASE_URL + InvoicingConstants.shoplistfortable_URL;
         LogUtils.d("登陆的url" + url);
         OkHttpUtils
@@ -285,6 +289,7 @@ public class ShopListActivity extends BaseActivity {
                 .addParams("page", page)
                 .addParams("limit", limit)
                 .addParams("cid", cid)
+                .addParams("shopid", shopid)
                 .addParams("shopname", shopname)
                 .url(url)
                 .build()
@@ -309,10 +314,20 @@ public class ShopListActivity extends BaseActivity {
                                 List<ShopListBean.DataBean> dataList = shopListBean.getData();
                                 if (dataList != null) {
                                     mList.addAll(dataList);
-                                    adapter.notifyDataSetChanged();
-                                    llList.setVisibility(View.VISIBLE);
-                                    tvError.setVisibility(View.GONE);
-
+                                    if (mList.size() != 0) {
+                                        if (dataList.size() == 0) {
+                                            showToast("没有更多数据!");
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                        llList.setVisibility(View.VISIBLE);
+                                        tvError.setVisibility(View.GONE);
+                                    } else {
+                                        if (dataList.size() == 0) {
+                                            llList.setVisibility(View.GONE);
+                                            tvError.setVisibility(View.VISIBLE);
+                                            showToast("暂无店铺,请进行添加!");
+                                        }
+                                    }
                                 } else {
                                     llList.setVisibility(View.GONE);
                                     tvError.setVisibility(View.VISIBLE);
@@ -537,5 +552,19 @@ public class ShopListActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isPause) {
+            smartRefreshLayout.autoRefresh();
+        }
     }
 }

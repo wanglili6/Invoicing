@@ -225,150 +225,15 @@
             android:textColor="@color/text_color"
             android:textSize="14sp" />
     </LinearLayout>
+<ListView
+    android:divider="@null"
+    android:scrollbars="none"
+    android:id="@+id/batch_pic_list_view"
+    android:layout_marginTop="1dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</ListView>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="证件类型:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-        <RelativeLayout
-
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/login_btn_bg">
-
-            <Spinner
-                android:id="@+id/commodity_dialog_et_type"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </Spinner>
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="证件编号:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-
-        <EditText
-            android:id="@+id/commodity_dialog_et_code"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/login_btn_bg"
-            android:hint="请输入证件编号"
-            android:padding="8dp"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="有效期至:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-
-        <EditText
-            android:id="@+id/commodity_dialog_et_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/login_btn_bg"
-            android:focusable="false"
-            android:hint="请输入有效期至"
-            android:padding="8dp"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_white"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="批次文件证明:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/add_batch_recyclcer_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1">
-
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/xian_color" />
 </LinearLayout>

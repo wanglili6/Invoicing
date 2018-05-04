@@ -106,8 +106,6 @@ public class AddCommodityActivity extends BaseActivity {
     EditText commodityEtStartCode;
     @BindView(R.id.commodity_tv_commit)
     TextView commodityTvCommit;
-    @BindView(R.id.commodity_batch_list_view)
-    NoScrollListView commodityBacthListView;
 
     String genre = "";//类型
     String name = "";//名字
@@ -151,9 +149,6 @@ public class AddCommodityActivity extends BaseActivity {
         showDialog = ShowDalogUtils.showDialog(AddCommodityActivity.this, false, view1);
         showDialog.dismiss();
 
-        commodityBatchListAdater = new CommodityBatchListAdater(this, mBacthlist);
-        commodityBacthListView.setAdapter(commodityBatchListAdater);
-        commodityBatchListAdater.notifyDataSetChanged();
 
     }
 
@@ -193,7 +188,7 @@ public class AddCommodityActivity extends BaseActivity {
                         genre = "1";
                         commodityEtBarCode.setEnabled(false);
                         commodityEtBarCode.setText("散装商品只可填入商品编码");
-                        commodityEtCode.setTextColor(getResources().getColor(R.color.text_hint_red));
+                        commodityEtBarCode.setTextColor(getResources().getColor(R.color.text_hint_red));
                         commodityEtCode.setEnabled(true);
                         break;
                 }

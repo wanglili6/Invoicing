@@ -54,6 +54,15 @@ public class EmployeeListBean implements Serializable {
         private CreatdateBean creatdate;
         private String address;
         private String role;
+        private String roleid;
+
+        public String getRoleid() {
+            return roleid;
+        }
+
+        public void setRoleid(String roleid) {
+            this.roleid = roleid;
+        }
 
         public String getShopname() {
             return shopname;

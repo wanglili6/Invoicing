@@ -18,7 +18,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            android:background="@mipmap/shop_icon"
+            android:background="@mipmap/login_shop"
             android:scaleType="centerCrop" />
 
         <LinearLayout

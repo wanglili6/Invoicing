@@ -65,16 +65,16 @@ public class CommodityBatchListAdater extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         final BatchBean batchBean = mList.get(position);
-        holder.tvBacthTime.setText(batchBean.getBatchName());
+        holder.tvBacthTime.setText(batchBean.getBatchstartTimer());
         holder.tvBatchSee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //查看附件
                 LogUtils.d("查看附件");
-                Intent intent = new Intent();
-                intent.putExtra("imgurl", (Serializable) batchBean.getImgUrl());
-                intent.setClass(mContext, SeeImgActivity.class);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent();
+//                intent.putExtra("imgurl", (Serializable) batchBean.getImgUrl());
+//                intent.setClass(mContext, SeeImgActivity.class);
+//                mContext.startActivity(intent);
             }
         });
 
@@ -115,7 +115,7 @@ public class CommodityBatchListAdater extends BaseAdapter {
         TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
         TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
         TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
-        contactTV.setText("是否删除 " + bean.getBatchName() + " 批次?");
+        contactTV.setText("是否删除当前批次?");
         dissTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

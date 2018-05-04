@@ -10,7 +10,9 @@
         android:layout_height="match_parent"
         android:layout_weight="100"
         android:orientation="vertical">
+
         <include layout="@layout/base_title" />
+
         <RelativeLayout
             android:id="@+id/mine_rl_msg"
             android:layout_width="match_parent"
@@ -52,6 +54,36 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/next" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mine_rl_role"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/approve"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="企业认证"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -121,35 +153,7 @@
                 android:background="@mipmap/next" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/mine_rl_role"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/color_white"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/role_icon"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="角色管理"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@mipmap/next" />
-        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/mine_rl_setting"
             android:layout_width="match_parent"
@@ -168,7 +172,7 @@
                 android:drawableLeft="@mipmap/mine_setting"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="设置"
+                android:text="修改密码"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 

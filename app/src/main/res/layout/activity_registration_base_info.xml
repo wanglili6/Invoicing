@@ -62,7 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="真实姓名"
+                            android:text="姓名"
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
 
@@ -482,7 +482,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="营业执照号"
+                            android:text="统一社会信用码"
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
 

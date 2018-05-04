@@ -21,6 +21,43 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="我的角色"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                    <TextView
+                        android:id="@+id/person_msg_role"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -37,60 +74,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="真实姓名"
+                        android:text="姓名"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
 
-                        <TextView
+                        <EditText
                             android:id="@+id/person_msg_name"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:background="@null"
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/color_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="角色"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp">
-
-                        <TextView
-                            android:id="@+id/person_msg_role"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-
-                            android:textColor="@color/text_gray_color"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,17 +118,24 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_age"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
 
-                        <TextView
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
+
+
+                        <EditText
                             android:id="@+id/person_msg_age"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                            android:background="@null"
+
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -127,6 +143,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
@@ -136,6 +153,7 @@
                     android:padding="10dp">
 
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -144,16 +162,23 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_sex"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
 
-                        <TextView
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
+
+
+                        <EditText
                             android:id="@+id/person_msg_sex"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:background="@null"
 
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
@@ -179,17 +204,23 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_phone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
 
-                        <TextView
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
+
+
+                        <EditText
                             android:id="@+id/person_msg_phone"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-
+                            android:background="@null"
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -214,17 +245,23 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_code"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
 
-                        <TextView
+
+                        <EditText
                             android:id="@+id/person_msg_code"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                            android:background="@null"
+
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -232,7 +269,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:background="@color/color_white"
@@ -249,16 +286,22 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_emily"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
 
-                        <TextView
+
+                        <EditText
                             android:id="@+id/person_msg_emily"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
+                            android:background="@null"
 
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
@@ -284,50 +327,42 @@
                         android:textSize="14sp" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_person_msg_address"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                       android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
 
-                        <TextView
+
+                        <EditText
                             android:id="@+id/person_msg_address"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                           
+                            android:background="@null"
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
+
                     </RelativeLayout>
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/person_msg_rl_more"
+                <TextView
+                    android:id="@+id/person_tv_msg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/color_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_centerVertical="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="企业信息"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:background="@mipmap/next"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@mipmap/login_btn"
+                    android:gravity="center"
+                    android:text="完善信息"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -138,7 +138,7 @@ public class RegisrationPWDActivity extends BaseActivity {
             showToast("用户名已被注册!");
             return;
         }
-        Intent intent = new Intent(this, RegistrationBaseInfoActivity.class);
+        Intent intent = new Intent(this, ShortRegistrationInfoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(InvoicingConstants.BASE_INFO_TYPE, InvoicingConstants.regis);
         bundle.putString(InvoicingConstants.regisName, userName);

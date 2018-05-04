@@ -114,6 +114,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     private int cid = 0;
     private AlertDialog showDialog;
     private EmployeeListBean.DataBean selectDataBean;
+    private boolean resultName;
 
     @Override
     public void widgetClick(View v) {
@@ -207,6 +208,59 @@ public class EmployeeManagemnetActivity extends BaseActivity {
         msexAdapter.notifyDataSetChanged();
         employeeSpinnerPsex.setSelection(0);
         setSpinner();
+
+        employeeEtName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String name = employeeEtName.getText().toString().trim();
+                    requestNetVerificationName(name);
+                }
+            }
+        });
+    }
+
+    private void requestNetVerificationName(final String userName) {
+        final String url = InvoicingConstants.BASE_URL + InvoicingConstants.ValidateLogName_URL;
+        LogUtils.d("验证用户名的url" + url);
+        LogUtils.d("验证用户名的url" + url);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("logname", userName)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e.toString());
+                            Toast.makeText(EmployeeManagemnetActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            LogUtils.d("返回值信息EmployeeManagemnetActivity" + response.toString());
+                            //解析json 对象
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean result = jsonObject.optBoolean("result");
+                            if (result) {
+                                resultName = true;
+                                employeeEtName.setText("");
+                                employeeEtName.setHint(userName + "(用户名已被注册!请重新输入)");
+                                employeeEtName.setHintTextColor(getResources().getColor(R.color.text_hint_red));
+                            } else {
+                                resultName = false;
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeManagemnetActivity" + e1.toString());
+                        }
+                    }
+                });
     }
 
     /**
@@ -252,7 +306,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
             alertDialog.dismiss();
             return;
         }
-        if (TextUtils.isEmpty(sex) || sex.equals("0")) {
+        if (TextUtils.isEmpty(sex) || sex.equals("-1")) {
             showToast("性别不能为空!");
             alertDialog.dismiss();
             return;
@@ -267,11 +321,24 @@ public class EmployeeManagemnetActivity extends BaseActivity {
             alertDialog.dismiss();
             return;
         }
-
+        if (phone.length() != 11) {
+            alertDialog.dismiss();
+            showToast("手机号格式不正确!");
+            return;
+        }
+        if (code.length() != 18) {
+            alertDialog.dismiss();
+            showToast("身份证格式不正确!");
+            return;
+        }
 
         if (TextUtils.isEmpty(userName) || userName.equals("")) {
             showToast("员工用户名不能为空!");
             alertDialog.dismiss();
+            return;
+        }
+        if (resultName) {
+            showToast("用户名已被注册!");
             return;
         }
         if (TextUtils.isEmpty(userPwd) || userPwd.equals("")) {

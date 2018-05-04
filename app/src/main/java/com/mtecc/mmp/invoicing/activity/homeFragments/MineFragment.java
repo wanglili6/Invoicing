@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.approve.ApproveActivity;
 import com.mtecc.mmp.invoicing.activity.baseinfoMsg.CompanyMsgActivity;
+import com.mtecc.mmp.invoicing.activity.baseinfoMsg.PersonMgsBean;
+import com.mtecc.mmp.invoicing.activity.baseinfoMsg.PersonMsgActivity;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeListActivity;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 import com.mtecc.mmp.invoicing.activity.role.RoleListActivity;
 import com.mtecc.mmp.invoicing.activity.setting.SettingActivity;
+import com.mtecc.mmp.invoicing.activity.setting.SettingPwdActivity;
 import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
@@ -102,7 +106,7 @@ public class MineFragment extends Fragment {
         switch (view.getId()) {
             case R.id.mine_rl_msg:
                 //查看基础信息
-                startActivity(new Intent(getContext(), CompanyMsgActivity.class));
+                startActivity(new Intent(getContext(), PersonMsgActivity.class));
                 break;
             case R.id.mine_rl_shop:
                 //TODO:店铺管理
@@ -120,16 +124,13 @@ public class MineFragment extends Fragment {
                 startActivity(intentemployee);
                 break;
             case R.id.mine_rl_role:
-                //角色管理
-                Intent roleintent = new Intent(getContext(), RoleListActivity.class);
-                Bundle rolebundle = new Bundle();
-                rolebundle.putString(InvoicingConstants.role_TYPE, InvoicingConstants.role_see);
-                roleintent.putExtras(rolebundle);
+                //公司认证
+                Intent roleintent = new Intent(getContext(), ApproveActivity.class);
                 startActivity(roleintent);
                 break;
             case R.id.mine_rl_setting:
                 //设置界面
-                Intent setintent = new Intent(getContext(), SettingActivity.class);
+                Intent setintent = new Intent(getContext(), SettingPwdActivity.class);
                 startActivity(setintent);
                 break;
             case R.id.mine_tv_exit:

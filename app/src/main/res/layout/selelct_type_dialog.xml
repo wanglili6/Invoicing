@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_ll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:background="@drawable/yuan_btn_bg"
+        android:gravity="center"
+        android:text="选择"
+        android:textColor="@color/text_gray_color"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/dialog_tv_yy"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/yuan_btn_bg"
+        android:gravity="center"
+        android:text="营业执照"
+        android:textColor="@color/text_surplus_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/dialog_tv_xk"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/yuan_btn_bg"
+        android:gravity="center"
+        android:text="许可证"
+        android:textColor="@color/text_surplus_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/dialog_tv_exit"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/yuan_btn_bg"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/text_surplus_color"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

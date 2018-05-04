@@ -169,6 +169,10 @@
         <activity android:name=".activity.comodity.AddCommodityActivity" />
         <activity android:name=".activity.comodity.SeeCommodityActivity" />
         <activity android:name=".activity.comodity.SeeImgActivity" />
+        <activity android:name=".activity.login.ShortRegistrationInfoActivity" />
+        <activity android:name=".activity.approve.ApproveActivity" />
+        <activity android:name=".activity.comodity.BatchListActivity" />
+        <activity android:name=".activity.comodity.SeeBatchMsgActivity"></activity>
     </application>
 
 </manifest>

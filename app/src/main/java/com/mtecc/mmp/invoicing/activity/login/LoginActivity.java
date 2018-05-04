@@ -3,9 +3,13 @@ package com.mtecc.mmp.invoicing.activity.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,12 +17,20 @@ import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.MainActivity;
+import com.mtecc.mmp.invoicing.activity.employee.adapter.SelectEmployeedialogListAdapter;
+import com.mtecc.mmp.invoicing.activity.login.adapter.SelectShopAdapter;
 import com.mtecc.mmp.invoicing.activity.login.bean.LoginUserInfo;
+import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.shop.ShopEmployeeActivity;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
+import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.io.Serializable;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,9 +107,9 @@ public class LoginActivity extends BaseActivity {
                     showToast("用户名或密码不能为空!");
                     return;
                 }
+                requestNetLogin(userName, userPwd);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
-                requestNetLogin(userName, userPwd);
                 break;
             case R.id.tv_register:
 //                startActivity(new Intent(this, RegistrationSMSActivity.class));
@@ -106,6 +118,12 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 登陆
+     *
+     * @param userName
+     * @param userPwd
+     */
     private void requestNetLogin(String userName, final String userPwd) {
         url = InvoicingConstants.BASE_URL + InvoicingConstants.LOGIN_URL;
         LogUtils.d("登陆的url" + url);
@@ -136,12 +154,37 @@ public class LoginActivity extends BaseActivity {
                             if (loginUserInfo != null) {
                                 int result = loginUserInfo.getResult();
                                 if (result == 200) {
-                                    //请求成功
-                                    storageMsg(loginUserInfo, userPwd);
+                                    boolean isuseradmin = loginUserInfo.isIsuseradmin();
+                                    if (isuseradmin) {
+                                        PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, "");
+                                        storageMsg(loginUserInfo, userPwd);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("isuseradmin", isuseradmin);
+                                        intent.putExtra("name", "商户管理员");
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        int ishavemoreshop = loginUserInfo.getIshavemoreshop();
+                                        if (ishavemoreshop == 1) {
+                                            //请求成功
+                                            storageMsg(loginUserInfo, userPwd);
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtra("isuseradmin", isuseradmin);
+                                            intent.putExtra("ishavemoreshop", "1");
+                                            intent.putExtra("shopname", loginUserInfo.getShop().getShopname());
+                                            PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, loginUserInfo.getShop().getShopid() + "");
+                                            startActivity(intent);
+                                            finish();
+                                        } else if (ishavemoreshop == 0) {
+                                            showToast("您当前没有绑定店铺,请联系管理员进行绑定!");
+                                            PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, "");
+                                        } else {
+                                            storageMsg(loginUserInfo, userPwd);
+                                            requestNetShops(loginUserInfo.getUser().getUserid() + "", "2", isuseradmin);
 
+                                        }
+                                    }
 
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
                                 } else if (result == 500) {
                                     //用户名或密码错误
                                     showToast("用户名或密码错误!请重新输入");
@@ -153,6 +196,90 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    /**
+     * 所有店铺
+     *
+     * @param userid
+     * @param msg
+     * @param isuseradmin
+     */
+    private void requestNetShops(String userid, final String msg, final boolean isuseradmin) {
+        url = InvoicingConstants.BASE_URL + InvoicingConstants.SELECT_SHOP_URL;
+        LogUtils.d("登陆的url" + url);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("userid", userid)
+                .addParams("msg", msg)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            LogUtils.d("错误信息LoginActivity" + e.toString());
+                            Toast.makeText(LoginActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息LoginActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            LogUtils.d("返回值信息LoginActivity" + response.toString());
+                            Gson gson = new Gson();
+                            ShopSelectBean shopSelectBean = gson.fromJson(response, ShopSelectBean.class);
+                            if (shopSelectBean != null) {
+                                List<ShopSelectBean.ShoplistBean> shoplist = shopSelectBean.getShoplist();
+                                if (shoplist != null) {
+                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(LoginActivity.this, R.layout.add_selectshop_dialog);
+                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(LoginActivity.this, false, customizeDialog);
+                                    SelectEmployeeClick(customizeDialog, alertDialog, shoplist, isuseradmin);
+                                }
+                            }
+
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息LoginActivity" + e1.toString());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 选择店铺
+     *
+     * @param customizeDialog
+     * @param alertDialog
+     * @param shoplist
+     * @param isuseradmin
+     */
+    private void SelectEmployeeClick(View customizeDialog, final AlertDialog alertDialog, final List<ShopSelectBean.ShoplistBean> shoplist, final boolean isuseradmin) {
+        ListView selectList = customizeDialog.findViewById(R.id.select_list_view);
+        ImageView imgxDialog = customizeDialog.findViewById(R.id.img_x_dialog);
+        TextView tvselct = customizeDialog.findViewById(R.id.tv_select);
+        imgxDialog.setVisibility(View.GONE);
+        tvselct.setText("选择店铺");
+        SelectShopAdapter selectShopList = new SelectShopAdapter(LoginActivity.this, shoplist, alertDialog, isuseradmin);
+        selectList.setAdapter(selectShopList);
+        selectShopList.notifyDataSetChanged();
+        selectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShopSelectBean.ShoplistBean shoplistBean = shoplist.get(position);
+                PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, shoplistBean.getShopid() + "");
+                alertDialog.dismiss();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("isuseradmin", isuseradmin);
+                intent.putExtra("ishavemoreshop", "2");
+                intent.putExtra("shopname", shoplistBean.getShopname());
+                intent.putExtra("shopList", (Serializable) shoplist);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /**
@@ -175,7 +302,7 @@ public class LoginActivity extends BaseActivity {
         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.USER_SEX, loginUserInfo.getUser().getSex());
         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.USER_CARDNUM, loginUserInfo.getUser().getCardnum());
         //存储企业信息
-        LoginUserInfo.UserBean.CidBean cidBean = loginUserInfo.getUser().getCid();
+        LoginUserInfo.UserBean.CidBeanXX cidBean = loginUserInfo.getUser().getCid();
         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.QY_ADDRESS, cidBean.getAddress());
         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.QY_CODE, cidBean.getClicence());
         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.QY_END_DATA, cidBean.getEnddateStr());
