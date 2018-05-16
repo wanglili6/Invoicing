@@ -164,30 +164,32 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.comodity.CommodityListActivity"
+            android:name=".activity.manager.comodity.CommodityListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.SaoMaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.comodity.AddBatchActivity" />
+        <activity android:name=".activity.manager.comodity.AddBatchActivity" />
         <activity android:name=".activity.employee.SelectEmployeeListActivity" />
         <activity android:name=".activity.shop.SelectShopListActivity" />
         <activity android:name=".activity.role.RoleListActivity" />
         <activity android:name=".activity.shop.ShopEmployeeActivity" />
-        <activity android:name=".activity.comodity.SwipeActivity" />
-        <activity android:name=".activity.comodity.AddCommodityActivity" />
-        <activity android:name=".activity.comodity.SeeCommodityActivity" />
-        <activity android:name=".activity.comodity.SeeImgActivity" />
+        <activity android:name=".activity.manager.comodity.SwipeActivity" />
+        <activity android:name=".activity.manager.comodity.AddCommodityActivity" />
+        <activity android:name=".activity.manager.comodity.SeeCommodityActivity" />
+        <activity android:name=".activity.manager.comodity.SeeImgActivity" />
         <activity android:name=".activity.login.ShortRegistrationInfoActivity" />
         <activity android:name=".activity.approve.ApproveActivity" />
-        <activity android:name=".activity.comodity.BatchListActivity" />
-        <activity android:name=".activity.comodity.SeeBatchMsgActivity" />
-        <activity android:name=".activity.distributor.AddDistributorActivity" />
-        <activity android:name=".activity.distributor.AddDocumentActivity" />
-        <activity android:name=".activity.distributor.SeeDistributorActivity" />
-        <activity android:name=".activity.distributor.DistributorLIstActivity"></activity>
+        <activity android:name=".activity.manager.comodity.BatchListActivity" />
+        <activity android:name=".activity.manager.comodity.SeeBatchMsgActivity" />
+        <activity android:name=".activity.manager.distributor.AddDistributorActivity" />
+        <activity android:name=".activity.manager.distributor.AddDocumentActivity" />
+        <activity android:name=".activity.manager.distributor.SeeDistributorActivity" />
+        <activity android:name=".activity.manager.distributor.DistributorLIstActivity" />
+        <activity android:name=".activity.manager.warehouse.WarehouseListActivity" />
+        <activity android:name=".activity.purchase.PurchaseListActivity"></activity>
     </application>
 
 </manifest>

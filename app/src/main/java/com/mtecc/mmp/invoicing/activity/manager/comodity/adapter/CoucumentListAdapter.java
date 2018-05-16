@@ -1,16 +1,14 @@
-package com.mtecc.mmp.invoicing.activity.login.adapter;
+package com.mtecc.mmp.invoicing.activity.manager.comodity.adapter;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.bean.DicBean;
 
 import java.util.List;
 
@@ -19,23 +17,17 @@ import butterknife.ButterKnife;
 
 /**
  * Created by wll on 2018/5/3.
- * 选择商铺的适配器
+ * 批次列表的适配器
  */
 
-public class SelectShopAdapter extends BaseAdapter {
+public class CoucumentListAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ShopSelectBean.ShoplistBean> batchBeenList;
-    private AlertDialog alertDialog;
-    private boolean isuseradmin;
+    private List<DicBean.DataBean> batchBeenList;
 
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog, boolean isuseradmin) {
+    public CoucumentListAdapter(Context mContext, List<DicBean.DataBean> batchBeenList) {
         this.mContext = mContext;
         this.batchBeenList = batchBeenList;
-        this.alertDialog = alertDialog;
-        this.isuseradmin = isuseradmin;
     }
-
-
 
     @Override
     public int getCount() {
@@ -56,26 +48,21 @@ public class SelectShopAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.shop_dialog_list_iteam, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.zhengjian_msg_iterm, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final ShopSelectBean.ShoplistBean shoplistBean = batchBeenList.get(position);
-
-        holder.shopTvName.setText(shoplistBean.getShopname());
-
+        DicBean.DataBean dataBean = batchBeenList.get(position);
+        holder.dialogTvYy.setText(dataBean.getBUSINNAME());
         return convertView;
     }
 
 
     static class ViewHolder {
-        @BindView(R.id.employee_img)
-        ImageView employeeImg;
-        @BindView(R.id.shop_tv_name)
-        TextView shopTvName;
-
+        @BindView(R.id.dialog_tv_yy)
+        TextView dialogTvYy;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

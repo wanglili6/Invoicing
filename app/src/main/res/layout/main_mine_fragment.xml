@@ -85,7 +85,19 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
+            <TextView
+                android:textSize="14sp"
+                android:text="已认证"
+                android:id="@+id/tv_commoidty_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/img_nexxt"
+                android:textColor="@color/colorPrimaryDark" />
+
             <ImageView
+                android:id="@+id/img_nexxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

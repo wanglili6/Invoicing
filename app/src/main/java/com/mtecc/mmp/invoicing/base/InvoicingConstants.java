@@ -7,7 +7,7 @@ package com.mtecc.mmp.invoicing.base;
 
 public class InvoicingConstants {
     //基础地址
-    public static final String BASE_URL = "http://192.168.1.144:8080/SSMSAPP";
+    public static final String BASE_URL = "http://192.168.1.114:8080/SSMSAPP";
     //图片地址
     public static final String IMAGEURL = "http://192.168.1.144:8080/image/";
     //登陆
@@ -80,6 +80,12 @@ public class InvoicingConstants {
     public static final String buyersEdit_URL = "/app/buyers/Edit.htm";
     //增加
     public static final String buyersAdd_URL = "/app/buyers/Add.htm";
+
+    //认证企业信息
+    public static final String goCertificate_URL = "/app/certification/goCertificate.htm";
+    //查看企业信息
+    public static final String toLookCompany_URL = "/app/certification/toLook.htm";
+    public static final String EditCompany_URL = "/app/certification/Edit.htm";
 
 
     //公司员工列表

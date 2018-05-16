@@ -1,7 +1,8 @@
-package com.mtecc.mmp.invoicing.activity.login.adapter;
+package com.mtecc.mmp.invoicing.activity.manager.comodity.adapter;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.bean.CommodityExistedBean;
 
 import java.util.List;
 
@@ -19,23 +20,20 @@ import butterknife.ButterKnife;
 
 /**
  * Created by wll on 2018/5/3.
- * 选择商铺的适配器
+ * 选择商品的适配器
  */
 
-public class SelectShopAdapter extends BaseAdapter {
+public class SelectGoodsAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ShopSelectBean.ShoplistBean> batchBeenList;
+    private List<CommodityExistedBean.DataBean> batchBeenList;
     private AlertDialog alertDialog;
     private boolean isuseradmin;
 
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog, boolean isuseradmin) {
+    public SelectGoodsAdapter(Context mContext, List<CommodityExistedBean.DataBean> batchBeenList) {
         this.mContext = mContext;
         this.batchBeenList = batchBeenList;
-        this.alertDialog = alertDialog;
-        this.isuseradmin = isuseradmin;
+
     }
-
-
 
     @Override
     public int getCount() {
@@ -62,9 +60,22 @@ public class SelectShopAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final ShopSelectBean.ShoplistBean shoplistBean = batchBeenList.get(position);
+        CommodityExistedBean.DataBean dataBean = batchBeenList.get(position);
+        holder.shopTvName.setTextSize(16);
+        holder.shopTvCode.setVisibility(View.VISIBLE);
+        holder.employeeImg.setBackgroundResource(R.mipmap.goods_icon);
+        holder.shopTvName.setText(dataBean.getProName());
+        String proCode = dataBean.getProCode();
+        String barcode = dataBean.getBarcode();
+        if (TextUtils.isEmpty(proCode) && !TextUtils.isEmpty(barcode)) {
+            holder.shopTvCode.setText(barcode);
 
-        holder.shopTvName.setText(shoplistBean.getShopname());
+        }
+
+        if (TextUtils.isEmpty(barcode) && !TextUtils.isEmpty(proCode)) {
+            holder.shopTvCode.setText(proCode);
+
+        }
 
         return convertView;
     }
@@ -75,7 +86,8 @@ public class SelectShopAdapter extends BaseAdapter {
         ImageView employeeImg;
         @BindView(R.id.shop_tv_name)
         TextView shopTvName;
-
+        @BindView(R.id.shop_tv_code)
+        TextView shopTvCode;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity;
-import com.mtecc.mmp.invoicing.activity.distributor.AddDistributorActivity;
-import com.mtecc.mmp.invoicing.activity.distributor.DistributorLIstActivity;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.CommodityListActivity;
+import com.mtecc.mmp.invoicing.activity.manager.distributor.DistributorLIstActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import butterknife.BindView;

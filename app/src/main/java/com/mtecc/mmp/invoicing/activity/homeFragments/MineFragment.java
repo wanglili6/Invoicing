@@ -57,8 +57,11 @@ public class MineFragment extends Fragment {
     TextView mineTvQyName;
     @BindView(R.id.mine_tv_user_name)
     TextView mineTvUserName;
+    @BindView(R.id.tv_commoidty_status)
+    TextView minetvCommoidtyStatus;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    private String qy_status;
 
     @Nullable
     @Override
@@ -67,6 +70,7 @@ public class MineFragment extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是我的的oncreate");
         tvTitle.setText("我的信息");
+        qyStatus();
         initData();
 
         return inflate;
@@ -79,8 +83,26 @@ public class MineFragment extends Fragment {
 
         if (isVisibleToUser) {
             LogUtils.i(isVisibleToUser + "====刷新页面");
+            qyStatus();
         } else {
             LogUtils.i(isVisibleToUser + "====不显示页面");
+        }
+    }
+
+    /**
+     * 设置企业是否认证
+     */
+    private void qyStatus() {
+        qy_status = PreferencesUtils.getString(getContext(), InvoicingConstants.QY_STATUS, "");
+        if (qy_status.equals("0")) {
+            minetvCommoidtyStatus.setText("未认证");
+            minetvCommoidtyStatus.setTextColor(getResources().getColor(R.color.text_gray_color));
+        } else if (qy_status.equals("1")) {
+            minetvCommoidtyStatus.setText("待认证");
+            minetvCommoidtyStatus.setTextColor(getResources().getColor(R.color.text_money_color));
+        } else if (qy_status.equals("2")) {
+            minetvCommoidtyStatus.setText("已认证");
+            minetvCommoidtyStatus.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
         }
     }
 
@@ -170,5 +192,11 @@ public class MineFragment extends Fragment {
                 getActivity().finish();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        qyStatus();
     }
 }

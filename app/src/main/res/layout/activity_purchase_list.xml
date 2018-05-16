@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.manager.comodity.BatchListActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity">
 
     <include layout="@layout/base_title" />
 
@@ -17,9 +16,7 @@
 
         <include layout="@layout/seach_layout" />
 
-
         <ImageView
-
             android:id="@+id/img_commodity_list_saoma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,33 +27,11 @@
             android:visibility="gone" />
     </LinearLayout>
 
+    <LinearLayout
 
-    <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/xian_color" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smart_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.baoyz.swipemenulistview.SwipeMenuListView
-                android:id="@+id/batch_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                android:scrollbars="none">
-
-            </com.baoyz.swipemenulistview.SwipeMenuListView>
-
-            <include layout="@layout/error_layout" />
-        </RelativeLayout>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
 </LinearLayout>
-

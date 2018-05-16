@@ -24,6 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 收支明细
+ */
 public class InComeExpendActivity extends BaseActivity {
 
 

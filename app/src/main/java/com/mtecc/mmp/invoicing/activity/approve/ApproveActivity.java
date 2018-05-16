@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
@@ -25,23 +26,40 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.comodity.SwipeActivity;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.AddBatchActivity;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.SwipeActivity;
+import com.mtecc.mmp.invoicing.activity.manager.comodity.bean.BatchPicListBean;
+import com.mtecc.mmp.invoicing.activity.setting.bean.CompanyInfoBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
+import com.mtecc.mmp.invoicing.utils.PhotoBitmapUtils;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 import com.mtecc.mmp.invoicing.utils.UseSystemUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ApproveActivity extends BaseActivity {
 
@@ -90,6 +108,9 @@ public class ApproveActivity extends BaseActivity {
     private Uri photoUri;
     private String picPath = "";
     private AlertDialog showDialog;
+    private int cid;
+    Gson gson = new Gson();
+    private String state;
 
     @Override
     public void widgetClick(View v) {
@@ -101,6 +122,17 @@ public class ApproveActivity extends BaseActivity {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("企业认证");
         userSystemutils = new UseSystemUtils(this);
+        cid = PreferencesUtils.getInt(ApproveActivity.this, InvoicingConstants.QY_ID, 0);
+        state = PreferencesUtils.getString(ApproveActivity.this, InvoicingConstants.QY_STATUS, "");
+        if (state.equals("0")) {
+            //未认证
+            resgisterEtName.setEnabled(true);
+        } else {
+//            已认证
+            resgisterEtName.setEnabled(false);
+        }
+
+        requestNetSeeCompany(cid + "");
         View view1 = ShowDalogUtils.showCustomizeDialog(ApproveActivity.this, R.layout.send_customize);
         showDialog = ShowDalogUtils.showDialog(ApproveActivity.this, false, view1);
         showDialog.dismiss();
@@ -110,6 +142,7 @@ public class ApproveActivity extends BaseActivity {
     public View bindView() {
         return null;
     }
+
 
     @Override
     public int bindLayout() {
@@ -170,6 +203,7 @@ public class ApproveActivity extends BaseActivity {
                 break;
             case R.id.qy_tv_approve:
                 //进行认证
+                showDialog.show();
                 commanyMsg();
 
                 break;
@@ -250,26 +284,31 @@ public class ApproveActivity extends BaseActivity {
         qyAddress = approveEtAdress.getText().toString().trim();
         qyUntilTimer = approveTvValidUntil.getText().toString().trim();
         qyrange = approveEtRange.getText().toString().trim();
-        if (TextUtils.isEmpty(codeType)) {
+        qycode = approveEtCode.getText().toString().trim();
+//        if (TextUtils.isEmpty(codeType)) {
+//            showDialog.dismiss();
+//            showToast("请选择证件类型!");
+//            return;
+//        } else {
+//            if (codeType.equals("0")) {
+//                if (qycode.length() != 18) {
+//                    showDialog.dismiss();
+//                    showToast("统一社会信用码不符合!");
+//                    return;
+//                }
+//            } else if (codeType.equals("1")) {
+//                qycode = approveEtYyCode.getText().toString().trim();
+//                if (qycode.length() != 15) {
+//                    showDialog.dismiss();
+//                    showToast("营业执照号不符合!");
+//                    return;
+//                }
+//            }
+//        }
+        if (TextUtils.isEmpty(qycode)) {
             showDialog.dismiss();
-            showToast("请选择证件类型!");
+            showToast("统一信用代码不能为空!");
             return;
-        } else {
-            if (codeType.equals("0")) {
-                qycode = approveEtCode.getText().toString().trim();
-                if (qycode.length() != 18) {
-                    showDialog.dismiss();
-                    showToast("统一社会信用码不符合!");
-                    return;
-                }
-            } else if (codeType.equals("1")) {
-                qycode = approveEtYyCode.getText().toString().trim();
-                if (qycode.length() != 15) {
-                    showDialog.dismiss();
-                    showToast("营业执照号不符合!");
-                    return;
-                }
-            }
         }
         if (TextUtils.isEmpty(qyname)) {
             showDialog.dismiss();
@@ -302,8 +341,25 @@ public class ApproveActivity extends BaseActivity {
             showToast("证件照片不能为空!");
             return;
         }
+        CompanyBean companyInfoBean = new CompanyBean();
+        companyInfoBean.setCid(cid);
+        companyInfoBean.setCname(qyname);
+        companyInfoBean.setClicence(qycode);
+        companyInfoBean.setQyfr(qyfaren);
+        companyInfoBean.setJjfw(qyrange);
+        companyInfoBean.setAddress(qyAddress);
+        companyInfoBean.setEnddate(qyUntilTimer);
+        companyInfoBean.setFilecardname("certification.png");
 
+        String companyBeanJson = gson.toJson(companyInfoBean);
 
+        if (state.equals("0")) {
+            //未认证
+            requestNetAddCommodity(companyBeanJson);
+        } else {
+//            已认证
+            requestNetEditCommodity(companyBeanJson);
+        }
     }
 
     /**
@@ -336,6 +392,9 @@ public class ApproveActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 拍照
+     */
     private void picPhoto() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -363,36 +422,47 @@ public class ApproveActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case 1:
-                // 当选择的图片不为空的话，在获取到图片的途径
-                Uri urix = null;
-                if (data != null && data.getData() != null) {
-                    urix = data.getData();
-                }
-                String[] pojox = {MediaStore.Images.Media.DATA};
-                Cursor cursorx = this.getContentResolver().query(urix,
-                        pojox, null, null, null);
-                if (cursorx != null) {
-                    ContentResolver cr = this.getContentResolver();
-                    int colunm_index = cursorx
-                            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursorx.moveToFirst();
-                    String path = cursorx.getString(colunm_index);
-                    // 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
-                    // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
-                    if (path.endsWith("jpg") || path.endsWith("png")) {
-                        //压缩
-                        picPath = CompressionPhotoUtils.compressImage(path, path, 50);
-                        LogUtils.d("更换的数据" + picPath);
-                        Glide.with(this)
-                                .load(picPath)
-                                .centerCrop()
-                                .into(imgZhengjian);
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    // 当选择的图片不为空的话，在获取到图片的途径
+                    Uri uri = null;
+                    if (data != null && data.getData() != null) {
+                        uri = data.getData();
+                    }
+                    if (uri == null) {
+                        if (photoUri != null) {
+                            uri = photoUri;
+                        }
+                    }
+                    String[] pojo = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = this.getContentResolver().query(uri,
+                            pojo, null, null, null);
+                    if (cursor != null) {
+                        ContentResolver cr = this.getContentResolver();
+                        int colunm_index = cursor
+                                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        String path = cursor.getString(colunm_index);
+                        // 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
+                        // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
+                        if (path.endsWith("jpg") || path.endsWith("png")) {
+                            //压缩
+                            picPath = CompressionPhotoUtils.compressImage(path, path, 50);
+                            // 得到修复后的照片路径
+//                            picPath = PhotoBitmapUtils.amendRotatePhoto(picPath, ApproveActivity.this);
+                            LogUtils.d("更换的数据" + picPath);
+                            Glide.with(this)
+                                    .load(picPath)
+                                    .centerCrop()
+                                    .skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .into(imgZhengjian);
 
+                        }
                     }
                 }
                 break;
-            case 2:
+            case 1:
                 // 当选择的图片不为空的话，在获取到图片的途径
                 Uri uri = null;
                 if (data != null && data.getData() != null) {
@@ -421,11 +491,203 @@ public class ApproveActivity extends BaseActivity {
                         Glide.with(this)
                                 .load(picPath)
                                 .centerCrop()
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .into(imgZhengjian);
 
                     }
                 }
                 break;
+
+
         }
+
     }
+
+
+    /**
+     * 修改
+     */
+    private void requestNetEditCommodity(String companyBean) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.EditCompany_URL;
+        final PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + companyBean);
+
+        String substring = picPath.substring(0, 4);
+        if (!substring.equals("http")) {
+            post.addFile(qycode, "certification.png", new File(picPath));
+        }
+
+        post.addParams("companyBean", companyBean);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("企业认证审核中!");
+                                    PreferencesUtils.putString(ApproveActivity.this, InvoicingConstants.QY_STATUS, "1");
+                                    finish();
+                                } else {
+                                    showToast("企业认证失败!");
+                                }
+                            } else {
+                                Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 去认证
+     */
+    private void requestNetAddCommodity(String companyBean) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.goCertificate_URL;
+        final PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + companyBean);
+
+        String substring = picPath.substring(0, 4);
+        if (!substring.equals("http")) {
+            post.addFile(qycode, "certification.png", new File(picPath));
+        }
+
+        post.addParams("companyBean", companyBean);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("企业认证成功!");
+                                    PreferencesUtils.putString(ApproveActivity.this, InvoicingConstants.QY_STATUS, "1");
+                                    finish();
+                                } else {
+                                    showToast("企业认证失败!");
+                                }
+                            } else {
+                                Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 查看
+     */
+    private void requestNetSeeCompany(String cid) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.toLookCompany_URL;
+        final PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + cid);
+
+        post.addParams("cid", cid);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.e("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + response);
+                            CompanySeeBean companySeeBean = gson.fromJson(response, CompanySeeBean.class);
+                            if (companySeeBean != null) {
+                                CompanySeeBean.DataBean data = companySeeBean.getData();
+                                if (data != null) {
+                                    qyname = data.getCname();
+                                    qycode = data.getClicence();
+                                    qyrange = data.getJjfw();
+                                    qyUntilTimer = data.getEnddateStr();
+                                    qyfaren = data.getQyfr();
+                                    qyAddress = data.getAddress();
+                                    resgisterEtName.setText(qyname);
+                                    approveEtFaren.setText(qyfaren);
+                                    approveEtCode.setText(qycode);
+                                    approveEtAdress.setText(qyAddress);
+                                    approveEtRange.setText(qyrange);
+                                    approveTvValidUntil.setText(qyUntilTimer);
+                                    CompanySeeBean.DataBean.FilecardidBean filecardid = data.getFilecardid();
+                                    picPath = InvoicingConstants.IMAGEURL + filecardid.getParentpath() + "/" + filecardid.getPath();
+                                    Glide.with(ApproveActivity.this)
+                                            .load(picPath)
+                                            .centerCrop()
+                                            .skipMemoryCache(true)
+                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .into(imgZhengjian);
+                                }
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.e("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(ApproveActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+
 }

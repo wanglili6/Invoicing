@@ -104,6 +104,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/manage_rl_depot"
             android:layout_width="match_parent"
             android:layout_height="45dp"
