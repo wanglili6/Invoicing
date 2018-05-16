@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.MainActivity;
+import com.mtecc.mmp.invoicing.activity.comodity.AddCommodityActivity;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityExistedBean;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
@@ -41,6 +43,8 @@ public class SelectShopAdapter extends BaseAdapter {
         this.alertDialog = alertDialog;
         this.isuseradmin = isuseradmin;
     }
+
+
 
     @Override
     public int getCount() {

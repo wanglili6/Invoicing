@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="@drawable/shop_btn_bg"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -22,20 +22,40 @@
             android:background="@mipmap/login_shop"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/shop_tv_name"
+        <LinearLayout
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/employee_img"
-            android:padding="10dp"
-            android:textColor="@color/text_black_color"
-            android:textSize="18sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/shop_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="xdd"
+                android:textColor="@color/text_black_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/shop_tv_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="eee"
+                android:textColor="@color/text_gray_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:background="@mipmap/next"
             android:scaleType="centerCrop" />

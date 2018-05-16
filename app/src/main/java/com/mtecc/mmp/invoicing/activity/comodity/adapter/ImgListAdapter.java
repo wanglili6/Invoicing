@@ -24,12 +24,14 @@ import butterknife.ButterKnife;
 public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopViewHolder> {
     private Context mContext;
     private List<String> mList;
+    private String type;
     IImgOnClickListerner iImgOnClickListerner;
     IImgDelOnClickListerner iImgDelOnClickListerner;
 
-    public ImgListAdapter(Context mContext, List<String> mList) {
+    public ImgListAdapter(Context mContext, List<String> mList, String type) {
         this.mContext = mContext;
         this.mList = mList;
+        this.type = type;
     }
 
     @Override
@@ -41,18 +43,28 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
     @Override
     public void onBindViewHolder(ImgListAdapter.ShopViewHolder holder, final int position) {
         final String imgUrl = mList.get(position);
-        if (TextUtils.isEmpty(imgUrl)) {
-            holder.imgAdd.setImageResource(R.mipmap.add_img);
-            holder.imgDel.setVisibility(View.GONE);
 
-        } else {
-            holder.imgDel.setVisibility(View.VISIBLE);
+        if (type.equals("see")) {
+            holder.imgDel.setVisibility(View.GONE);
             Glide.with(mContext)
                     .load(imgUrl)
                     .centerCrop()
                     .into(holder.imgAdd);
 
+        } else if (type.equals("add")) {
+            if (TextUtils.isEmpty(imgUrl)) {
+                holder.imgAdd.setImageResource(R.mipmap.add_img);
+                holder.imgDel.setVisibility(View.GONE);
 
+            } else {
+                holder.imgDel.setVisibility(View.VISIBLE);
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .centerCrop()
+                        .into(holder.imgAdd);
+
+
+            }
         }
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +83,8 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
                 }
             }
         });
+
+
     }
 
 
@@ -82,7 +96,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
 
     static class ShopViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_del)
-        RelativeLayout imgDel;
+        public RelativeLayout imgDel;
         @BindView(R.id.img_add)
         ImageView imgAdd;
 

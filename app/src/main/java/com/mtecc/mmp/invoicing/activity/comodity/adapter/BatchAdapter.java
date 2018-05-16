@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicListBean;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ import butterknife.ButterKnife;
 
 public class BatchAdapter extends BaseAdapter {
     private Context mContext;
-    private List<BatchBean> batchBeenList;
+    private List<BatchBean.DataBean> batchBeenList;
 
-    public BatchAdapter(Context mContext, List<BatchBean> batchBeenList) {
+    public BatchAdapter(Context mContext, List<BatchBean.DataBean> batchBeenList) {
         this.mContext = mContext;
         this.batchBeenList = batchBeenList;
     }
@@ -54,10 +55,10 @@ public class BatchAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        BatchBean batchBean = batchBeenList.get(position);
-        holder.batchMsgTvName.setText(batchBean.getBatchnum());
-        holder.batchMsgTvtimer.setText(batchBean.getBatchstartTimer());
-        holder.batchMsgTvjiage.setText("进货价: " + batchBean.getBatchjHuojia() + "\r\n" + "批发价价: " + batchBean.getBatchpfajia() + "\r\n" + "零售价: " + batchBean.getBatchlShouji());
+        BatchBean.DataBean dataBean = batchBeenList.get(position);
+        holder.batchMsgTvName.setText(dataBean.getBatchnum());
+        holder.batchMsgTvtimer.setText(dataBean.getBatchdateStr());
+        holder.batchMsgTvjiage.setText("进货价: " + dataBean.getEnterprice() + "\r\n" + "批发价价: " + dataBean.getSaleprice() + "\r\n" + "零售价: " + dataBean.getSellprice());
         return convertView;
     }
 

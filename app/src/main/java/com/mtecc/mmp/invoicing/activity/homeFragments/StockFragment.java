@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
@@ -23,11 +26,41 @@ import butterknife.Unbinder;
  */
 
 public class StockFragment extends Fragment {
-    @BindView(R.id.btn_ceshi)
-    Button btnCeshi;
+
     Unbinder unbinder;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.tv_left_select)
+    TextView tvLeftSelect;
+    @BindView(R.id.img_left_select)
+    ImageButton imgLeftSelect;
+    @BindView(R.id.rl_right_left)
+    RelativeLayout rlRightLeft;
+    @BindView(R.id.tv_select)
+    TextView tvSelect;
+    @BindView(R.id.img_select)
+    ImageButton imgSelect;
+    @BindView(R.id.rl_select)
+    RelativeLayout rlSelect;
+    @BindView(R.id.ll_right)
+    LinearLayout llRight;
+    @BindView(R.id.rl_title_bg)
+    RelativeLayout rlTitleBg;
+    @BindView(R.id.stock_rl_commodity)
+    RelativeLayout stockRlCommodity;
+    @BindView(R.id.stock_rl_supplier)
+    RelativeLayout stockRlSupplier;
+    @BindView(R.id.stock_rl_client)
+    RelativeLayout stockRlClient;
+    @BindView(R.id.stock_rl_depot)
+    RelativeLayout stockRlDepot;
+
 
     @Nullable
     @Override
@@ -36,7 +69,7 @@ public class StockFragment extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         LogUtils.i("这是库存的oncreate");
         tvTitle.setText("库存");
-        initData();
+
 
         return inflate;
     }
@@ -53,12 +86,7 @@ public class StockFragment extends Fragment {
         }
     }
 
-    /**
-     * 初始化数据
-     */
-    private void initData() {
-        btnCeshi.setText("库存");
-    }
+
 
     @Override
     public void onDestroyView() {
@@ -66,13 +94,18 @@ public class StockFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btn_ceshi})
+
+    @OnClick({R.id.stock_rl_commodity, R.id.stock_rl_supplier, R.id.stock_rl_client, R.id.stock_rl_depot})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_ceshi:
-                LogUtils.d("测试:--", "这是库存");
+            case R.id.stock_rl_commodity:
                 break;
-
+            case R.id.stock_rl_supplier:
+                break;
+            case R.id.stock_rl_client:
+                break;
+            case R.id.stock_rl_depot:
+                break;
         }
     }
 }

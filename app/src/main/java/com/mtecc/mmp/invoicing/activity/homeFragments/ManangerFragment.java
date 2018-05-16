@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity;
+import com.mtecc.mmp.invoicing.activity.distributor.AddDistributorActivity;
+import com.mtecc.mmp.invoicing.activity.distributor.DistributorLIstActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,13 +85,27 @@ public class ManangerFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.manage_rl_commodity:
+                //商品管理
                 Intent intent = new Intent();
                 intent.setClass(getContext(), CommodityListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.manage_rl_supplier:
+                Intent supplierintent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Merchants_TYPE);
+                supplierintent.setClass(getContext(), DistributorLIstActivity.class);
+                supplierintent.putExtras(bundle);
+                startActivity(supplierintent);
                 break;
             case R.id.manage_rl_client:
+                //客户管理
+                Intent clientintent = new Intent();
+                Bundle clienbundle = new Bundle();
+                clienbundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Distributor_TYPE);
+                clientintent.setClass(getContext(), DistributorLIstActivity.class);
+                clientintent.putExtras(clienbundle);
+                startActivity(clientintent);
                 break;
             case R.id.manage_rl_depot:
                 break;

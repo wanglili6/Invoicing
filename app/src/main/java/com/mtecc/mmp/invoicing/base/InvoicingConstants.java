@@ -8,6 +8,8 @@ package com.mtecc.mmp.invoicing.base;
 public class InvoicingConstants {
     //基础地址
     public static final String BASE_URL = "http://192.168.1.144:8080/SSMSAPP";
+    //图片地址
+    public static final String IMAGEURL = "http://192.168.1.144:8080/image/";
     //登陆
     public static final String LOGIN_URL = "/app/login/toMain.htm";
     //选择店铺
@@ -41,14 +43,49 @@ public class InvoicingConstants {
     //分配角色
     public static final String bindRole_URL = "/app/shopmanage/bindRole.htm";
 
+    //商品列表
+    public static final String GoogSlistfortable_URL = "/app/goods/listfortable.htm";
+    //商品添加
+    public static final String AddGoogs_URL = "/app/goods/Add.htm";
+    //商品快速查询
+    public static final String searchGood_URL = "/app/goods/searchGood.htm";
+    //商品查看
+    public static final String lookGood_URL = "/app/goods/look.htm";
+    //商品編輯
+    public static final String EditGood_URL = "/app/goods/Edit.htm";
+    //商品删除
+    public static final String deleteGood_URL = "/app/goods/delete.htm";
+    //商品类别
+    public static final String toAdd_URL = "/app/goods/toAdd.htm";
+    //批次列表
+    public static final String batchList_URL = "/app/goodbatch/batchList.htm";
+    //证件类型信息
+    public static final String getDic_URL = "/app/goodbatch/getDic.htm";
+    //添加批次
+    public static final String addBatch_URL = "/app/goodbatch/addBatch.htm";
+    //修改批次
+    public static final String editBatch_URL = "/app/goodbatch/editBatch.htm";
+    //删除
+    public static final String deleteBatch_URL = "/app/goodbatch/deleteBatch.htm";
+    //查看
+    public static final String toEditBatch_URL = "/app/goodbatch/toEditBatch.htm";
+
+    //分销商_经销商列表
+    public static final String buyers_URL = "/app/buyers/listfortable.htm";
+    //删除
+    public static final String buyersdelete_URL = "/app/buyers/delete.htm";
+    //查看
+    public static final String buyerstoEdit_URL = "/app/buyers/toEdit.htm";
+    //编辑
+    public static final String buyersEdit_URL = "/app/buyers/Edit.htm";
+    //增加
+    public static final String buyersAdd_URL = "/app/buyers/Add.htm";
+
 
     //公司员工列表
     public static final String employee_listfortable_URL = "/app/employee/listfortable.htm";
-
     //获取公司下面所有可用员工
     public static final String manlistforcompany_URL = "/app/shopmanage/manlistforcompany.htm";
-
-
     //角色列表
     public static final String roleList_URL = "/app/rolemanage/listfortable.htm";
     //添加角色
@@ -60,11 +97,13 @@ public class InvoicingConstants {
     public static final String employeeAdd_URL = "/app/employee/Add.htm";
     //编辑员工
     public static final String employeeEdit_URL = "/app/employee/Edit.htm";
+    //删除
     public static final String employeedelete_URL = "/app/employee/delete.htm";
 
 
     //用户信息
     public static final String USER_NAME = "USER_NAME";//用户名
+    public static final String isuseradmin = "isuseradmin";//用户名
     public static final String USER_PWD = "USER_PWD";//用户密码
     public static final String USER_ID = "USER_ID";//用户id
     public static final String USER_CRESTER_TIMER_STR = "USER_CRESTER_TIMER_STR";//注册时间
@@ -131,6 +170,30 @@ public class InvoicingConstants {
     public static final String BATCH_Add_list = "BATCH_Add_list";
     public static final String BATCH_Id = "BATCH_Id";//编辑商品id
     public static final String BATCH_ADD = "BATCH_ADD";//add--添加
-    public static final String BATCH_LIST = "BATCH_LIST";//list--从列表添加
+    public static final String BATCH_Edit = "BATCH_Edit";//编辑
+
+    //证件
+    public static final String DOUCUMENT_TYPE = "DOUCUMENT_TYPE";//类型
+    public static final String DOUCUMENT_ADD = "DOUCUMENT_ADD";//添加
+    public static final String DOUCUMENT_EDIT = "DOUCUMENT_EDIT";//编辑
+
+
+    public static final String Merchants_Distributor_type = "Merchants_Distributor_type";//分销商的id
+    //分销商
+    public static final String Distributor_ID = "Distributor_ID";//分销商的id
+    public static final String Distributor_mertype = "1";//分销商的id
+    public static final String Distributor_TYPE = "Distributor_TYPE";//类型
+    public static final String Distributor_ADD = "Distributor_ADD";//添加
+
+
+    public static final String Distributor_EDIT = "Distributor_EDIT";//编辑
+    public static final String Merchants_ID = "Merchants_ID";//分销商的id
+    public static final String Merchants_TYPE = "Merchants_TYPE";//类型
+    public static final String Merchants_ADD = "Merchants_ADD";//添加
+    public static final String Merchants_EDIT = "Merchants_EDIT";//编辑
+
+    //进货商
+    public static final String Merchants_mertype = "2";//进货商的type
+
 
 }

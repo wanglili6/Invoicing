@@ -1,19 +1,14 @@
 package com.mtecc.mmp.invoicing.activity.comodity;
 
-import android.Manifest;
 import android.app.ActivityOptions;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.transition.Transition;
@@ -26,30 +21,40 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.BatchListAdapter;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicListBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.DicBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.SeeBatchMsgBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 import com.mtecc.mmp.invoicing.utils.UseSystemUtils;
 import com.mtecc.mmp.invoicing.views.NoScrollListView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * 添加批次信息
@@ -94,7 +99,7 @@ public class AddBatchActivity extends BaseActivity {
     EditText commodityDialogEtJhuojia;
     @BindView(R.id.commodity_dialog_et_pfjia)
     EditText commodityDialogEtPfjia;
-    private Uri photoUri;
+
     private String name = "";
     private String pihaoNum = "";
     private String lshougj = "";
@@ -102,12 +107,24 @@ public class AddBatchActivity extends BaseActivity {
     private String pfajia = "";
     private String picPath = "";
     private String picName = "";
-    private List<BatchPicBean> mlist;
+    private List<BatchPicListBean.CardBean> mlist;
+    private List<DicBean.DataBean> mDiclist = new ArrayList<>();
     private BatchListAdapter batchListAdapter;
     private int picPosiion;
-    List<String> newPathlist;
-    List<BatchPicBean> newPiclist;
+    List<BatchPicListBean.CardBean> newBeanmlist;
+    //    List<BatchPicListBean.BatchListBean.PicListBean> newPiclist;
     private UseSystemUtils useSystemUtils;
+    private String batchType;
+    private String imageName;
+    private String pic_path;
+    private String numName;//图片名字
+    private String mimgurl;
+    private AlertDialog showDialog;
+    private String goodsId;
+    private String pbatchid;
+    private int cid;
+    private String user_id;
+
 
     @Override
     public void widgetClick(View v) {
@@ -116,88 +133,114 @@ public class AddBatchActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
+        cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0);
+        user_id = PreferencesUtils.getString(this, InvoicingConstants.USER_ID, "");
         useSystemUtils = new UseSystemUtils(this);
-
         mlist = new ArrayList<>();
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText("添加批次");
-        BatchPicBean picBean = new BatchPicBean();
-        picBean.setBatchcode("");
-        picBean.setBatchcarType("");
-        picBean.setBatchtimer("");
-        List<String> imgUrlList = new ArrayList<>();
-        imgUrlList.add("");
-        picBean.setImgUrl(imgUrlList);
-        mlist.add(picBean);
+        parms = getIntent().getExtras();
+        batchType = parms.getString(InvoicingConstants.BATCH_TYPE);
+        View view1 = ShowDalogUtils.showCustomizeDialog(AddBatchActivity.this, R.layout.send_customize);
+        showDialog = ShowDalogUtils.showDialog(AddBatchActivity.this, false, view1);
+        showDialog.dismiss();
+        requestNetgetDicList();
+        if (batchType.equals(InvoicingConstants.BATCH_ADD)) {
+            tvTitle.setText("添加批次");
+            BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
+            picBean.setCardnum("");
+            picBean.setCardtype("");
+            picBean.setCharddate("");
+            mlist.add(picBean);
+            goodsId = parms.getString(InvoicingConstants.COMMODITY_Id);
+
+        } else if (batchType.equals(InvoicingConstants.BATCH_Edit)) {
+            tvTitle.setText("编辑批次");
+            pbatchid = parms.getString("pbatchid");
+            requestNetSeeBatch(pbatchid);
+        }
 
 
-        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit);
+        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit, mDiclist);
         addBatchListView.setAdapter(batchListAdapter);
         batchListAdapter.notifyDataSetChanged();
-        //点击图片
-        batchListAdapter.setiImgOnClickListerner(new BatchListAdapter.IBatchImgOnClickListerner() {
+
+        batchListAdapter.setiSeeOnClickListerner(new BatchListAdapter.IBatchSeeImgListerner() {
             @Override
-            public void onBatchImgClick(int position, int pos, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList) {
-                LogUtils.d("点击图片" + position + imgUrl);
-                if (TextUtils.isEmpty(imgUrl)) {
-                    newPathlist = new ArrayList<>();
-                    newPiclist = new ArrayList<>();
-                    newPiclist.addAll(mList);
-                    newPathlist.addAll(finalImgUrlList);
-                    picPosiion = position;
-                    picPhoto();
-                } else {
+            public void onBatchSee(int position, String imgUrl) {
+                if (!TextUtils.isEmpty(imgUrl)) {
                     ArrayList<String> imgUrlList = new ArrayList<String>();
-                    for (int i = 0; i < finalImgUrlList.size(); i++) {
-                        if (!TextUtils.isEmpty(finalImgUrlList.get(i))) {
-                            imgUrlList.add(finalImgUrlList.get(i));
-                        }
-                    }
+                    imgUrlList.add(imgUrl);
                     Intent intent = new Intent();
                     intent.setClass(AddBatchActivity.this, SwipeActivity.class);
                     intent.putStringArrayListExtra("imagelist", imgUrlList);
-                    intent.putExtra("position", pos + "");
+                    intent.putExtra("position", 1 + "");
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AddBatchActivity.this).toBundle());
                     } else {
                         startActivity(intent);
                     }
+                } else {
+                    showToast("请先拍照,才能进行查看");
                 }
-
 
             }
 
         });
-        batchListAdapter.setiDelOnClickListerner(new BatchListAdapter.IBatchDelImgOnClickListerner() {
+        batchListAdapter.setiImgOnClickListerner(new BatchListAdapter.IBatchImgOnClickListerner() {
             @Override
-            public void onBatchDelClick(int position, int imgposition, String imgUrl, List<String> finalImgUrlList, List<BatchPicBean> mList) {
-                View exitView = ShowDalogUtils.showCustomizeDialog(AddBatchActivity.this, R.layout.exit_dialog);
-                AlertDialog dialog = ShowDalogUtils.showDialog(AddBatchActivity.this, false, exitView);
-                exitClick(exitView, dialog, position, imgposition, finalImgUrlList, mlist);
-
+            public void onBatchImgClick(int position, String
+                    imgUrl, List<BatchPicListBean.CardBean> mList) {
+                mimgurl = imgUrl;
+                newBeanmlist = new ArrayList<>();
+                newBeanmlist.addAll(mList);
+                BatchPicListBean.CardBean cardBean = mList.get(position);
+                numName = cardBean.getCardnum();
+                picPosiion = position;
+                picPhoto();
             }
         });
 
         batchListAdapter.setiAddBatchOnClickListerner(new BatchListAdapter.IAddBatchOnClickListerner() {
             @Override
-            public void onAddBatchClick(List<BatchPicBean> mPicimgList) {
+            public void onAddBatchClick(List<BatchPicListBean.CardBean> mPicimgList) {
                 name = commodityDialogEtName.getText().toString().trim();
                 pihaoNum = commodityDialogEtNum.getText().toString().trim();
                 lshougj = commodityDialogEtLshoujia.getText().toString().trim();
                 jhuojia = commodityDialogEtJhuojia.getText().toString().trim();
                 pfajia = commodityDialogEtPfjia.getText().toString().trim();
-                BatchBean batchBean = new BatchBean();
-                batchBean.setBatchstartTimer(name);
-                batchBean.setBatchnum(pihaoNum);
-                batchBean.setBatchlShouji(lshougj);
-                batchBean.setBatchjHuojia(jhuojia);
-                batchBean.setBatchpfajia(pfajia);
-                batchBean.setPicList(mPicimgList);
+                if (TextUtils.isEmpty(name)) {
+                    showDialog.dismiss();
+                    showToast("生产日期不能为空");
+                    return;
+                }
+                BatchPicListBean batchPicListBean = new BatchPicListBean();
+                batchPicListBean.setBatchdate(name);
+                batchPicListBean.setBatchnum(pihaoNum);
+                batchPicListBean.setSaleprice(pfajia);
+                batchPicListBean.setSellprice(lshougj);
+                batchPicListBean.setEnterprice(jhuojia);
+                batchPicListBean.setCardBeanlist(mPicimgList);
+                Map<String, String> imgMap = new HashMap<String, String>();
+                int size = mPicimgList.size();
+                for (int i = 0; i < size; i++) {
+                    BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
+                    imgMap.put(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png");
+                }
+                batchPicListBean.setpicmap(imgMap);
 
-                //从列表添加
+//                //从列表添加
                 Gson gson = new Gson();
-                String batchJson = gson.toJson(batchBean);
-                LogUtils.d("批次管理" + batchJson);
+                if (batchType.equals(InvoicingConstants.BATCH_ADD)) {
+                    String batchJson = gson.toJson(batchPicListBean);
+                    LogUtils.d("批次管理" + batchJson);
+                    requestNetAddCommodity(batchJson, goodsId, mPicimgList);
+
+                } else if (batchType.equals(InvoicingConstants.BATCH_Edit)) {
+                    batchPicListBean.setPbatchid(Integer.valueOf(pbatchid));
+                    String batchJson = gson.toJson(batchPicListBean);
+                    LogUtils.d("批次管理" + batchJson);
+                    requestNeteditCommodity(batchJson, mPicimgList);
+                }
 
 
             }
@@ -247,76 +290,31 @@ public class AddBatchActivity extends BaseActivity {
 
     }
 
-    /**
-     * 是否返回
-     *
-     * @param exitView
-     * @param dialog
-     * @param position
-     * @param imgposition
-     * @param finalImgUrlList
-     * @param mlist
-     */
-    private void exitClick(View exitView, final AlertDialog dialog, final int position, final int imgposition, final List<String> finalImgUrlList, final List<BatchPicBean> mlist) {
-        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
-        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
-        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
-        contactTV.setText("是否删除当前图片?");
-        dissTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-            }
-        });
-        sureTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                showToast("已删除图片");
-                newPathlist = new ArrayList<>();
-                newPiclist = new ArrayList<>();
-                newPiclist.addAll(mlist);
-                newPathlist.addAll(finalImgUrlList);
-                myDeleteFile(newPathlist.get(imgposition));
-                newPathlist.remove(imgposition);
-                picPosiion = position;
-                BatchPicBean element = new BatchPicBean();
-                element.setBatchcarType(newPiclist.get(picPosiion).getBatchcarType());
-                element.setBatchcode(newPiclist.get(picPosiion).getBatchcode());
-                element.setBatchtimer(newPiclist.get(picPosiion).getBatchtimer());
-                element.setImgUrl(newPathlist);
-                newPiclist.set(picPosiion, element);
-                AddBatchActivity.this.mlist.clear();
-                AddBatchActivity.this.mlist.addAll(newPiclist);
-                LogUtils.d("更换的数据" + picPosiion);
-                batchListAdapter.notifyDataSetChanged();
-
-            }
-        });
-    }
-
 
     private void picPhoto() {
+        Intent intent = new Intent();
+        // 指定开启系统相机的Action
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        //获取当前时间
+        long date = System.currentTimeMillis();
+        Date curDate = new Date(date);
+        String str = formatter.format(curDate);
+        String pic_pathFileName = str + numName + ".png";
+        imageName = numName + "";
+        // 根据文件地址创建文件
+        pic_path = Environment.getExternalStorageDirectory().toString() + "/mtecc/invoing/" + pic_pathFileName;
+        File file = new File(pic_path);
+        // 把文件地址转换成Uri格式
+        Uri photoURI = FileProvider.getUriForFile(AddBatchActivity.this,
+                getApplicationContext().getPackageName() + ".fileProvider",
+                file);
+        // 设置系统相机拍摄照片完成后图片文件的存放地址
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-//				requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-        } else {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            //针对4.4以下
-            SimpleDateFormat timeStampFormat2 = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-            String path = timeStampFormat2.format(new Date());
-            ContentValues values2 = new ContentValues();//和hashtable类似但是只能存基本数据类型不能存对象
-            values2.put(MediaStore.Images.Media.TITLE, path);
-            photoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values2);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            //启动照相机
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 2);
-        }
+        startActivityForResult(intent, 2);
+
 
     }
 
@@ -326,51 +324,30 @@ public class AddBatchActivity extends BaseActivity {
             try {
                 switch (requestCode) {
                     case 2:
-                        // 当选择的图片不为空的话，在获取到图片的途径
-                        Uri uri = null;
-                        if (data != null && data.getData() != null) {
-                            uri = data.getData();
-                        }
-                        if (uri == null) {
-                            if (photoUri != null) {
-                                uri = photoUri;
+                        if (resultCode == RESULT_OK) {
+                            LogUtils.i("onActivityResult: RESULT_OK " + pic_path);
+                            String imagepath = CompressionPhotoUtils.compressImage(pic_path, pic_path, 50);
+                            LogUtils.i("onActivityResult: RESULT_OK " + imagepath);
+                            LogUtils.i("onActivityResult: RESULT_OK " + imageName);
+                            BatchPicListBean.CardBean bean = new BatchPicListBean.CardBean();
+                            bean.setCardtype(newBeanmlist.get(picPosiion).getCardtype());
+                            bean.setCardtypeName(newBeanmlist.get(picPosiion).getCardtypeName());
+                            bean.setCharddate(newBeanmlist.get(picPosiion).getCharddate());
+                            bean.setCardnum(newBeanmlist.get(picPosiion).getCardnum());
+                            bean.setRemark(newBeanmlist.get(picPosiion).getRemark());
+                            bean.setImgUrl(imagepath);
+                            newBeanmlist.set(picPosiion, bean);
+                            mlist.clear();
+                            mlist.addAll(newBeanmlist);
+                            LogUtils.d("更换的数据" + picPosiion);
+                            batchListAdapter.notifyDataSetChanged();
+                        } else {
+                            LogUtils.i("onActivityResult: " + pic_path);
+                            File file = new File(pic_path);
+                            if (!file.exists()) {
+                                imageName = "";
                             }
-                        }
-                        String[] pojo = {MediaStore.Images.Media.DATA};
-                        Cursor cursor = this.getContentResolver().query(uri,
-                                pojo, null, null, null);
-                        if (cursor != null) {
-                            ContentResolver cr = this.getContentResolver();
-                            int colunm_index = cursor
-                                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                            cursor.moveToFirst();
-                            String path = cursor.getString(colunm_index);
-                            // 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
-                            // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
-                            if (path.endsWith("jpg") || path.endsWith("png")) {
-                                picPath = path;
-                                //压缩
-                                List<String> picPathlist = new ArrayList<>();
-                                picPathlist.addAll(newPathlist);
 
-                                picPath = CompressionPhotoUtils.compressImage(path, path, 50);
-                                picPathlist.add(picPath);
-                                BatchPicBean bean = new BatchPicBean();
-                                bean.setBatchcarType(newPiclist.get(picPosiion).getBatchcarType());
-                                bean.setBatchcode(newPiclist.get(picPosiion).getBatchcode());
-                                bean.setBatchtimer(newPiclist.get(picPosiion).getBatchtimer());
-                                bean.setImgUrl(picPathlist);
-                                newPiclist.set(picPosiion, bean);
-                                mlist.clear();
-                                mlist.addAll(newPiclist);
-                                LogUtils.d("更换的数据" + picPosiion);
-                                batchListAdapter.notifyDataSetChanged();
-                                for (int i = 0; i < picPathlist.size(); i++) {
-                                    LogUtils.d("选中的图片" + picPathlist.get(i));
-
-                                }
-
-                            }
                         }
                         break;
                 }
@@ -380,8 +357,6 @@ public class AddBatchActivity extends BaseActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 
 
     @OnClick({R.id.rl_back, R.id.commodity_dialog_et_name})
@@ -398,6 +373,7 @@ public class AddBatchActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 是否返回
      *
@@ -426,5 +402,239 @@ public class AddBatchActivity extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 获取证件信息
+     */
+    private void requestNetgetDicList() {
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.getDic_URL;
+        LogUtils.d("登陆的url" + url);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            Gson gson = new Gson();
+                            DicBean dicBean = gson.fromJson(response, DicBean.class);
+                            if (dicBean != null) {
+                                List<DicBean.DataBean> data = dicBean.getData();
+                                mDiclist.clear();
+                                mDiclist.addAll(data);
+
+                            } else {
+                                Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 添加批次
+     */
+    private void requestNetAddCommodity(String batchBean, String goodid, List<BatchPicListBean.CardBean> mPicimgList) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.addBatch_URL;
+        PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + goodid);
+        LogUtils.d("登陆的url" + batchBean);
+        for (int i = 0; i < mPicimgList.size(); i++) {
+            BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
+            post.addFile(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png", new File(cardBean.getImgUrl()));
+        }
+        post.addParams("batchBean", batchBean);
+        post.addParams("goodid", goodid);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("添加批次成功!");
+                                    finish();
+                                } else {
+                                    showToast("添加批次失败!");
+                                }
+                            } else {
+                                Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 修改批次
+     */
+    private void requestNeteditCommodity(String batchBean, List<BatchPicListBean.CardBean> mPicimgList) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.editBatch_URL;
+        PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + batchBean);
+        for (int i = 0; i < mPicimgList.size(); i++) {
+            BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
+            String imgUrl = cardBean.getImgUrl();
+            String substring = imgUrl.substring(0, 4);
+            if (!substring.equals("http")) {
+                post.addFile(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png", new File(cardBean.getImgUrl()));
+            }
+        }
+        post.addParams("batchBean", batchBean);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("修改批次成功!");
+                                    finish();
+                                } else {
+                                    showToast("修改批次失败!");
+                                }
+                            } else {
+                                Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 查看批次详情
+     */
+    private void requestNetSeeBatch(String pbatchid) {
+
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.toEditBatch_URL;
+        PostFormBuilder post = OkHttpUtils.post();
+
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + pbatchid);
+
+        post.addParams("pbatchid", pbatchid);
+        post.tag(this)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息AddBatchActivity" + e.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息AddBatchActivity" + response.toString());
+                            Gson gson = new Gson();
+                            SeeBatchMsgBean seeBatchMsgBean = gson.fromJson(response, SeeBatchMsgBean.class);
+                            if (seeBatchMsgBean != null) {
+                                List<SeeBatchMsgBean.CardListBean> cardList = seeBatchMsgBean.getCardList();
+                                int size = cardList.size();
+                                mlist.clear();
+                                List<SeeBatchMsgBean.DiclistBean> diclist = seeBatchMsgBean.getDiclist();
+                                for (int i = 0; i < size; i++) {
+                                    SeeBatchMsgBean.CardListBean cardListBean = cardList.get(i);
+                                    commodityDialogEtName.setText(cardListBean.getPbatchid().getBatchdateStr());
+                                    commodityDialogEtNum.setText(cardListBean.getPbatchid().getBatchnum());
+                                    commodityDialogEtLshoujia.setText(cardListBean.getPbatchid().getSellprice());
+                                    commodityDialogEtJhuojia.setText(cardListBean.getPbatchid().getEnterprice());
+                                    commodityDialogEtPfjia.setText(cardListBean.getPbatchid().getSaleprice());
+                                    BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
+                                    picBean.setCardnum(cardListBean.getCardnum());
+                                    int diclistsize = diclist.size();
+                                    for (int j = 0; j < diclistsize; j++) {
+                                        if (cardListBean.getCardtype().equals(diclist.get(j).getBUSINID() + "")) {
+                                            picBean.setCardtypeName(diclist.get(j).getBUSINNAME());
+                                        }
+                                    }
+                                    picBean.setCharddate(cardListBean.getCharddateStr());
+                                    picBean.setRemark(cardListBean.getRemark());
+                                    picBean.setImgUrl(InvoicingConstants.IMAGEURL + cardListBean.getFilecardid().getParentpath() + "/" + cardListBean.getFilecardid().getPath());
+                                    mlist.add(picBean);
+                                    batchListAdapter.notifyDataSetChanged();
+                                }
+
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息AddBatchActivity" + e1.toString());
+                            Toast.makeText(AddBatchActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

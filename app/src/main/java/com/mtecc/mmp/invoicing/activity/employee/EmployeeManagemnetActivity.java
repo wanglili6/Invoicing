@@ -115,6 +115,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     private AlertDialog showDialog;
     private EmployeeListBean.DataBean selectDataBean;
     private boolean resultName;
+    private String shop_id;
 
     @Override
     public void widgetClick(View v) {
@@ -135,6 +136,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
         sexspinnervalueList.add("1");
         employeeType = parms.getString(InvoicingConstants.EMPLOYEE_TYPE);
         cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0);
+        shop_id = PreferencesUtils.getString(this, InvoicingConstants.SHOP_ID, "");
         if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_ADD)) {
             tvTitle.setText("添加员工");
             llShopStatus.setVisibility(View.GONE);
@@ -220,6 +222,11 @@ public class EmployeeManagemnetActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 验证用户名
+     *
+     * @param userName
+     */
     private void requestNetVerificationName(final String userName) {
         final String url = InvoicingConstants.BASE_URL + InvoicingConstants.ValidateLogName_URL;
         LogUtils.d("验证用户名的url" + url);
@@ -374,7 +381,7 @@ public class EmployeeManagemnetActivity extends BaseActivity {
             employeeAddBean.setUserage(age);
             Gson gson = new Gson();
             String addJson = gson.toJson(employeeAddBean);
-            requestNetAddEmployee(addJson);
+            requestNetAddEmployee(addJson, shop_id);
         } else if (!TextUtils.isEmpty(employeeType) && employeeType.equals(InvoicingConstants.EMPLOYEE_EDIT)) {
             EmployeeAddBean employeeAddBean = new EmployeeAddBean();
             employeeAddBean.setCid(cid);
@@ -460,14 +467,16 @@ public class EmployeeManagemnetActivity extends BaseActivity {
     /**
      * 添加用户
      */
-    private void requestNetAddEmployee(String addJosn) {
+    private void requestNetAddEmployee(String addJosn, String shopid) {
         String url = InvoicingConstants.BASE_URL + InvoicingConstants.employeeAdd_URL;
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + addJosn);
+        LogUtils.d("登陆的url" + shopid);
         OkHttpUtils
                 .post()
                 .tag(this)
                 .addParams("userBean", addJosn)
+                .addParams("shopid", shopid)
                 .url(url)
                 .build()
                 .execute(new StringCallback() {

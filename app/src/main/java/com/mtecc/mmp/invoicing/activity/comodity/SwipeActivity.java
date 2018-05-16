@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.mtecc.mmp.invoicing.R;
@@ -169,7 +170,8 @@ public class SwipeActivity extends AppCompatActivity {
             //data
             String url = imagelist.get(position);
             //data+view
-            Glide.with(SwipeActivity.this).load(url).into(iv);
+            Glide.with(SwipeActivity.this).load(url).skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
 
             iv.setOnPhotoTapListener(new OnPhotoTapListener() {
                 @Override

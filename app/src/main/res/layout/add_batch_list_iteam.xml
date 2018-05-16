@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-
+            android:drawableLeft="@mipmap/code_msg_icon"
+            android:drawablePadding="5dp"
             android:gravity="center_vertical"
             android:text="批次管理"
             android:textColor="@color/text_color"
@@ -225,15 +226,16 @@
             android:textColor="@color/text_color"
             android:textSize="14sp" />
     </LinearLayout>
-<ListView
-    android:divider="@null"
-    android:scrollbars="none"
-    android:id="@+id/batch_pic_list_view"
-    android:layout_marginTop="1dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</ListView>
+    <ListView
+        android:id="@+id/batch_pic_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:divider="@null"
+        android:scrollbars="none">
+
+    </ListView>
 
 
 </LinearLayout>

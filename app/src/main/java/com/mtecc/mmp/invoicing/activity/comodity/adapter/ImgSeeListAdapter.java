@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.SeeImgActivity;
@@ -50,6 +51,8 @@ public class ImgSeeListAdapter extends RecyclerView.Adapter<ImgSeeListAdapter.Sh
         holder.imgDel.setVisibility(View.GONE);
         Glide.with(mContext)
                 .load(imgUrl)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .centerCrop()
                 .into(holder.imgAdd);
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {

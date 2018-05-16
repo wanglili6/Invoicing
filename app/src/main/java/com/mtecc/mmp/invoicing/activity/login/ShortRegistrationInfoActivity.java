@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,7 +18,6 @@ import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.login.bean.RegistrationInfoBean;
-import com.mtecc.mmp.invoicing.activity.setting.bean.CompanyInfoBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
@@ -84,12 +80,22 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     LinearLayout llInfoPersonMsg;
     @BindView(R.id.register_tv_register)
     TextView registerTvRegister;
+    @BindView(R.id.registration_user_name)
+    EditText registrationUserName;
+    @BindView(R.id.registration_pwd)
+    EditText registrationPwd;
+    @BindView(R.id.registration_agin_pwd)
+    EditText registrationAginPwd;
+    @BindView(R.id.ll_info_user_pwd)
+    LinearLayout llInfoUserPwd;
     private UseSystemUtils userSystemutils = null;
     private AlertDialog alertDialog;
     private AlertDialog exitAlertDialog;
     private String baseInfoType;
     private String regisName = "";//用户名
     private String regisPWD = "";//密码
+    private String regisagingPWD = "";//确认密码
+    boolean resultName = false;
 
     @Override
     public void widgetClick(View v) {
@@ -101,10 +107,6 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     public void initParms(Bundle parms) {
         userSystemutils = new UseSystemUtils(this);
         ivBack.setVisibility(View.VISIBLE);
-        parms = getIntent().getExtras();
-        baseInfoType = parms.getString(InvoicingConstants.BASE_INFO_TYPE);
-        regisName = parms.getString(InvoicingConstants.regisName);
-        regisPWD = parms.getString(InvoicingConstants.regisPWD);
         tvTitle.setText("填写注册信息");
         registerTvRegister.setText("注册");
         llInfoPersonMsg.setVisibility(View.VISIBLE);
@@ -132,7 +134,15 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
 
     @Override
     public void doBusiness(Context mContext) {
-
+        registrationUserName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String name = registrationUserName.getText().toString().trim();
+                    requestNetVerificationName(name);
+                }
+            }
+        });
     }
 
 
@@ -190,7 +200,22 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     private void judgmentValueIsEmpty() {
         pName = resgisterEtPname.getText().toString().trim();
         pPhone = registerEtPphone.getText().toString().trim();
-
+        regisName = registrationUserName.getText().toString().trim();
+        regisPWD = registrationPwd.getText().toString().trim();
+        regisagingPWD = registrationAginPwd.getText().toString().trim();
+        if (!TextUtils.isEmpty(regisName) && !TextUtils.isEmpty(regisPWD) && !TextUtils.isEmpty(regisagingPWD)) {
+            if (!regisPWD.equals(regisagingPWD)) {
+                showToast("两次密码不一致!");
+                return;
+            }
+        } else {
+            showToast("用户名或密码不能为空!");
+            return;
+        }
+        if (resultName) {
+            showToast("用户名已被注册!");
+            return;
+        }
         if (TextUtils.isEmpty(pName) || pName.equals("")) {
             showToast("用户的姓名不能为空!");
             alertDialog.dismiss();
@@ -273,6 +298,7 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
                                     Intent intent = new Intent();
                                     intent.setClass(ShortRegistrationInfoActivity.this, LoginActivity.class);
                                     startActivity(intent);
+                                    showToast("注册成功,去登陆!");
                                     finish();
                                 } else {
                                     showToast("注册失败请重新提交!");
@@ -291,4 +317,46 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     }
 
 
+    private void requestNetVerificationName(final String userName) {
+        final String url = InvoicingConstants.BASE_URL + InvoicingConstants.ValidateLogName_URL;
+        LogUtils.d("验证用户名的url" + url);
+        LogUtils.d("验证用户名的url" + url);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("logname", userName)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            LogUtils.d("错误信息RegisrationPWDActivity" + e.toString());
+                            Toast.makeText(ShortRegistrationInfoActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息RegisrationPWDActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            LogUtils.d("返回值信息RegisrationPWDActivity" + response.toString());
+                            //解析json 对象
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean result = jsonObject.optBoolean("result");
+                            if (result) {
+                                resultName = true;
+                                registrationUserName.setText("");
+                                registrationUserName.setHint(userName + "(用户名已被注册!请重新输入)");
+                                registrationUserName.setHintTextColor(getResources().getColor(R.color.text_hint_red));
+                            } else {
+                                resultName = false;
+                            }
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息RegisrationPWDActivity" + e1.toString());
+                        }
+                    }
+                });
+    }
 }

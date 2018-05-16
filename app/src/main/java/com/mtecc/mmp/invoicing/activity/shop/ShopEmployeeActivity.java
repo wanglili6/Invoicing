@@ -142,7 +142,7 @@ public class ShopEmployeeActivity extends BaseActivity {
                 // 创建“打开”项
                 SwipeMenuItem openItem = new SwipeMenuItem(
                         getApplicationContext());
-                openItem.setBackground(new ColorDrawable(Color.parseColor("#FD3B31")));
+                openItem.setBackground(new ColorDrawable(Color.parseColor("#0099FF")));
                 openItem.setWidth(dp2px(100));
                 openItem.setTitle("分配角色");
                 openItem.setTitleSize(16);

@@ -94,7 +94,7 @@ public class EmployeeListActivity extends BaseActivity {
         if (parms != null) {
             //全部员工
             tvTitle.setText("员工列表");
-            requestNetEmployeeList(pagenum + "", cid);
+            requestNetEmployeeList(pagenum + "", cid,shop_id);
             adapter = new EmployeeListAdapter(this, mList);
             shopListRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -130,7 +130,7 @@ public class EmployeeListActivity extends BaseActivity {
                 mList.clear();
                 pagenum = 1;
 
-                requestNetEmployeeList(pagenum + "", cid + "");
+                requestNetEmployeeList(pagenum + "", cid + "",shop_id);
 
 
                 adapter.notifyDataSetChanged();
@@ -143,7 +143,7 @@ public class EmployeeListActivity extends BaseActivity {
                 refreshlayout.finishLoadmore(1500);
                 pagenum++;
 
-                requestNetEmployeeList(pagenum + "", cid + "");
+                requestNetEmployeeList(pagenum + "", cid + "",shop_id);
 
 
             }
@@ -200,13 +200,14 @@ public class EmployeeListActivity extends BaseActivity {
      * @param page
      * @param id
      */
-    private void requestNetEmployeeList(String page, String id) {
+    private void requestNetEmployeeList(String page, String id, String shopid) {
         String url = InvoicingConstants.BASE_URL + InvoicingConstants.employee_listfortable_URL;
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + id);
         OkHttpUtils.post().tag(this)
                 .addParams("page", page)
                 .addParams("cid", id)
+                .addParams("shopid", shopid)
                 .url(url)
                 .build()
                 .execute(new StringCallback() {

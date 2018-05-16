@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.SeeCommodityActivity;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityListBean;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import java.util.List;
@@ -30,9 +32,9 @@ import butterknife.ButterKnife;
 
 public class CommodityListAdapter extends BaseAdapter {
     private Context mContext;
-    private List<String> mList;
+    private List<CommodityListBean.DataBean> mList;
 
-    public CommodityListAdapter(Context mContext, List<String> mList) {
+    public CommodityListAdapter(Context mContext, List<CommodityListBean.DataBean> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -62,14 +64,30 @@ public class CommodityListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final String name = mList.get(position);
-        holder.commodityTvName.setText(name);
+        final CommodityListBean.DataBean dataBean = mList.get(position);
+        holder.commodityTvName.setText(dataBean.getProName() + "");
+        String proCode = dataBean.getProCode();
+        String barcode = dataBean.getBarcode();
+        if (TextUtils.isEmpty(proCode) && !TextUtils.isEmpty(barcode)) {
+            holder.commodityTvCoding.setText(barcode + "");
+
+        }
+        if (TextUtils.isEmpty(barcode) && !TextUtils.isEmpty(proCode)) {
+            holder.commodityTvCoding.setText(barcode + "");
+
+        }
+        holder.commodityTvNorm.setText(dataBean.getMeas() + " / " + dataBean.getMeaunit());
+        holder.commodityTvShelfLife.setText(dataBean.getProbzq() + "");
+        holder.commodityTvBatchNum.setText(dataBean.getBatchCount() + "");
+
         holder.commodityListImgBatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //添加批次
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString(InvoicingConstants.BATCH_TYPE, InvoicingConstants.BATCH_LIST);
+                bundle.putString(InvoicingConstants.BATCH_TYPE, InvoicingConstants.BATCH_ADD);
+                bundle.putString(InvoicingConstants.COMMODITY_Id, dataBean.getProId() + "");
                 intent.setClass(mContext, AddBatchActivity.class);
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
@@ -82,7 +100,9 @@ public class CommodityListAdapter extends BaseAdapter {
                 //查看商品
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
+                bundle.putString("proid", dataBean.getProId() + "");
                 intent.setClass(mContext, SeeCommodityActivity.class);
+                intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }
         });
@@ -98,8 +118,8 @@ public class CommodityListAdapter extends BaseAdapter {
         TextView commodityTvCoding;
         @BindView(R.id.commodity_tv_norm)
         TextView commodityTvNorm;
-        @BindView(R.id.commodity_tv_genre)
-        TextView commodityTvGenre;
+        @BindView(R.id.commodity_tv_batch_num)
+        TextView commodityTvBatchNum;
         @BindView(R.id.commodity_tv_shelf_life)
         TextView commodityTvShelfLife;
         @BindView(R.id.commodity_tv_type)

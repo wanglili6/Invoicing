@@ -125,19 +125,7 @@ public class RegisrationPWDActivity extends BaseActivity {
         String userName = registrationUserName.getText().toString().trim();
         String userPWD = registrationPwd.getText().toString().trim();
         String userAgainPWD = registrationAginPwd.getText().toString().trim();
-        if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPWD) && !TextUtils.isEmpty(userAgainPWD)) {
-            if (!userPWD.equals(userAgainPWD)) {
-                showToast("两次密码不一致!");
-                return;
-            }
-        } else {
-            showToast("用户名或密码不能为空!");
-            return;
-        }
-        if (resultName) {
-            showToast("用户名已被注册!");
-            return;
-        }
+
         Intent intent = new Intent(this, ShortRegistrationInfoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(InvoicingConstants.BASE_INFO_TYPE, InvoicingConstants.regis);

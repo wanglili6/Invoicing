@@ -10,32 +10,53 @@
 
     <include layout="@layout/base_title" />
 
-    <ScrollView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <include layout="@layout/seach_layout" />
+
+
+        <ImageView
+
+            android:id="@+id/img_commodity_list_saoma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@mipmap/saoma"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xian_color" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/smart_refresh_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <RelativeLayout
+            <com.baoyz.swipemenulistview.SwipeMenuListView
+                android:id="@+id/batch_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:divider="@null"
+                android:scrollbars="none">
 
-                <com.mtecc.mmp.invoicing.views.NoScrollListView
-                    android:id="@+id/batch_list_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="@null"
-                    android:scrollbars="none">
+            </com.baoyz.swipemenulistview.SwipeMenuListView>
 
-                </com.mtecc.mmp.invoicing.views.NoScrollListView>
+            <include layout="@layout/error_layout" />
+        </RelativeLayout>
 
-                <include layout="@layout/error_layout" />
-            </RelativeLayout>
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
+

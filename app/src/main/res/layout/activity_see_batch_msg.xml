@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical"
     tools:context="com.mtecc.mmp.invoicing.activity.comodity.SeeBatchMsgActivity">
 
@@ -12,11 +13,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:layout_weight="100">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/bg_color"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -29,7 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-
+                    android:drawableLeft="@mipmap/batch_msg_icon"
+                    android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:text="批次信息"
                     android:textColor="@color/text_color"
@@ -78,6 +82,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -88,6 +93,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/color_white"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -121,6 +127,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -131,6 +138,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/color_white"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -163,6 +171,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -172,6 +181,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/color_white"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -198,12 +208,13 @@
 
                     <EditText
                         android:id="@+id/commodity_see_et_jhuojia"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -213,6 +224,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/color_white"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -245,6 +257,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -252,10 +265,10 @@
             </LinearLayout>
 
             <com.mtecc.mmp.invoicing.views.NoScrollListView
-
                 android:id="@+id/see_batch_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:divider="@null"
                 android:scrollbars="none">
 

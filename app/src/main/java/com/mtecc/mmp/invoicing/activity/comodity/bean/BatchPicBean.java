@@ -8,10 +8,10 @@ import java.util.List;
  */
 
 public  class BatchPicBean implements Serializable {
-    String batchcarType;//证件类型
-    String batchcode;//证件号
-    String batchtimer;//有效期至
-    List<String> imgUrl;//证件地址
+    private String batchcarType;//证件类型
+    private String batchcode;//证件号
+    private String batchtimer;//有效期至
+    private List<String> imgUrl;//证件地址
 
     public String getBatchcarType() {
         return batchcarType;

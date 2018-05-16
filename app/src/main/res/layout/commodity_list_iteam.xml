@@ -96,7 +96,6 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
@@ -128,7 +127,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/commodity_tv_genre"
+                        android:id="@+id/commodity_tv_batch_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"

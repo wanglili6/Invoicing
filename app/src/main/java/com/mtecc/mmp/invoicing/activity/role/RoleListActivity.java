@@ -195,7 +195,7 @@ public class RoleListActivity extends BaseActivity {
                     // 创建“打开”项
                     SwipeMenuItem openItem = new SwipeMenuItem(
                             getApplicationContext());
-                    openItem.setBackground(new ColorDrawable(Color.parseColor("#C8C7CC")));
+                    openItem.setBackground(new ColorDrawable(Color.parseColor("#0099FF")));
                     openItem.setWidth(dp2px(100));
                     openItem.setTitle("编辑");
                     openItem.setTitleSize(16);

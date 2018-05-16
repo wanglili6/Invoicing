@@ -108,12 +108,10 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 requestNetLogin(userName, userPwd);
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
                 break;
             case R.id.tv_register:
 //                startActivity(new Intent(this, RegistrationSMSActivity.class));
-                startActivity(new Intent(this, RegisrationPWDActivity.class));
+                startActivity(new Intent(this, ShortRegistrationInfoActivity.class));
                 break;
         }
     }
@@ -155,6 +153,7 @@ public class LoginActivity extends BaseActivity {
                                 int result = loginUserInfo.getResult();
                                 if (result == 200) {
                                     boolean isuseradmin = loginUserInfo.isIsuseradmin();
+                                    PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isuseradmin, isuseradmin);
                                     if (isuseradmin) {
                                         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, "");
                                         storageMsg(loginUserInfo, userPwd);

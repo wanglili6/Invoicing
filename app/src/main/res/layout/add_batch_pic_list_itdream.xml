@@ -92,16 +92,28 @@
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
-
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:layout_gravity="center"
             android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="证件编号:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="证件编号"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*"
+                android:textColor="@color/text_red"
+                android:textSize="14sp" />
+        </LinearLayout>
+
 
 
         <EditText
@@ -154,7 +166,40 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:text="备注:"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+
+        <EditText
+            android:id="@+id/commodity_dialog_et_remark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/login_btn_bg"
+            android:hint="请输入备注"
+            android:padding="8dp"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_white"
@@ -175,14 +220,64 @@
             android:textColor="@color/text_color"
             android:textSize="14sp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/add_batch_recyclcer_view"
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/add_batch_recyclcer_view"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_weight="1">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/color_white"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:drawablePadding="5dp"
+                android:drawableLeft="@mipmap/jinggao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="确认证件照片上的信息清晰可见"
+                android:textColor="@color/text_money_color"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/img_zhangjian"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_btn_bg"
+                android:padding="5dp"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_select_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/pic_bg"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:text="拍照上传"
+                android:textColor="@color/color_white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <View

@@ -1,5 +1,6 @@
 package com.mtecc.mmp.invoicing.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
@@ -7,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -136,4 +138,61 @@ public class ShowDalogUtils {
         dialog.setCanceledOnTouchOutside(touchout);
         return dialog;
     }
+
+
+//    /**
+//     * @param activity      Activity
+//     * @param attachOnView  显示在这个View的下方
+//     * @param popView       被显示在PopupWindow上的View
+//     * @param popShowHeight 被显示在PopupWindow上的View的高度，可以传默认值defaultBotom
+//     * @param popShowWidth  被显示在PopupWindow上的View的宽度，一般是传attachOnView的getWidth()
+//     * @return PopupWindow
+//     */
+//    public static PopupWindow show(Context context,Activity activity, View attachOnView, View popView, final int popShowHeight, final int popShowWidth) {
+//        if (popView != null && popView.getParent() != null) {
+//            ((ViewGroup) popView.getParent()).removeAllViews();
+//        }
+//
+//        PopupWindow popupWindow = null;
+//        Rect frame = new Rect();
+//        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+//
+//        int location[] = new int[2];
+//        int x, y;
+//        int popHeight = 0, popWidth = 0;
+//
+//        attachOnView.getLocationOnScreen(location);
+//        x = location[0];
+//        y = location[1];
+//
+//        int h = attachOnView.getHeight();
+//        int screenHeight = context.DeviceInfoManager.getInstance().getScreenHeight();
+//
+//        if (popShowHeight == defaultBotom) {
+//            popHeight = screenHeight / 6;
+//            popHeight = Math.abs(screenHeight - (h + y)) - popHeight;
+//        } else if (popHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
+//            popHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+//        } else {
+//            popHeight = popShowHeight;
+//        }
+//
+//        if (popShowWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
+//            popWidth = attachOnView.getWidth();
+//        } else {
+//            popWidth = popShowWidth;
+//        }
+//
+//        popupWindow = new PopupWindow(popView, popWidth, popHeight, true);
+//
+//        //这行代码时用来让PopupWindow点击区域之外消失的，这个应该是PopupWindow的一个bug。
+//        //但是利用这个bug可以做到点击区域外消失
+//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+//
+//        popupWindow.setAnimationStyle(R.style.PopupAnimationDown);
+//        popupWindow.showAtLocation(attachOnView, Gravity.NO_GRAVITY, x, h + y);
+//        popupWindow.update();
+//        return popupWindow;
+//    }
+
 }

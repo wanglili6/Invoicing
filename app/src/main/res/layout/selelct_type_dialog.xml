@@ -6,15 +6,32 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:background="@drawable/yuan_btn_bg"
-        android:gravity="center"
-        android:text="选择"
-        android:textColor="@color/text_gray_color"
-        android:textSize="18sp" />
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:paddingRight="15dp"
+            android:text="选择证件类型"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/img_x_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/x_dialog" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/dialog_tv_yy"
@@ -25,7 +42,8 @@
         android:gravity="center"
         android:text="营业执照"
         android:textColor="@color/text_surplus_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/dialog_tv_xk"
@@ -36,10 +54,21 @@
         android:gravity="center"
         android:text="许可证"
         android:textColor="@color/text_surplus_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <ListView
+
+        android:id="@+id/list_zhengjian_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:divider="@null"
+        android:scrollbars="none">
+
+    </ListView>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/dialog_tv_exit"
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -48,7 +77,8 @@
         android:gravity="center"
         android:text="取消"
         android:textColor="@color/text_surplus_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

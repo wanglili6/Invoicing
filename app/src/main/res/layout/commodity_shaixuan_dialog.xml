@@ -59,7 +59,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn_bg"
-                android:hint="请输入年龄"
+                android:hint="请输入商品名称"
                 android:padding="8dp"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />

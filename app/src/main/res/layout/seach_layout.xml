@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/ll_seach"
+    android:layout_width="match_parent"
     android:layout_height="45dp"
     android:layout_margin="10dp"
+    android:layout_weight="100"
     android:background="@drawable/login_btn_bg"
     android:padding="10dp">
 
@@ -51,7 +52,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:clickable="true"
-                android:hint="请输入查询的企业名称" />
+                android:hint="请输入查询的名称" />
 
             <ImageView
                 android:id="@+id/iv_serch"
