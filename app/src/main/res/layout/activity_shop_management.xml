@@ -120,6 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_shop_status"
                 android:focusableInTouchMode="true"
                 android:focusable="true"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.manager.comodity.SeeBatchMsgActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.comodity.SeeBatchMsgActivity">
 
     <include layout="@layout/base_title" />
 

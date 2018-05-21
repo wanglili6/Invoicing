@@ -4,34 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical"
     tools:context="com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity">
 
     <include layout="@layout/base_title" />
 
-    <LinearLayout
+    <com.flyco.tablayout.SegmentTabLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/income_segment_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        app:tl_bar_color="@color/color_white"
+        app:tl_indicator_color="@color/colorPrimaryDark"
+        app:tl_indicator_corner_radius="0dp"
+        app:tl_tab_padding="20dp"
+        app:tl_tab_space_equal="true"
+        app:tl_textSelectColor="@color/color_white"
+        app:tl_textUnselectColor="@color/colorPrimaryDark"
+        app:tl_textsize="16sp" />
 
-        <include layout="@layout/seach_layout" />
-
-        <ImageView
-            android:id="@+id/img_commodity_list_saoma"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@mipmap/saoma"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
-
+    <android.support.v4.view.ViewPager
+        android:id="@+id/income_switch_over_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-    </LinearLayout>
 </LinearLayout>

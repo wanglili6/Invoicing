@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_color"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,11 +15,11 @@
         android:padding="10dp">
 
         <ImageView
-            android:layout_marginRight="5dp"
             android:id="@+id/commodity_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
             android:background="@mipmap/commodity"
             android:scaleType="centerCrop" />
 
@@ -33,14 +34,37 @@
                 android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/commodity_tv_name"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="商品名称"
-                    android:textColor="@color/text_black_color"
-                    android:textSize="16sp" />
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/commodity_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="商品名称"
+                        android:textColor="@color/text_black_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_img_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/commodty_num"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:scaleType="centerCrop"
+                        android:textColor="@color/color_white"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,11 +159,12 @@
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,10 +185,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -186,15 +211,25 @@
             </LinearLayout>
 
             <TextView
-                android:textSize="14sp"
-                android:text="添加批次"
-                android:textColor="@color/text_money_color"
+
                 android:id="@+id/commodity_list_img_batch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:drawableTop="@mipmap/batch" />
+                android:drawableTop="@mipmap/batch"
+                android:text="添加批次"
+                android:textColor="@color/text_money_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/select_commodity_cbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/select_weixuanze_icon"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>

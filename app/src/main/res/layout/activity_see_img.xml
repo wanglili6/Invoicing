@@ -7,7 +7,7 @@
     android:background="@color/bg_color"
 
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.manager.comodity.SeeImgActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.comodity.SeeImgActivity">
 
     <include layout="@layout/base_title" />
 

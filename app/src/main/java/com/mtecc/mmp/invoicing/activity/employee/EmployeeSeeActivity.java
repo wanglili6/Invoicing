@@ -94,9 +94,9 @@ public class EmployeeSeeActivity extends BaseActivity {
         selectDataBean = (EmployeeListBean.DataBean) parms.getSerializable(InvoicingConstants.selectuserid);
         if (type.equals(InvoicingConstants.companyEmployeeAdd)) {
             seeEdit.setVisibility(View.VISIBLE);
-            seeEdit.setText("删除");
+            seeDelete.setText("删除");
         } else if (type.equals(InvoicingConstants.SHOP_Employee)) {
-            seeEdit.setText("移除");
+            seeDelete.setText("移除");
         }
         employeeSeeName.setText(selectDataBean.getUsername() + "");
         employeeSeeLoginName.setText(selectDataBean.getLogname() + "");

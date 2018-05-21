@@ -71,9 +71,9 @@ public class ShopSwitchListAdapter extends BaseAdapter {
         holder.shopTvCreateMan.setText(dataBean.getCreateman());
         String shopstate = dataBean.getShopstate();
         if (shopstate.equals("0")) {
-            holder.shopTvStatus.setText("正常");
+            holder.shopTvStatus.setText("正常营业");
         } else {
-            holder.shopTvStatus.setText("注销");
+            holder.shopTvStatus.setText("暂停营业");
         }
 
         return convertView;

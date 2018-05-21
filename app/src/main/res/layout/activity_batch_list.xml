@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.manager.comodity.BatchListActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.comodity.BatchListActivity">
 
     <include layout="@layout/base_title" />
 
@@ -39,7 +39,8 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1000">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,5 +59,13 @@
         </RelativeLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/xian_color" />
+
+    <include layout="@layout/shop_car_money_layout" />
 </LinearLayout>
 

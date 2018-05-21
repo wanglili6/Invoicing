@@ -22,6 +22,8 @@ import com.mtecc.mmp.invoicing.activity.MainActivity;
 import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 import com.mtecc.mmp.invoicing.activity.login.adapter.SelectShopAdapter;
 import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
+import com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
@@ -265,9 +267,15 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.home_pudchase:
                 //采购单
+                Intent intent = new Intent(getContext(), AddPurchaseActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "income");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case R.id.home_pudchase_note:
                 //采购订单
+                startActivity(new Intent(getContext(), PurchaseListActivity.class));
                 break;
             case R.id.home_salse_return:
                 //采购退货单

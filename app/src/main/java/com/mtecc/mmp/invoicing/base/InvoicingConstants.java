@@ -170,6 +170,12 @@ public class InvoicingConstants {
     public static final String COMMODITY_ADD = "COMMODITY_ADD";//add--添加
     public static final String COMMODITY_EDIT = "COMMODITY_EDIT";//edit--编辑
 
+    //选择批次
+    public static final String select_Batch = "select_Batch";//edit--编辑
+    public static final String select_Commiodty = "select_Commiodty";//edit--编辑
+    public static final String select_Batch_money = "select_Batch_money";//edit--编辑
+    public static final String select_Batch_num = "select_Batch_num";//edit--编辑
+
 
     // 跳转添加商品界面的type
     public static final String BATCH_TYPE = "BATCH_TYPE";

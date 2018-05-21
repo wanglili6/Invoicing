@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical"
-    tools:context="com.mtecc.mmp.invoicing.activity.manager.comodity.CommodityListActivity">
+    tools:context="com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity">
 
     <include layout="@layout/base_title" />
 
@@ -95,25 +95,32 @@
         android:background="@color/xian_color" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smart_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:id="@+id/smart_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="100">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/commodity_list_recycle_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:scrollbars="none">
+    <ListView
+    android:id="@+id/commodity_list_recycle_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@null"
+    android:scrollbars="none">
 
-            </ListView>
+    </ListView>
 
-            <include layout="@layout/error_layout" />
-        </RelativeLayout>
+    <include layout="@layout/error_layout" />
+    </RelativeLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/xian_color" />
+    <include layout="@layout/shop_car_money_layout" />
 </LinearLayout>

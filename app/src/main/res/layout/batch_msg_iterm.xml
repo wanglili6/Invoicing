@@ -80,6 +80,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_see"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -91,6 +92,54 @@
             android:textColor="@color/colorPrimaryDark"
 
             android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/select_commodity_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/login_btn_bg"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/img_jian_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@mipmap/jian" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/xian_color" />
+
+            <EditText
+                android:id="@+id/et_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:gravity="center"
+                android:inputType="numberSigned"
+                android:minWidth="50dp"
+                android:text="0" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/xian_color" />
+
+            <ImageView
+                android:id="@+id/img_add_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@mipmap/addition" />
+        </LinearLayout>
     </RelativeLayout>
 
 
