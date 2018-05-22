@@ -38,13 +38,13 @@ public class ImgSeeListAdapter extends RecyclerView.Adapter<ImgSeeListAdapter.Sh
     }
 
     @Override
-    public ImgSeeListAdapter.ShopViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ShopViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.img_list_iteam, parent, false);
         return new ShopViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ImgSeeListAdapter.ShopViewHolder holder, final int position) {
+    public void onBindViewHolder(ShopViewHolder holder, final int position) {
         final String imgUrl = mList.get(position);
         holder.imgDel.setVisibility(View.GONE);
         Glide.with(mContext)

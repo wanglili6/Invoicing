@@ -76,6 +76,7 @@ public class SelectCommodityListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.selectCommodityCbox.setVisibility(View.VISIBLE);
+        holder.commodityMoney.setVisibility(View.VISIBLE);
         holder.commodityListImgBatch.setVisibility(View.GONE);
         final CommodityListBean.DataBean dataBean = mList.get(position);
         holder.commodityTvName.setText(dataBean.getProName() + "");
@@ -92,16 +93,19 @@ public class SelectCommodityListAdapter extends BaseAdapter {
         holder.commodityTvNorm.setText(dataBean.getMeas() + " / " + dataBean.getMeaunit());
         holder.commodityTvShelfLife.setText(dataBean.getProbzq() + "");
         holder.commodityTvBatchNum.setText(dataBean.getBatchCount() + "");
-        Map<String, SelectBatchBean> stringDataBeanMap = mList.get(position).getmSelectMap();
+        List<SelectBatchBean> stringDataBeanMap = mList.get(position).getmSelectMap();
         if (stringDataBeanMap != null && stringDataBeanMap.size() != 0) {
             holder.commodityImgNum.setVisibility(View.VISIBLE);
             int num = 0;
-            for (String key : stringDataBeanMap.keySet()) {
-                num = num + stringDataBeanMap.get(key).getNum();
+            int size = stringDataBeanMap.size();
+            for (int i = 0; i < size; i++) {
+                num = num + stringDataBeanMap.get(i).getNum();
             }
             holder.commodityImgNum.setText(num + "");
+            holder.commodityMoney.setText(dataBean.getmSelectMoney() + "");
             holder.selectCommodityCbox.setBackgroundResource(R.mipmap.selext_yixuanze_icon);
         } else {
+            holder.commodityMoney.setText("0.0");
             holder.commodityImgNum.setVisibility(View.GONE);
             holder.selectCommodityCbox.setBackgroundResource(R.mipmap.select_weixuanze_icon);
         }
@@ -130,6 +134,8 @@ public class SelectCommodityListAdapter extends BaseAdapter {
         TextView commodityListImgBatch;
         @BindView(R.id.commodity_img_num)
         TextView commodityImgNum;
+        @BindView(R.id.commodity_money)
+        TextView commodityMoney;
         @BindView(R.id.select_commodity_cbox)
         ImageView selectCommodityCbox;
         @BindView(R.id.commodity_list_ll)

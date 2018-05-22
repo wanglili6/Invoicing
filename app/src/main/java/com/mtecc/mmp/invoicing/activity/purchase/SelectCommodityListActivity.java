@@ -110,6 +110,7 @@ public class SelectCommodityListActivity extends BaseActivity {
     TextView tvSelectNames;
     @BindView(R.id.img_shop_car)
     ImageView imgShopCar;
+
     @BindView(R.id.img_select_num)
     TextView imgSelectNum;
     @BindView(R.id.tv_select_sure)
@@ -172,7 +173,17 @@ public class SelectCommodityListActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(InvoicingConstants.COMMODITY_Id, mList.get(position).getProId() + "");
                 bundle.putString("position", position + "");
-                bundle.putSerializable(InvoicingConstants.select_Batch, (Serializable) mList.get(position).getmSelectMap());
+                List<SelectBatchBean> selectBatchBeen = mList.get(position).getmSelectMap();
+                Map<String, SelectBatchBean> selectMap = new HashMap<String, SelectBatchBean>();
+                if (selectBatchBeen != null) {
+                    int size = selectBatchBeen.size();
+                    for (int i = 0; i < size; i++) {
+                        SelectBatchBean batchBean = selectBatchBeen.get(i);
+                        selectMap.put(batchBean.getPbatchid() + "", batchBean);
+                    }
+                }
+
+                bundle.putSerializable(InvoicingConstants.select_Batch, (Serializable) selectMap);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 2);
             }
@@ -232,7 +243,6 @@ public class SelectCommodityListActivity extends BaseActivity {
     private void mapMlist() {
         for (int i = 0; i < mList.size(); i++) {
             CommodityListBean.DataBean dataBean = mList.get(i);
-            Map<String, SelectBatchBean> stringDataBeanMap = dataBean.getmSelectMap();
             mSelectCommodityMap.put(dataBean.getProId() + "", dataBean);
 
         }
@@ -330,13 +340,13 @@ public class SelectCommodityListActivity extends BaseActivity {
                     double selectmoney = extras.getDouble(InvoicingConstants.select_Batch_money);
                     int selectNum = extras.getInt(InvoicingConstants.select_Batch_num);
                     if (mgetSelectMap != null) {
-                        Map<String, SelectBatchBean> mSelectMap = new HashMap<>();
+                        List<SelectBatchBean> mSelectMap = new ArrayList<>();
                         Iterator<String> iterator = mgetSelectMap.keySet().iterator();
                         while (iterator.hasNext()) {
                             String next = iterator.next();
                             String num1 = mgetSelectMap.get(next).getNum() + "";
                             if (!num1.equals("0")) {
-                                mSelectMap.put(next, mgetSelectMap.get(next));
+                                mSelectMap.add(mgetSelectMap.get(next));
                             }
                         }
                         mList.get(selectposition).setmSelectMap(mSelectMap);

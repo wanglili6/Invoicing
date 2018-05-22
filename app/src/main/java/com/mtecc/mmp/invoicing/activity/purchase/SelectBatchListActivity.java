@@ -216,6 +216,7 @@ public class SelectBatchListActivity extends BaseActivity {
             BatchBean.DataBean value = mList.get(i);
             SelectBatchBean batchBean = new SelectBatchBean();
             batchBean.setNum(value.getNum());
+            batchBean.setBatchnum(value.getBatchnum() + "");
             batchBean.setEnterprice(value.getEnterprice());
             batchBean.setPbatchid(value.getPbatchid());
             mSelectMap.put(mList.get(i).getPbatchid() + "", batchBean);
@@ -500,19 +501,19 @@ public class SelectBatchListActivity extends BaseActivity {
     }
 
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        isPause = true;
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (isPause) {
-//            smartRefreshLayout.autoRefresh();
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isPause) {
+            smartRefreshLayout.autoRefresh();
+        }
+    }
 
 
 }

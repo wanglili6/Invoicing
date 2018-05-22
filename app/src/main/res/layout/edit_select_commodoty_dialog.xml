@@ -13,7 +13,7 @@
         android:layout_height="45dp"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
-        android:text="修改店铺"
+        android:text="修改选择的批次信息"
         android:textColor="@color/color_white"
         android:textSize="16sp">
 
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="店铺名称"
+                    android:text="进货价"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
@@ -61,14 +61,15 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/shop_mange_name"
+                android:id="@+id/commodity_enter_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn_bg"
-                android:hint="请输入店铺名称"
+                android:hint="请输入进货价"
+                android:inputType="numberDecimal"
                 android:padding="8dp"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
@@ -96,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="店铺编码"
+                    android:text="数量"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
@@ -110,127 +111,20 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/shop_mange_code"
+                android:id="@+id/commodity_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_btn_bg"
-                android:hint="请输入店铺编码"
+                android:hint="请输入数量"
+                android:inputType="numberDecimal"
                 android:padding="8dp"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/color_white"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_weight="0.4"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="店铺地址"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="*"
-                    android:textColor="@color/text_red"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/shop_mange_address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/login_btn_bg"
-                android:hint="请输入店铺地址"
-                android:padding="8dp"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_shop_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/color_white"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_weight="0.4"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="店铺状态"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="*"
-                    android:textColor="@color/text_red"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <Switch
-                    android:id="@+id/shop_spinner_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:checked="true"
-                    android:switchMinWidth="60dp"
-                    android:switchPadding="10dp"
-                    android:textOff="开"
-                    android:textOn="关"
-                    android:thumb="@drawable/thumb_selector"
-                    android:track="@drawable/switch_selector"
-                    android:typeface="normal" />
-            </RelativeLayout>
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -254,13 +148,14 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="取消"
-
             android:textSize="14sp" />
 
         <TextView
             android:layout_width="2px"
             android:layout_height="match_parent"
             android:background="@color/xian_color" />
+
+
         <TextView
             android:id="@+id/tv_sure"
             android:layout_width="wrap_content"

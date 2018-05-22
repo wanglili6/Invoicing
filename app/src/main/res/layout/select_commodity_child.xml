@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/batch_ex_ex_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/batch_ex_tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="批次名称"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/batch_ex_tv_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="数量"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/batch_ex_tv_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="进货价:"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/batch_ex_tv_total_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="金额:"
+            android:textColor="@color/text_money_color"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/btach_img_up_down"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:background="@mipmap/shut_down_icon_2x"
+            android:scaleType="centerCrop" />
+
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xian_color" />
+</LinearLayout>

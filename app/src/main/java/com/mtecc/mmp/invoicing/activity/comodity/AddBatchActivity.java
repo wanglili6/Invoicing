@@ -200,52 +200,67 @@ public class AddBatchActivity extends BaseActivity {
             }
         });
 
+
         batchListAdapter.setiAddBatchOnClickListerner(new BatchListAdapter.IAddBatchOnClickListerner() {
             @Override
-            public void onAddBatchClick(List<BatchPicListBean.CardBean> mPicimgList) {
-                name = commodityDialogEtName.getText().toString().trim();
-                pihaoNum = commodityDialogEtNum.getText().toString().trim();
-                lshougj = commodityDialogEtLshoujia.getText().toString().trim();
-                jhuojia = commodityDialogEtJhuojia.getText().toString().trim();
-                pfajia = commodityDialogEtPfjia.getText().toString().trim();
-                if (TextUtils.isEmpty(name)) {
-                    showDialog.dismiss();
-                    showToast("生产日期不能为空");
-                    return;
-                }
-                BatchPicListBean batchPicListBean = new BatchPicListBean();
-                batchPicListBean.setBatchdate(name);
-                batchPicListBean.setBatchnum(pihaoNum);
-                batchPicListBean.setSaleprice(pfajia);
-                batchPicListBean.setSellprice(lshougj);
-                batchPicListBean.setEnterprice(jhuojia);
-                batchPicListBean.setCardBeanlist(mPicimgList);
-                Map<String, String> imgMap = new HashMap<String, String>();
-                int size = mPicimgList.size();
-                for (int i = 0; i < size; i++) {
-                    BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
-                    imgMap.put(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png");
-                }
-                batchPicListBean.setpicmap(imgMap);
-
-//                //从列表添加
-                Gson gson = new Gson();
-                if (batchType.equals(InvoicingConstants.BATCH_ADD)) {
-                    String batchJson = gson.toJson(batchPicListBean);
-                    LogUtils.d("批次管理" + batchJson);
-                    requestNetAddCommodity(batchJson, goodsId, mPicimgList);
-
-                } else if (batchType.equals(InvoicingConstants.BATCH_Edit)) {
-                    batchPicListBean.setPbatchid(Integer.valueOf(pbatchid));
-                    String batchJson = gson.toJson(batchPicListBean);
-                    LogUtils.d("批次管理" + batchJson);
-                    requestNeteditCommodity(batchJson, mPicimgList);
-                }
+            public void onAddBatchClick(final List<BatchPicListBean.CardBean> mPicimgList) {
+                requestCommit(mPicimgList);
 
 
             }
-        });
 
+        });
+        if (mlist == null || mlist.size() == 0) {
+            CommondityTvCommit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestCommit(null);
+                }
+            });
+        }
+    }
+
+    private void requestCommit(List<BatchPicListBean.CardBean> mPicimgList) {
+        name = commodityDialogEtName.getText().toString().trim();
+        pihaoNum = commodityDialogEtNum.getText().toString().trim();
+        lshougj = commodityDialogEtLshoujia.getText().toString().trim();
+        jhuojia = commodityDialogEtJhuojia.getText().toString().trim();
+        pfajia = commodityDialogEtPfjia.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            showDialog.dismiss();
+            showToast("生产日期不能为空");
+            return;
+        }
+        BatchPicListBean batchPicListBean = new BatchPicListBean();
+        batchPicListBean.setBatchdate(name);
+        batchPicListBean.setBatchnum(pihaoNum);
+        batchPicListBean.setSaleprice(pfajia);
+        batchPicListBean.setSellprice(lshougj);
+        batchPicListBean.setEnterprice(jhuojia);
+        batchPicListBean.setCardBeanlist(mPicimgList);
+        Map<String, String> imgMap = new HashMap<String, String>();
+        if (mPicimgList != null) {
+            int size = mPicimgList.size();
+            for (int i = 0; i < size; i++) {
+                BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
+                imgMap.put(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png");
+            }
+            batchPicListBean.setpicmap(imgMap);
+        }
+
+//                //从列表添加
+        Gson gson = new Gson();
+        if (batchType.equals(InvoicingConstants.BATCH_ADD)) {
+            String batchJson = gson.toJson(batchPicListBean);
+            LogUtils.d("批次管理" + batchJson);
+            requestNetAddCommodity(batchJson, goodsId, mPicimgList);
+
+        } else if (batchType.equals(InvoicingConstants.BATCH_Edit)) {
+            batchPicListBean.setPbatchid(Integer.valueOf(pbatchid));
+            String batchJson = gson.toJson(batchPicListBean);
+            LogUtils.d("批次管理" + batchJson);
+            requestNeteditCommodity(batchJson, mPicimgList);
+        }
     }
 
 
@@ -511,16 +526,18 @@ public class AddBatchActivity extends BaseActivity {
 
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + batchBean);
-        for (int i = 0; i < mPicimgList.size(); i++) {
-            BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
-            String imgUrl = cardBean.getImgUrl();
-            if (!TextUtils.isEmpty(imgUrl)) {
-                String substring = imgUrl.substring(0, 4);
-                if (!substring.equals("http")) {
-                    post.addFile(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png", new File(cardBean.getImgUrl()));
+        if (mPicimgList != null) {
+            for (int i = 0; i < mPicimgList.size(); i++) {
+                BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
+                String imgUrl = cardBean.getImgUrl();
+                if (!TextUtils.isEmpty(imgUrl)) {
+                    String substring = imgUrl.substring(0, 4);
+                    if (!substring.equals("http")) {
+                        post.addFile(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png", new File(cardBean.getImgUrl()));
+                    }
                 }
-            }
 
+            }
         }
         post.addParams("batchBean", batchBean);
         post.tag(this)

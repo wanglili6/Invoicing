@@ -219,10 +219,6 @@ public class BatchListAdapter extends BaseAdapter {
         commondityTvCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mList.get(position).getCardnum())) {
-                    Toast.makeText(mContext, "证件编号不能为空!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (iAddBatchOnClickListerner != null) {
                     iAddBatchOnClickListerner.onAddBatchClick(mList);
                 }

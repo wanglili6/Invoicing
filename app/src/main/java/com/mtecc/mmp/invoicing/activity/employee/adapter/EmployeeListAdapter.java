@@ -36,13 +36,13 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
     }
 
     @Override
-    public EmployeeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.employee_list_iteam, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(EmployeeListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final EmployeeListBean.DataBean dataBean = mList.get(position);
         holder.employeeTvName.setText(dataBean.getUsername());
         holder.employeeTvCode.setText(dataBean.getCardnum());

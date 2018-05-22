@@ -3,8 +3,10 @@
     <color name="colorPrimary">#9cdab1</color>
     <color name="colorPrimaryDark">#64b37e</color>
     <color name="colorAccent">#458B7D</color>
+    <color name="color_green">#009688</color>
 
     <color name="bg_color">#f1f4fb</color>
+    <color name="bg_green_color">#EDF8F7</color>
     <color name="color_white">#ffffff</color>
     <color name="color_huise">#F0EFF5</color>
     <color name="color_gray">#D0D0D0</color>
@@ -17,6 +19,6 @@
     <color name="text_hint_red">#88cc0000</color>
     <color name="text_money_color">#FE4401</color>
     <color name="text_surplus_color">#3485E4</color>
-    <color name="xian_color">#d7d7d7</color>
+    <color name="xian_color">#e6e4e4</color>
     <color name="salse_red_color">#CD5E5E</color>
 </resources>

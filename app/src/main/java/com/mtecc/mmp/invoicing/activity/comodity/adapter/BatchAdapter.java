@@ -1,6 +1,7 @@
 package com.mtecc.mmp.invoicing.activity.comodity.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,19 @@ public class BatchAdapter extends BaseAdapter {
         BatchBean.DataBean dataBean = batchBeenList.get(position);
         holder.batchMsgTvName.setText(dataBean.getBatchnum());
         holder.batchMsgTvtimer.setText(dataBean.getBatchdateStr());
-        holder.batchMsgTvjiage.setText("进货价: " + dataBean.getEnterprice() + "\r\n" + "批发价价: " + dataBean.getSaleprice() + "\r\n" + "零售价: " + dataBean.getSellprice());
+        String enterprice = dataBean.getEnterprice();
+        String saleprice = dataBean.getSaleprice();
+        String sellprice = dataBean.getSellprice();
+        if (TextUtils.isEmpty(enterprice)) {
+            enterprice = "0.0";
+        }
+        if (TextUtils.isEmpty(saleprice)) {
+            saleprice = "0.0";
+        }
+        if (TextUtils.isEmpty(sellprice)) {
+            sellprice = "0.0";
+        }
+        holder.batchMsgTvjiage.setText("进货价: " + enterprice + "\r\n" + "批发价价: " + saleprice + "\r\n" + "零售价: " + sellprice);
         return convertView;
     }
 

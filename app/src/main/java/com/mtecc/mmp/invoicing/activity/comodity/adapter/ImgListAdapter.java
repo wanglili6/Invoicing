@@ -35,13 +35,13 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ShopView
     }
 
     @Override
-    public ImgListAdapter.ShopViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ShopViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.img_list_iteam, parent, false);
         return new ShopViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ImgListAdapter.ShopViewHolder holder, final int position) {
+    public void onBindViewHolder(ShopViewHolder holder, final int position) {
         final String imgUrl = mList.get(position);
 
         if (type.equals("see")) {

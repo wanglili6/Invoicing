@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/bg_color"
-    android:descendantFocusability="blocksDescendants"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/commodity_list_ll"
+        android:id="@+id/commodity_ex_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_white"
@@ -16,8 +14,8 @@
 
         <ImageView
             android:id="@+id/commodity_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
             android:background="@mipmap/commodity"
@@ -25,7 +23,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="100">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,7 +73,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
+                        android:padding="5dp"
                         android:text="编码:"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
@@ -98,7 +97,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
+                        android:padding="5dp"
                         android:text="规格/单位:"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
@@ -113,6 +112,27 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="总数量:"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_tv_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@color/text_hint_red"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,131 +142,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="保质期:"
+                        android:padding="5dp"
+                        android:text="总金额:"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/commodity_tv_shelf_life"
+                        android:id="@+id/commodity_tv_total_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="123"
-                        android:textColor="@color/text_gray_color"
-                        android:textSize="14sp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:drawableLeft="@mipmap/money_icon"
+                        android:drawablePadding="5dp"
+                        android:text="0.0"
+                        android:textColor="@color/text_money_color"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="批次数量:"
-                        android:textColor="@color/text_gray_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/commodity_tv_batch_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="123"
-                        android:textColor="@color/text_gray_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="类别:"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/commodity_tv_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="123"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="价格:"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/commodity_tv_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="注销"
-                        android:textColor="@color/text_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
 
-                android:id="@+id/commodity_list_img_batch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:drawableTop="@mipmap/batch"
-                android:text="添加批次"
-                android:textColor="@color/text_money_color"
-                android:textSize="14sp"
-                 />
-
-            <TextView
-                android:id="@+id/commodity_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
-                android:drawableLeft="@mipmap/money_icon"
-                android:layout_toLeftOf="@+id/select_commodity_cbox"
-                android:drawablePadding="5dp"
-                android:text="0.0"
-                android:textColor="@color/text_money_color"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/select_commodity_cbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@mipmap/select_weixuanze_icon"
-                android:visibility="gone" />
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/commodity_img_up_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@mipmap/x_icon"
+            android:scaleType="centerCrop" />
     </LinearLayout>
 
     <View

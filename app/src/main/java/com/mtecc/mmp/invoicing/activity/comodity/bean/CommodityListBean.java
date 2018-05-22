@@ -60,7 +60,7 @@ public class CommodityListBean implements Serializable {
         private Object updatedate;
         private String meaunit;
         private String batchCount;
-        private Map<String, SelectBatchBean> mSelectMap;
+        private List<SelectBatchBean> mSelectMap;
         private double mSelectMoney;
         private int mSelectNum;
 
@@ -80,11 +80,11 @@ public class CommodityListBean implements Serializable {
             this.mSelectMoney = mSelectMoney;
         }
 
-        public Map<String, SelectBatchBean> getmSelectMap() {
+        public List<SelectBatchBean> getmSelectMap() {
             return mSelectMap;
         }
 
-        public void setmSelectMap(Map<String, SelectBatchBean> mSelectMap) {
+        public void setmSelectMap(List<SelectBatchBean> mSelectMap) {
             this.mSelectMap = mSelectMap;
         }
 

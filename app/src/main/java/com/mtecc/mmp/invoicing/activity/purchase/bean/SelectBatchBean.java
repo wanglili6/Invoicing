@@ -9,7 +9,16 @@ import java.io.Serializable;
 public class SelectBatchBean implements Serializable {
     private int pbatchid;
     private String enterprice;
+    private String batchnum;
     private int num;
+
+    public String getBatchnum() {
+        return batchnum;
+    }
+
+    public void setBatchnum(String batchnum) {
+        this.batchnum = batchnum;
+    }
 
     public int getPbatchid() {
         return pbatchid;

@@ -163,6 +163,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/login_btn_bg"
                     android:hint="请输入零售价"
+                    android:inputType="numberDecimal"
                     android:padding="8dp"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
@@ -199,6 +200,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/login_btn_bg"
                     android:hint="请输入进货价"
+                    android:inputType="numberDecimal"
                     android:padding="8dp"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
@@ -235,6 +237,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/login_btn_bg"
                     android:hint="请输入批发价"
+                    android:inputType="numberDecimal"
                     android:padding="8dp"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
