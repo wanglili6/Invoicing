@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.purchase.adapter;
+package com.mtecc.mmp.invoicing.activity.sales.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.purchase.bean.PurchaseListBean;
-import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 
 import java.util.List;
 
@@ -22,12 +21,12 @@ import butterknife.ButterKnife;
  * Created by wll on 2018/4/18.
  */
 
-public class PurchaseSwitchListAdapter extends BaseAdapter {
+public class SalesSwitchListAdapter extends BaseAdapter {
     private Context mContext;
     private List<PurchaseListBean> mList;
     private String type;
 
-    public PurchaseSwitchListAdapter(Context mContext, List<PurchaseListBean> mList, String type) {
+    public SalesSwitchListAdapter(Context mContext, List<PurchaseListBean> mList, String type) {
         this.mContext = mContext;
         this.mList = mList;
         this.type = type;
@@ -64,12 +63,12 @@ public class PurchaseSwitchListAdapter extends BaseAdapter {
         holder.purchaseTvMoney.setText(purchaseListBean.getMoney() + "");
         holder.purchaseTvCode.setText(purchaseListBean.getCode());
         holder.purchaseTvTimer.setText(purchaseListBean.getTimer());
-        String state = purchaseListBean.getState();
         if (type.equals("0")) {
-            holder.purchaseImg.setBackgroundResource(R.mipmap.up_jin_icon);
+            holder.purchaseImg.setBackgroundResource(R.mipmap.out_xiao_icon);
         } else if (type.equals("1")) {
             holder.purchaseImg.setBackgroundResource(R.mipmap.tui_icon);
         }
+        String state = purchaseListBean.getState();
         if (state.equals("0")) {
             holder.imgCheck.setBackgroundResource(R.mipmap.dai_shenhe_icon);
             holder.tvCheck.setText("审核中...");
@@ -84,7 +83,6 @@ public class PurchaseSwitchListAdapter extends BaseAdapter {
             holder.tvCheck.setText("审核通过");
             holder.tvCheck.setTextColor(mContext.getResources().getColor(R.color.check_green_color));
         }
-
         return convertView;
     }
 
@@ -93,10 +91,6 @@ public class PurchaseSwitchListAdapter extends BaseAdapter {
         ImageView purchaseImg;
         @BindView(R.id.purchase_tv_name)
         TextView purchaseTvName;
-        @BindView(R.id.img_check)
-        ImageView imgCheck;
-        @BindView(R.id.tv_check)
-        TextView tvCheck;
         @BindView(R.id.purchase_tv_money)
         TextView purchaseTvMoney;
         @BindView(R.id.purchase_tv_code)
@@ -107,7 +101,10 @@ public class PurchaseSwitchListAdapter extends BaseAdapter {
         LinearLayout imgPurchase;
         @BindView(R.id.purchase_list_ll)
         LinearLayout purchaseListLl;
-
+        @BindView(R.id.img_check)
+        ImageView imgCheck;
+        @BindView(R.id.tv_check)
+        TextView tvCheck;
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

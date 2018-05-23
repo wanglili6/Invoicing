@@ -57,14 +57,14 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/add_purchase_code"
+                    android:id="@+id/add_sales_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/login_btn_bg"
-                    android:hint="请输入进货单编号"
+                    android:hint="请输入销售单编号"
                     android:padding="8dp"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
@@ -89,10 +89,11 @@
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tv_see_purchases_sales"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="进货商"
+                        android:text="分销商"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
@@ -113,7 +114,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/add_purchase_merchants"
+                        android:id="@+id/add_sales_merchants"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -175,7 +176,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/add_purchase_shop"
+                    android:id="@+id/add_sales_shop"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -225,7 +226,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/add_purchase_user"
+                    android:id="@+id/add_sales_user"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -250,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:drawableLeft="@mipmap/select_goos_purchase"
+                    android:drawableLeft="@mipmap/select_sales_commodity_icon"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:text="选择商品"
@@ -287,8 +288,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="1dp"
+        android:layout_marginTop="5dp"
         android:background="@color/color_white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -298,7 +299,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/add_purchase_commit"
+            android:layout_toLeftOf="@+id/add_sales_commit"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="15dp">
@@ -336,11 +337,11 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/add_purchase_commit"
+            android:layout_toLeftOf="@+id/add_sales_commit"
             android:background="@color/xian_color" />
 
         <TextView
-            android:id="@+id/add_purchase_commit"
+            android:id="@+id/add_sales_commit"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

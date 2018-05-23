@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.purchase;
+package com.mtecc.mmp.invoicing.activity.sales;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,11 +23,11 @@ import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicListBean;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityListBean;
 import com.mtecc.mmp.invoicing.activity.distributor.DistributorLIstActivity;
 import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
-import com.mtecc.mmp.invoicing.activity.purchase.adapter.SelectCommpdityExAdapter;
-import com.mtecc.mmp.invoicing.activity.purchase.adapter.SelectEmployeeAdapter;
-import com.mtecc.mmp.invoicing.activity.purchase.adapter.SelectPurchaseShopAdapter;
-import com.mtecc.mmp.invoicing.activity.purchase.bean.PurchaseCommitBean;
 import com.mtecc.mmp.invoicing.activity.purchase.bean.SelectBatchBean;
+import com.mtecc.mmp.invoicing.activity.sales.adapter.SelectCommpdityExAdapter;
+import com.mtecc.mmp.invoicing.activity.sales.adapter.SelectEmployeeAdapter;
+import com.mtecc.mmp.invoicing.activity.sales.adapter.SelectSalesShopAdapter;
+import com.mtecc.mmp.invoicing.activity.sales.bean.SalesCommitBean;
 import com.mtecc.mmp.invoicing.activity.sales.bean.SelectCommodityBean;
 import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
@@ -57,7 +57,7 @@ import okhttp3.Call;
 /**
  * 采购订单
  */
-public class AddPurchaseActivity extends BaseActivity {
+public class AddSalesActivity extends BaseActivity {
 
 
     @BindView(R.id.iv_back)
@@ -84,31 +84,33 @@ public class AddPurchaseActivity extends BaseActivity {
     LinearLayout llRight;
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
-    @BindView(R.id.add_purchase_code)
-    EditText addPurchaseCode;
-    @BindView(R.id.add_purchase_merchants)
-    EditText addPurchaseMerchants;
-    @BindView(R.id.add_purchase_shop)
-    EditText addPurchaseShop;
-    @BindView(R.id.add_purchase_user)
-    EditText addPurchaseUser;
+    @BindView(R.id.add_sales_code)
+    EditText addSalesCode;
+    @BindView(R.id.add_sales_merchants)
+    EditText addSalesMerchants;
+    @BindView(R.id.add_sales_shop)
+    EditText addSalesShop;
+    @BindView(R.id.add_sales_user)
+    EditText addSalesUser;
     @BindView(R.id.add_batch_list_view)
     NoScrollExpandaleListView addBatchListView;
-    @BindView(R.id.add_purchase_commit)
-    TextView addPurchaseCommit;
+    @BindView(R.id.add_sales_commit)
+    TextView addSalesCommit;
     @BindView(R.id.tv_batch_num)
     TextView tvBatchNum;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
+    @BindView(R.id.tv_see_purchases_sales)
+    TextView tvSeePurchasesSales;
     @BindView(R.id.tv_see_code)
     TextView tvSeeCode;
-    String purchaseCode = "";//订单号
-    String purchaseShopId = "";//店铺id
-    String purchaseShopName = "";//店铺id
-    String purchaseUserId = "";//审核人
-    String purchaseUserName = "";//审核人
-    String purchaseMerchantId = "";//供货商
-    String purchaseMerchantName = "";//供货商名字
+    String salesCode = "";//订单号
+    String salesShopId = "";//店铺id
+    String salesShopName = "";//店铺id
+    String salesUserId = "";//审核人
+    String salesUserName = "";//审核人
+    String salesMerchantId = "";//供货商
+    String salesMerchantName = "";//供货商名字
     private int cid = 0;
     private String user_id;
     private Map<String, CommodityListBean.DataBean> mSelectCommodityMap = new HashMap<>();
@@ -126,8 +128,8 @@ public class AddPurchaseActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
-        View view1 = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.send_customize);
-        showDialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, view1);
+        View view1 = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.send_customize);
+        showDialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, view1);
         showDialog.dismiss();
         cid = PreferencesUtils.getInt(this, InvoicingConstants.QY_ID, 0);
         user_id = PreferencesUtils.getString(this, InvoicingConstants.USER_ID, "");
@@ -138,14 +140,14 @@ public class AddPurchaseActivity extends BaseActivity {
         long timeMillis = System.currentTimeMillis();
         if (type.equals("income")) {
             tvTitle.setText("采购订单");
-            tvSeeCode.setText("进货单编号");
-            addPurchaseCode.setText("CGJH" + cid + timeMillis);
-            purchaseCode = addPurchaseCode.getText().toString().trim();
-        } else {
+            tvSeeCode.setText("销货单编号");
+            addSalesCode.setText("XSJH" + cid + timeMillis);
+            salesCode = addSalesCode.getText().toString().trim();
+        } else if (type.equals("out")){
+            tvSeeCode.setText("销售退货单编号");
             tvTitle.setText("退货订单");
-            tvSeeCode.setText("采购退货单编号");
-            addPurchaseCode.setText("CGTH" + cid + timeMillis);
-            purchaseCode = addPurchaseCode.getText().toString().trim();
+            addSalesCode.setText("XSTH" + cid + timeMillis);
+            salesCode = addSalesCode.getText().toString().trim();
         }
         //时间戳
 
@@ -158,8 +160,8 @@ public class AddPurchaseActivity extends BaseActivity {
         selectCommpdityExAdapter.setOndelListerner(new SelectCommpdityExAdapter.OnDelListerner() {
             @Override
             public void onDelClick(int groupPostion) {
-                View exitView = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.exit_dialog);
-                AlertDialog dialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, exitView);
+                View exitView = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, exitView);
                 delClick(exitView, dialog, groupPostion);
             }
         });
@@ -168,16 +170,16 @@ public class AddPurchaseActivity extends BaseActivity {
         selectCommpdityExAdapter.setOnEditBtachLIsterner(new SelectCommpdityExAdapter.OnEditBtachListerner() {
             @Override
             public void onEditClick(int groupPostion, int childPostion) {
-                View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.edit_select_commodoty_dialog);
-                AlertDialog alertDialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, customizeDialog);
+                View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.edit_select_commodoty_dialog);
+                AlertDialog alertDialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, customizeDialog);
                 editClick(customizeDialog, alertDialog, groupPostion, childPostion);
             }
         }); //编辑批次--进货价--数量
         selectCommpdityExAdapter.setOnDelBtachLIsterner(new SelectCommpdityExAdapter.OnDelBtachListerner() {
             @Override
             public void onDelBtachClick(int groupPostion, int childPostion) {
-                View exitView = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.exit_dialog);
-                AlertDialog dialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, exitView);
+                View exitView = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, exitView);
                 delBtachClick(exitView, dialog, groupPostion, childPostion);
             }
         });
@@ -190,7 +192,7 @@ public class AddPurchaseActivity extends BaseActivity {
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_add_purchase;
+        return R.layout.activity_add_sales;
     }
 
     @Override
@@ -209,27 +211,27 @@ public class AddPurchaseActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_back, R.id.add_purchase_commit, R.id.add_purchase_shop, R.id.add_purchase_user, R.id.tv_select_user, R.id.commodity_add_iteam})
+    @OnClick({R.id.rl_back, R.id.add_sales_commit, R.id.add_sales_shop, R.id.add_sales_user, R.id.tv_select_user, R.id.commodity_add_iteam})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
-            case R.id.add_purchase_shop:
+            case R.id.add_sales_shop:
                 //选择店铺
                 requestNetShopList();
                 break;
-            case R.id.add_purchase_user:
+            case R.id.add_sales_user:
                 //审核人
                 requestNetEmployeeList();
                 break;
             case R.id.tv_select_user:
-                //供货商
+                //分销商
                 Intent supplierintent = new Intent();
                 Bundle distributorbundle = new Bundle();
-                distributorbundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Merchants_TYPE);
-                distributorbundle.putString(InvoicingConstants.Merchants_TYPE, InvoicingConstants.Merchants_Select);
-                supplierintent.setClass(AddPurchaseActivity.this, DistributorLIstActivity.class);
+                distributorbundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Distributor_TYPE);
+                distributorbundle.putString(InvoicingConstants.Distributor_TYPE, InvoicingConstants.Distributor_Select);
+                supplierintent.setClass(AddSalesActivity.this, DistributorLIstActivity.class);
                 supplierintent.putExtras(distributorbundle);
                 startActivityForResult(supplierintent, 3);
                 break;
@@ -237,15 +239,15 @@ public class AddPurchaseActivity extends BaseActivity {
                 //选择商品
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                intent.setClass(AddPurchaseActivity.this, SelectCommodityListActivity.class);
+                intent.setClass(AddSalesActivity.this, SelectSalesCommodityListActivity.class);
                 bundle.putSerializable(InvoicingConstants.select_Commiodty, (Serializable) mSelectCommodityMap);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 1);
                 break;
-            case R.id.add_purchase_commit:
+            case R.id.add_sales_commit:
                 //提交采购单
                 showDialog.show();
-                commitPurchase();
+                commitSales();
                 break;
         }
     }
@@ -253,39 +255,39 @@ public class AddPurchaseActivity extends BaseActivity {
     /**
      * 提交采购单
      */
-    private void commitPurchase() {
-        purchaseCode = addPurchaseCode.getText().toString().trim();
-        purchaseMerchantName = addPurchaseMerchants.getText().toString().trim();
-        purchaseShopName = addPurchaseShop.getText().toString().trim();
-        purchaseUserName = addPurchaseUser.getText().toString().trim();
-        if (TextUtils.isEmpty(purchaseCode)) {
+    private void commitSales() {
+        salesCode = addSalesCode.getText().toString().trim();
+        salesMerchantName = addSalesMerchants.getText().toString().trim();
+        salesShopName = addSalesShop.getText().toString().trim();
+        salesUserName = addSalesUser.getText().toString().trim();
+        if (TextUtils.isEmpty(salesCode)) {
             showToast("进货单编号不能为空!");
             showDialog.dismiss();
             return;
         }
-        if (TextUtils.isEmpty(purchaseMerchantName)) {
+        if (TextUtils.isEmpty(salesMerchantName)) {
             showToast("进货商不能为空!");
             showDialog.dismiss();
             return;
         }
-        if (TextUtils.isEmpty(purchaseShopName)) {
+        if (TextUtils.isEmpty(salesShopName)) {
             showToast("店铺不能为空!");
             showDialog.dismiss();
             return;
         }
-        if (TextUtils.isEmpty(purchaseUserName)) {
+        if (TextUtils.isEmpty(salesUserName)) {
             showToast("审核人不能为空!");
             showDialog.dismiss();
             return;
         }
-        PurchaseCommitBean purchaseCommitBean = new PurchaseCommitBean();
-        purchaseCommitBean.setPurchaseCode(purchaseCode);
-        purchaseCommitBean.setPurchaseMerchantId(purchaseMerchantId);
-        purchaseCommitBean.setPurchaseMerchantName(purchaseMerchantName);
-        purchaseCommitBean.setPurchaseShopId(purchaseShopId);
-        purchaseCommitBean.setPurchaseShopName(purchaseShopName);
-        purchaseCommitBean.setPurchaseUserId(purchaseUserId);
-        purchaseCommitBean.setPurchaseUserName(purchaseUserName);
+        SalesCommitBean salesCommitBean = new SalesCommitBean();
+        salesCommitBean.setSalesCode(salesCode);
+        salesCommitBean.setSalesMerchantId(salesMerchantId);
+        salesCommitBean.setSalesMerchantName(salesMerchantName);
+        salesCommitBean.setSalesShopId(salesShopId);
+        salesCommitBean.setSalesShopName(salesShopName);
+        salesCommitBean.setSalesUserId(salesUserId);
+        salesCommitBean.setSalesUserName(salesUserName);
         if (mSelectCommodityMap.size() == 0) {
             showToast("选择的商品不能为空!");
             showDialog.dismiss();
@@ -309,10 +311,10 @@ public class AddPurchaseActivity extends BaseActivity {
                 }
                 mSelectCommodityList.add(selectCommodityBean);
             }
-            purchaseCommitBean.setmSelectCommodityMap(mSelectCommodityList);
+            salesCommitBean.setmSelectCommodityMap(mSelectCommodityList);
         }
         Gson gson = new Gson();
-        String commitJson = gson.toJson(purchaseCommitBean);
+        String commitJson = gson.toJson(salesCommitBean);
         LogUtils.i("提交采购单===" + commitJson);
     }
 
@@ -346,9 +348,9 @@ public class AddPurchaseActivity extends BaseActivity {
             case 3:
                 if (data != null) {
                     Bundle extras = data.getExtras();
-                    purchaseMerchantName = extras.getString(InvoicingConstants.Merchants_Name);
-                    purchaseMerchantId = extras.getString(InvoicingConstants.Merchants_ID);
-                    addPurchaseMerchants.setText(purchaseMerchantName + "");
+                    salesMerchantName = extras.getString(InvoicingConstants.Distributor_Name);
+                    salesMerchantId = extras.getString(InvoicingConstants.Distributor_ID);
+                    addSalesMerchants.setText(salesMerchantName + "");
                 }
 
                 break;
@@ -504,31 +506,31 @@ public class AddPurchaseActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         try {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
                         }
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-                            LogUtils.d("返回值信息AddPurchaseActivity" + response.toString());
+                            LogUtils.d("返回值信息AddSalesActivity" + response.toString());
                             Gson gson = new Gson();
                             ShopListBean shopSelectBean = gson.fromJson(response, ShopListBean.class);
                             if (shopSelectBean != null) {
                                 List<ShopListBean.DataBean> shoplist = shopSelectBean.getData();
                                 if (shoplist != null) {
-                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.add_selectshop_dialog);
-                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, customizeDialog);
+                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.add_selectshop_dialog);
+                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, customizeDialog);
                                     SelectShopClick(customizeDialog, alertDialog, shoplist);
                                 }
                             }
 
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -550,34 +552,34 @@ public class AddPurchaseActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         try {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
                         }
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-                            LogUtils.d("返回值信息AddPurchaseActivity" + response.toString());
+                            LogUtils.d("返回值信息AddSalesActivity" + response.toString());
                             Gson gson = new Gson();
                             EmployeeListBean employeeListBean = gson.fromJson(response, EmployeeListBean.class);
                             if (employeeListBean != null) {
                                 List<EmployeeListBean.DataBean> dataList = employeeListBean.getData();
                                 if (dataList != null) {
-                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddPurchaseActivity.this, R.layout.add_selectshop_dialog);
-                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(AddPurchaseActivity.this, false, customizeDialog);
+                                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(AddSalesActivity.this, R.layout.add_selectshop_dialog);
+                                    AlertDialog alertDialog = ShowDalogUtils.showDialog(AddSalesActivity.this, false, customizeDialog);
                                     SelectEmployeeClick(customizeDialog, alertDialog, dataList);
                                 }
                             } else {
-                                Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                             }
 
 
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -603,17 +605,17 @@ public class AddPurchaseActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         try {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
                         }
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         try {
-                            LogUtils.d("返回值信息AddPurchaseActivity" + response.toString());
+                            LogUtils.d("返回值信息AddSalesActivity" + response.toString());
                             JSONObject jsonObject = new JSONObject(response);
                             int result = jsonObject.optInt("result");
                             if (result != 0) {
@@ -625,11 +627,11 @@ public class AddPurchaseActivity extends BaseActivity {
                                     showToast("修改批次失败!");
                                 }
                             } else {
-                                Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e1) {
-                            LogUtils.d("错误信息AddPurchaseActivity" + e1.toString());
-                            Toast.makeText(AddPurchaseActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            LogUtils.d("错误信息AddSalesActivity" + e1.toString());
+                            Toast.makeText(AddSalesActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -745,16 +747,16 @@ public class AddPurchaseActivity extends BaseActivity {
         ImageView imgxDialog = customizeDialog.findViewById(R.id.img_x_dialog);
         TextView tvselct = customizeDialog.findViewById(R.id.tv_select);
         tvselct.setText("选择审核人");
-        SelectEmployeeAdapter selectShopList = new SelectEmployeeAdapter(AddPurchaseActivity.this, datalist, alertDialog);
+        SelectEmployeeAdapter selectShopList = new SelectEmployeeAdapter(AddSalesActivity.this, datalist, alertDialog);
         selectList.setAdapter(selectShopList);
         selectShopList.notifyDataSetChanged();
         selectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 alertDialog.dismiss();
-                purchaseUserId = datalist.get(position).getUserid() + "";
-                purchaseUserName = datalist.get(position).getUsername() + "";
-                addPurchaseUser.setText(purchaseUserName + "");
+                salesUserId = datalist.get(position).getUserid() + "";
+                salesUserName = datalist.get(position).getUsername() + "";
+                addSalesUser.setText(salesUserName + "");
             }
         });
 
@@ -778,16 +780,16 @@ public class AddPurchaseActivity extends BaseActivity {
         ImageView imgxDialog = customizeDialog.findViewById(R.id.img_x_dialog);
         TextView tvselct = customizeDialog.findViewById(R.id.tv_select);
         tvselct.setText("选择店铺");
-        SelectPurchaseShopAdapter selectShopList = new SelectPurchaseShopAdapter(AddPurchaseActivity.this, shoplist, alertDialog);
+        SelectSalesShopAdapter selectShopList = new SelectSalesShopAdapter(AddSalesActivity.this, shoplist, alertDialog);
         selectList.setAdapter(selectShopList);
         selectShopList.notifyDataSetChanged();
         selectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 alertDialog.dismiss();
-                purchaseShopId = shoplist.get(position).getShopid() + "";
-                purchaseShopName = shoplist.get(position).getShopname() + "";
-                addPurchaseShop.setText(purchaseShopName + "");
+                salesShopId = shoplist.get(position).getShopid() + "";
+                salesShopName = shoplist.get(position).getShopname() + "";
+                addSalesShop.setText(salesShopName + "");
             }
         });
 

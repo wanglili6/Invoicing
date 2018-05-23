@@ -1,9 +1,5 @@
 package com.mtecc.mmp.invoicing.activity.purchase.bean;
 
-import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
-
-import java.util.List;
-
 /**
  * Created by wll on 2018/5/16.
  */
@@ -15,6 +11,15 @@ public class PurchaseListBean {
     private String code;
     private String timer;
     private String money;
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getType() {
         return type;

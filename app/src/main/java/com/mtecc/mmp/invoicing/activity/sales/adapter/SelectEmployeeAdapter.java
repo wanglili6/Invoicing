@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.login.adapter;
+package com.mtecc.mmp.invoicing.activity.sales.adapter;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
 
 import java.util.List;
 
@@ -22,19 +22,12 @@ import butterknife.ButterKnife;
  * 选择商铺的适配器
  */
 
-public class SelectShopAdapter extends BaseAdapter {
+public class SelectEmployeeAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ShopSelectBean.ShoplistBean> batchBeenList;
+    private List<EmployeeListBean.DataBean> batchBeenList;
     private AlertDialog alertDialog;
-    private boolean isuseradmin;
 
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog, boolean isuseradmin) {
-        this.mContext = mContext;
-        this.batchBeenList = batchBeenList;
-        this.alertDialog = alertDialog;
-        this.isuseradmin = isuseradmin;
-    }
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog) {
+    public SelectEmployeeAdapter(Context mContext,List<EmployeeListBean.DataBean> batchBeenList, AlertDialog alertDialog) {
         this.mContext = mContext;
         this.batchBeenList = batchBeenList;
         this.alertDialog = alertDialog;
@@ -67,9 +60,11 @@ public class SelectShopAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final ShopSelectBean.ShoplistBean shoplistBean = batchBeenList.get(position);
+        EmployeeListBean.DataBean dataBean = batchBeenList.get(position);
 
-        holder.shopTvName.setText(shoplistBean.getShopname());
+        holder.employeeImg.setBackgroundResource(R.mipmap.person);
+        holder.shopTvName.setTextSize(14);
+        holder.shopTvName.setText(dataBean.getUsername()+"");
 
         return convertView;
     }

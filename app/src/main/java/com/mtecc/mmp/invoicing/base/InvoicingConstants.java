@@ -196,16 +196,29 @@ public class InvoicingConstants {
     public static final String Distributor_mertype = "1";//分销商的id
     public static final String Distributor_TYPE = "Distributor_TYPE";//类型
     public static final String Distributor_ADD = "Distributor_ADD";//添加
-
-
+    public static final String Distributor_Select = "Distributor_Select";//选择
+    public static final String  Distributor_Name= "Distributor_Name";//选择
     public static final String Distributor_EDIT = "Distributor_EDIT";//编辑
+
+    //进货商
+
     public static final String Merchants_ID = "Merchants_ID";//分销商的id
     public static final String Merchants_TYPE = "Merchants_TYPE";//类型
     public static final String Merchants_ADD = "Merchants_ADD";//添加
     public static final String Merchants_EDIT = "Merchants_EDIT";//编辑
-
-    //进货商
+    public static final String Merchants_Select = "Merchants_Select";//编辑
+    public static final String Merchants_Name = "Merchants_Name";//编辑
     public static final String Merchants_mertype = "2";//进货商的type
+
+
+    //审核
+    public static final String check_type = "check_type";//进货商的type
+    public static final String check_id = "check_id";//进货商的type
+    public static final String check_purchases = "check_purchases";//进货商的type
+    public static final String check_sales = "check_sales";//进货商的type
+    public static final String check_purchases_out = "check_purchases_out";//进货商的type
+    public static final String check_sales_out = "check_sales_out";//进货商的type
+
 
 
 }

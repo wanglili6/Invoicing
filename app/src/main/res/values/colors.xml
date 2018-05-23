@@ -21,4 +21,7 @@
     <color name="text_surplus_color">#3485E4</color>
     <color name="xian_color">#e6e4e4</color>
     <color name="salse_red_color">#CD5E5E</color>
+    <color name="check_yellow_color">#ff9933</color>
+    <color name="check_green_color">#339966</color>
+    <color name="check_red_color">#FF3333</color>
 </resources>

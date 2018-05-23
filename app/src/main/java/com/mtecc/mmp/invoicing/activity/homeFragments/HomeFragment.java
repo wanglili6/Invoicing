@@ -24,6 +24,8 @@ import com.mtecc.mmp.invoicing.activity.login.adapter.SelectShopAdapter;
 import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
 import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
 import com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity;
+import com.mtecc.mmp.invoicing.activity.sales.AddSalesActivity;
+import com.mtecc.mmp.invoicing.activity.sales.SalesListActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
@@ -279,15 +281,31 @@ public class HomeFragment extends Fragment {
                 break;
             case R.id.home_salse_return:
                 //采购退货单
+                Intent tuiintent = new Intent(getContext(), AddPurchaseActivity.class);
+                Bundle tuibundle = new Bundle();
+                tuibundle.putString("type", "out");
+                tuiintent.putExtras(tuibundle);
+                startActivity(tuiintent);
                 break;
             case R.id.home_sell:
                 //销售单
+                Intent salesintent = new Intent(getContext(), AddSalesActivity.class);
+                Bundle salesbundle = new Bundle();
+                salesbundle.putString("type", "income");
+                salesintent.putExtras(salesbundle);
+                startActivity(salesintent);
                 break;
             case R.id.home_sell_note:
                 //销售订单
+                startActivity(new Intent(getContext(), SalesListActivity.class));
                 break;
             case R.id.home_sell_salse_return:
                 //销售退货单
+                Intent tuisalesintent = new Intent(getContext(), AddSalesActivity.class);
+                Bundle tuisalesbundle = new Bundle();
+                tuisalesbundle.putString("type", "out");
+                tuisalesintent.putExtras(tuisalesbundle);
+                startActivity(tuisalesintent);
                 break;
         }
     }

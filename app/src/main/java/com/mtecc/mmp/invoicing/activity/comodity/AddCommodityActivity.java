@@ -1,17 +1,27 @@
 package com.mtecc.mmp.invoicing.activity.comodity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -32,24 +41,31 @@ import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityBean;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.SeeCommodityBean;
+import com.mtecc.mmp.invoicing.activity.comodity.adapter.ImgListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.SelectGoodsAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.BatchPicListBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityBean;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityExistedBean;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.GoodsTypeBean;
+import com.mtecc.mmp.invoicing.activity.comodity.bean.SeeCommodityBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.CompressionPhotoUtils;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
+import com.mtecc.mmp.invoicing.views.NoScrollRecycleView;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -159,7 +175,8 @@ public class AddCommodityActivity extends BaseActivity {
     TextView commodityTvCommit;
     @BindView(R.id.commodity_et_bz)
     TextView commodityetBz;
-
+    @BindView(R.id.recycle_list_pic)
+    NoScrollRecycleView recycleListPic;
 
     private String commodityType;
     private AlertDialog showDialog;
@@ -182,7 +199,11 @@ public class AddCommodityActivity extends BaseActivity {
     private String code3;
     private Gson gson;
     private String proid;
-    private SelectGoodsAdapter selectGoodsAdapter;
+    private Uri photoUri;
+    private String picPath;
+    List<String> picPathlist = new ArrayList<>();
+    private ImgListAdapter imgListAdapter;
+    private String pic_path;
 
     @Override
     public void widgetClick(View v) {
@@ -229,7 +250,57 @@ public class AddCommodityActivity extends BaseActivity {
                 requestNetGetCommodity(proid);
             }
         }
+        DisplayMetrics dm2 = getResources().getDisplayMetrics();
+        LogUtils.d("width-display :" + dm2.widthPixels);
+        if (dm2.widthPixels <= 1080) {
+            recycleListPic.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recycleListPic.setLayoutManager(new GridLayoutManager(this, 3));
+        }
+        picPathlist.clear();
+        picPathlist.add("");
+        imgListAdapter = new ImgListAdapter(this, picPathlist, "add");
+        recycleListPic.setAdapter(imgListAdapter);
+        imgListAdapter.notifyDataSetChanged();
+        imgListAdapter.setiImgOnClickListerner(new ImgListAdapter.IImgOnClickListerner() {
+            @Override
+            public void onImgClick(int position, String imgUrl) {
+                if (TextUtils.isEmpty(imgUrl)) {
+                    if (picPathlist.size() < 4) {
+                        picPhoto();
 
+                    } else {
+                        showToast("商品图片最多为3张!");
+                        return;
+                    }
+                } else {
+                    ArrayList<String> imgList = new ArrayList<String>();
+                    for (int i = 0; i < picPathlist.size(); i++) {
+                        if (!TextUtils.isEmpty(picPathlist.get(i))) {
+                            imgList.add(picPathlist.get(i));
+                        }
+                    }
+                    Intent intent = new Intent();
+                    intent.setClass(AddCommodityActivity.this, SwipeActivity.class);
+                    intent.putStringArrayListExtra("imagelist", imgList);
+                    intent.putExtra("position", position + "");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AddCommodityActivity.this).toBundle());
+                    } else {
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
+        imgListAdapter.setiIImgDelOnClickListerner(new ImgListAdapter.IImgDelOnClickListerner() {
+            @Override
+            public void onDelClick(int position, String imgUrl) {
+                View exitView = ShowDalogUtils.showCustomizeDialog(AddCommodityActivity.this, R.layout.exit_dialog);
+                AlertDialog dialog = ShowDalogUtils.showDialog(AddCommodityActivity.this, false, exitView);
+                exitClick(exitView, dialog, position, imgUrl);
+            }
+        });
 
     }
 
@@ -281,7 +352,6 @@ public class AddCommodityActivity extends BaseActivity {
                     requestNetGetCommodity("", cid + "", name);
 
 
-
                 }
             }
         });
@@ -316,6 +386,30 @@ public class AddCommodityActivity extends BaseActivity {
 //        });
     }
 
+    private void picPhoto() {
+        Intent intent = new Intent();
+        // 指定开启系统相机的Action
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        //获取当前时间
+        long date = System.currentTimeMillis();
+        Date curDate = new Date(date);
+        String str = formatter.format(curDate);
+        String pic_pathFileName = str + ".png";
+
+        // 根据文件地址创建文件
+        pic_path = Environment.getExternalStorageDirectory().toString() + "/mtecc/invoing/" + pic_pathFileName;
+        File file = new File(pic_path);
+        // 把文件地址转换成Uri格式
+        Uri photoURI = FileProvider.getUriForFile(AddCommodityActivity.this,
+                getApplicationContext().getPackageName() + ".fileProvider",
+                file);
+        // 设置系统相机拍摄照片完成后图片文件的存放地址
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+        startActivityForResult(intent, 109);
+    }
 
     @Override
     public void doBusiness(Context mContext) {
@@ -629,9 +723,10 @@ public class AddCommodityActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            switch (requestCode) {
-                case 1:
+
+        switch (requestCode) {
+            case 1:
+                if (data != null) {
                     //处理扫描结果（在界面上显示）
                     if (null != data) {
                         Bundle bundle = data.getExtras();
@@ -648,10 +743,11 @@ public class AddCommodityActivity extends BaseActivity {
                             Toast.makeText(AddCommodityActivity.this, "解析二维码失败!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    break;
-                case 12:
-                    //添加批次
-
+                }
+                break;
+            case 12:
+                //添加批次
+                if (data != null) {
                     List<BatchBean> bactchList = (List<BatchBean>) data.getSerializableExtra(InvoicingConstants.BATCH_Add_list);
 
                     if (bactchList != null) {
@@ -660,10 +756,27 @@ public class AddCommodityActivity extends BaseActivity {
                         Toast.makeText(AddCommodityActivity.this, "数据为空!", Toast.LENGTH_SHORT).show();
                     }
 
+                }
+                break;
 
-                    break;
-            }
+            case 109:
+                if (resultCode == RESULT_OK) {
+                    LogUtils.i("onActivityResult: RESULT_OK " + pic_path);
+                    String imagepath = CompressionPhotoUtils.compressImage(pic_path, pic_path, 50);
+                    LogUtils.i("onActivityResult: RESULT_OK " + imagepath);
+                    picPathlist.add(imagepath);
+                    imgListAdapter.notifyDataSetChanged();
+                } else {
+                    LogUtils.i("onActivityResult: " + pic_path);
+                    File file = new File(pic_path);
+                    if (!file.exists()) {
+                    }
+
+                }
+                break;
+
         }
+
     }
 
     /**
@@ -840,9 +953,18 @@ public class AddCommodityActivity extends BaseActivity {
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + productBean);
         LogUtils.d("登陆的url" + shopid);
-        OkHttpUtils
-                .post()
-                .tag(this)
+        PostFormBuilder post = OkHttpUtils.post();
+        if (picPathlist != null && picPathlist.size() != 0) {
+//            ArrayList<String> imgList = new ArrayList<String>();
+            for (int i = 0; i < picPathlist.size(); i++) {
+                if (!TextUtils.isEmpty(picPathlist.get(i))) {
+//                    imgList.add(picPathlist.get(i));
+                    post.addFile("imgname" + i, "imgname" + i + ".png", new File(picPathlist.get(i)));
+                }
+            }
+        }
+
+        post.tag(this)
                 .addParams("productBean", productBean)
                 .addParams("shopid", shopid)
                 .addParams("cid", cid)
@@ -944,54 +1066,6 @@ public class AddCommodityActivity extends BaseActivity {
                 });
     }
 
-    private void setPopuWindows() {
-        View view = View.inflate(AddCommodityActivity.this, R.layout.popuwindows_view, null);
-
-        //获取PopupWindow中View的宽高
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int measuredWidth = view.getMeasuredWidth();
-        int measuredHeight = view.getMeasuredHeight();
-
-        PopupWindow popupWindow = new PopupWindow(view, commodityEtName.getMeasuredWidth()
-                , measuredHeight);
-        popupWindow.setFocusable(true);//popupwindow设置焦点
-
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0xaa000000));//设置背景
-        popupWindow.setOutsideTouchable(true);//点击外面窗口消失
-        // popupWindow.showAsDropDown(v,0,0);
-        //获取点击View的坐标
-        int[] location = new int[2];
-        commodityEtName.getLocationOnScreen(location);
-        popupWindow.showAsDropDown(commodityEtName);//在v的下面
-//                //显示在上方
-//                popupWindow.showAtLocation(commodityEtName,Gravity.NO_GRAVITY,location[0]+v.getWidth()/2,location[1]-measuredHeight);
-//                //显示在正上方
-//                popupWindow.showAtLocation(commodityEtName, Gravity.NO_GRAVITY, (location[0] + v.getWidth() / 2) - measuredWidth / 2, location[1]-measuredHeight);
-//                //显示在左方
-//                popupWindow.showAtLocation(commodityEtName,Gravity.NO_GRAVITY,location[0]-popupWindow.getWidth(),location[1]);
-//                //显示在下方
-//                popupWindow.showAtLocation(commodityEtName,Gravity.NO_GRAVITY,location[0]+commodityEtName.getWidth(),location[1]);
-        popupWindow.setAnimationStyle(android.R.style.Animation_Translucent);//设置动画
-        ListView selectList = view.findViewById(R.id.select_list_view);
-        selectGoodsAdapter = new SelectGoodsAdapter(AddCommodityActivity.this, mSplbListBeanList);
-        selectList.setAdapter(selectGoodsAdapter);
-        selectGoodsAdapter.notifyDataSetChanged();
-        selectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CommodityExistedBean.DataBean dataBean = mSplbListBeanList.get(position);
-                if (dataBean != null) {
-                    setDataMsg(dataBean);
-                }
-
-            }
-
-
-        });
-    }
-
 
     /**
      * 商品查询
@@ -1051,9 +1125,17 @@ public class AddCommodityActivity extends BaseActivity {
         LogUtils.d("登陆的url" + url);
         LogUtils.d("登陆的url" + productBean);
         LogUtils.d("登陆的url" + userid);
-        OkHttpUtils
-                .post()
-                .tag(this)
+        PostFormBuilder post = OkHttpUtils.post();
+        if (picPathlist != null && picPathlist.size() != 0) {
+//            ArrayList<String> imgList = new ArrayList<String>();
+            for (int i = 0; i < picPathlist.size(); i++) {
+                if (!TextUtils.isEmpty(picPathlist.get(i))) {
+//                    imgList.add(picPathlist.get(i));
+                    post.addFile("imgname" + i, "imgname" + i + ".png", new File(picPathlist.get(i)));
+                }
+            }
+        }
+        post.tag(this)
                 .addParams("productBean", productBean)
                 .addParams("userid", userid)
                 .url(url)
@@ -1289,4 +1371,47 @@ public class AddCommodityActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 是否返回
+     *
+     * @param exitView
+     * @param dialog
+     * @param position
+     */
+    private void exitClick(View exitView, final AlertDialog dialog, final int position, final String imgurl) {
+        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
+        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
+        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
+        contactTV.setText("是否删除当前图片?");
+        dissTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        sureTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                myDeleteFile(imgurl);
+                picPathlist.remove(imgurl);
+                showToast("已删除图片");
+                imgListAdapter.notifyDataSetChanged();
+
+
+            }
+        });
+    }
+
+    /**
+     * 删除本地文件
+     */
+
+    public void myDeleteFile(String filePath) {
+        File f = new File(filePath);
+        if (f.exists()) {
+            f.delete();
+        }
+    }
 }

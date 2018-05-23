@@ -637,18 +637,20 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_shop_status"
-                android:focusableInTouchMode="true"
-                android:focusable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -671,6 +673,7 @@
                         android:textColor="@color/text_red"
                         android:textSize="14sp" />
                 </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -693,6 +696,7 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -742,7 +746,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -752,7 +755,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -792,7 +796,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -802,7 +805,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -888,7 +892,30 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="商品图片"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp">
 
+            </TextView>
+
+            <com.mtecc.mmp.invoicing.views.NoScrollRecycleView
+                android:id="@+id/recycle_list_pic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="1dp"
+                android:background="@color/color_white"
+                android:padding="15dp"
+                android:scrollbars="none">
+
+            </com.mtecc.mmp.invoicing.views.NoScrollRecycleView>
         </LinearLayout>
 
 

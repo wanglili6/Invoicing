@@ -189,9 +189,16 @@
         <activity android:name=".activity.distributor.SeeDistributorActivity" />
         <activity android:name=".activity.distributor.DistributorLIstActivity" />
         <activity android:name=".activity.purchase.PurchaseListActivity" />
-        <activity android:name=".activity.purchase.AddPurchaseActivity"></activity>
-        <activity android:name=".activity.purchase.SelectCommodityListActivity"></activity>
-        <activity android:name=".activity.purchase.SelectBatchListActivity"></activity>
+        <activity android:name=".activity.purchase.AddPurchaseActivity" />
+        <activity android:name=".activity.purchase.SelectCommodityListActivity" />
+        <activity android:name=".activity.purchase.SelectBatchListActivity" />
+        <activity android:name=".activity.sales.AddSalesActivity" />
+        <activity android:name=".activity.sales.SalesListActivity" />
+        <activity android:name=".activity.sales.SelectSalesBatchListActivity" />
+        <activity android:name=".activity.sales.SelectSalesCommodityListActivity" />
+        <activity android:name=".activity.check.CheckActivity" />
+        <activity android:name=".activity.check.CheckListActivity" />
+        <activity android:name=".activity.check.SeeOrdersActivity"></activity>
     </application>
 
 </manifest>

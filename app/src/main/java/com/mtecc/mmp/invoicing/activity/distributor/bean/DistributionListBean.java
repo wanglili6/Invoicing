@@ -1,5 +1,6 @@
 package com.mtecc.mmp.invoicing.activity.distributor.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class DistributionListBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * isgr : 0
          * cardcode : 131028199204232012

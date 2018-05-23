@@ -43,7 +43,7 @@ public class CommodityListBean implements Serializable {
          * meaunit : 12
          */
 
-        private int proId;
+
         private String remark;
         private String probzq;
         private UseridBean userid;
@@ -53,13 +53,15 @@ public class CommodityListBean implements Serializable {
         private String barcode;
         private String protype;
         private String mernameorplace;
-        private String proName;
+
         private String trademark;
         private String meas;
+        private String meaunit;
         private ObtypeBean obtype;
         private Object updatedate;
-        private String meaunit;
         private String batchCount;
+        private String proName;
+        private int proId;
         private List<SelectBatchBean> mSelectMap;
         private double mSelectMoney;
         private int mSelectNum;

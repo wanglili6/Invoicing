@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.purchase.adapter;
+package com.mtecc.mmp.invoicing.activity.sales.adapter;
 
 import android.content.Context;
 import android.text.Editable;

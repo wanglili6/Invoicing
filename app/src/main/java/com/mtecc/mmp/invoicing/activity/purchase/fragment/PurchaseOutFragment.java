@@ -29,6 +29,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.check.SeeOrdersActivity;
 import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
 import com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity;
 import com.mtecc.mmp.invoicing.activity.purchase.adapter.PurchaseSwitchListAdapter;
@@ -113,13 +114,14 @@ public class PurchaseOutFragment extends Fragment {
 
         for (int i1 = 0; i1 < 20; i1++) {
             Random random = new Random();
-            int i = random.nextInt(2);
+            int i = random.nextInt(3);
+
             PurchaseListBean bean = new PurchaseListBean();
             bean.setCode(i1 + "09090" + i);
             bean.setMoney(i1 + "000" + i);
             bean.setName(i1 + "订单名称" + i);
             bean.setTimer(i1 + "09090" + i);
-            bean.setType(i + "");
+            bean.setState(i + "");
             mList.add(bean);
         }
         cid = PreferencesUtils.getInt(getActivity(), InvoicingConstants.QY_ID, 0);
@@ -167,13 +169,15 @@ public class PurchaseOutFragment extends Fragment {
         purchaseListRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                ShopListBean.DataBean dataBean = mList.get(position);
-//                Intent intentemployee = new Intent();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("shopId", dataBean.getShopid() + "");
-//                intentemployee.setClass(PurchaseListActivity.this, ShopEmployeeActivity.class);
-//                intentemployee.putExtras(bundle);
-//                startActivity(intentemployee);
+                PurchaseListBean purchaseListBean = mList.get(position);
+                Intent expendintent = new Intent();
+                Bundle expendbundle = new Bundle();
+
+                expendbundle.putString(InvoicingConstants.check_type, InvoicingConstants.check_purchases_out);
+
+                expendintent.setClass(getContext(), SeeOrdersActivity.class);
+                expendintent.putExtras(expendbundle);
+                startActivity(expendintent);
             }
         });
 
@@ -215,35 +219,6 @@ public class PurchaseOutFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            LogUtils.i(isVisibleToUser + "====刷新页面");
-            if (activity != null) {
-                ImageButton imgSelect = activity.getImgSelect();
-                if (imgSelect != null) {
-                    imgSelect.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getContext(), AddPurchaseActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("type", "out");
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
-                    });
-                }
-            }
-
-
-            if (smartRefreshLayout != null) {
-                smartRefreshLayout.autoRefresh();
-            }
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -563,7 +538,6 @@ public class PurchaseOutFragment extends Fragment {
 //                    }
 //                });
 //    }
-
 
 
 }

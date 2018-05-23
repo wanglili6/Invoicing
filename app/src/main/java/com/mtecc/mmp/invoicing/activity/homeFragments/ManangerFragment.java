@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.check.CheckListActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity;
 import com.mtecc.mmp.invoicing.activity.distributor.DistributorLIstActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
@@ -90,9 +91,11 @@ public class ManangerFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.manage_rl_supplier:
+                //进货商
                 Intent supplierintent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Merchants_TYPE);
+                bundle.putString(InvoicingConstants.Merchants_TYPE, "list");
                 supplierintent.setClass(getContext(), DistributorLIstActivity.class);
                 supplierintent.putExtras(bundle);
                 startActivity(supplierintent);
@@ -102,6 +105,7 @@ public class ManangerFragment extends Fragment {
                 Intent clientintent = new Intent();
                 Bundle clienbundle = new Bundle();
                 clienbundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Distributor_TYPE);
+                clienbundle.putString(InvoicingConstants.Distributor_TYPE, "list");
                 clientintent.setClass(getContext(), DistributorLIstActivity.class);
                 clientintent.putExtras(clienbundle);
                 startActivity(clientintent);
@@ -109,8 +113,22 @@ public class ManangerFragment extends Fragment {
             case R.id.manage_rl_depot:
                 break;
             case R.id.manage_rl_income:
+                //采购审核
+                Intent incomeintent = new Intent();
+                Bundle incomebundle = new Bundle();
+                incomebundle.putString(InvoicingConstants.check_type, InvoicingConstants.check_purchases);
+                incomeintent.setClass(getContext(), CheckListActivity.class);
+                incomeintent.putExtras(incomebundle);
+                startActivity(incomeintent);
                 break;
             case R.id.manage_rl_expend:
+                //销售审核
+                Intent expendintent = new Intent();
+                Bundle expendbundle = new Bundle();
+                expendbundle.putString(InvoicingConstants.check_type, InvoicingConstants.check_sales);
+                expendintent.setClass(getContext(), CheckListActivity.class);
+                expendintent.putExtras(expendbundle);
+                startActivity(expendintent);
                 break;
         }
     }

@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.purchase.adapter;
+package com.mtecc.mmp.invoicing.activity.check;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.purchase.bean.PurchaseListBean;
-import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import java.util.List;
 
@@ -22,15 +22,15 @@ import butterknife.ButterKnife;
  * Created by wll on 2018/4/18.
  */
 
-public class PurchaseSwitchListAdapter extends BaseAdapter {
+public class CheckListAdapter extends BaseAdapter {
     private Context mContext;
     private List<PurchaseListBean> mList;
-    private String type;
+    private String checktype;
 
-    public PurchaseSwitchListAdapter(Context mContext, List<PurchaseListBean> mList, String type) {
+    public CheckListAdapter(Context mContext, List<PurchaseListBean> mList, String type) {
         this.mContext = mContext;
         this.mList = mList;
-        this.type = type;
+        this.checktype = type;
     }
 
 
@@ -65,8 +65,13 @@ public class PurchaseSwitchListAdapter extends BaseAdapter {
         holder.purchaseTvCode.setText(purchaseListBean.getCode());
         holder.purchaseTvTimer.setText(purchaseListBean.getTimer());
         String state = purchaseListBean.getState();
+        String type = purchaseListBean.getType();
         if (type.equals("0")) {
-            holder.purchaseImg.setBackgroundResource(R.mipmap.up_jin_icon);
+            if (checktype.equals(InvoicingConstants.check_purchases)) {
+                holder.purchaseImg.setBackgroundResource(R.mipmap.up_jin_icon);
+            } else if (checktype.equals(InvoicingConstants.check_sales)) {
+                holder.purchaseImg.setBackgroundResource(R.mipmap.out_xiao_icon);
+            }
         } else if (type.equals("1")) {
             holder.purchaseImg.setBackgroundResource(R.mipmap.tui_icon);
         }

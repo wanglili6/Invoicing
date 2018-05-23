@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    tools:context="com.mtecc.mmp.invoicing.activity.check.CheckActivity">
+
+    <include layout="@layout/base_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="100"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@color/color_white"
+                android:drawableLeft="@mipmap/check_dingdan_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="审核订单"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_see_datial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp"
+                android:background="@color/color_white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/check_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@color/text_black_color"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="采购金额:"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/check_tv_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/text_money_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="订单编号:"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/check_tv_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="创单时间:"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/check_tv_timer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/next" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_white"
+                android:drawableLeft="@mipmap/check_dingdan_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="审核意见"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <EditText
+                    android:id="@+id/et_check_yijian"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/login_btn_bg"
+                    android:hint="请输入审核意见"
+                    android:minHeight="100dp"
+                    android:padding="8dp"
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_white"
+                android:drawableLeft="@mipmap/check_dingdan_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="审核结果"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_jieguo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/color_white"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <RadioButton
+                    android:id="@+id/rb_jieguo_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="同意"
+                    android:textColor="@color/text_black_color" />
+
+                <RadioButton
+                    android:id="@+id/rb_jieguo_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:gravity="center"
+                    android:text="不同意"
+                    android:textColor="@color/text_black_color" />
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+
+        android:id="@+id/check_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@mipmap/exit_btn"
+        android:gravity="center"
+        android:text="审        核"
+        android:textColor="@color/color_white"
+        android:textSize="16sp" />
+</LinearLayout>

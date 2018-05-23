@@ -1,13 +1,11 @@
-package com.mtecc.mmp.invoicing.activity.purchase.fragment;
+package com.mtecc.mmp.invoicing.activity.sales.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +29,10 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.check.SeeOrdersActivity;
-import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
-import com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity;
-import com.mtecc.mmp.invoicing.activity.purchase.adapter.PurchaseSwitchListAdapter;
 import com.mtecc.mmp.invoicing.activity.purchase.bean.PurchaseListBean;
+import com.mtecc.mmp.invoicing.activity.sales.AddSalesActivity;
+import com.mtecc.mmp.invoicing.activity.sales.SalesListActivity;
+import com.mtecc.mmp.invoicing.activity.sales.adapter.SalesSwitchListAdapter;
 import com.mtecc.mmp.invoicing.activity.shop.bean.ShopAddBean;
 import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
@@ -62,13 +60,12 @@ import static com.scwang.smartrefresh.layout.util.DensityUtil.dp2px;
 
 /**
  * Created by wll on 2018/4/16.
- * 采购历史
+ * 退货单
  */
 
-public class PurchaseIncomeFragment extends Fragment {
+public class SalesOutFragment extends Fragment {
 
 
-    List<PurchaseListBean> mList = new ArrayList<>();
     Unbinder unbinder;
     @BindView(R.id.purchase_list_recycler_view)
     MySwipeMenuListView purchaseListRecyclerView;
@@ -78,6 +75,7 @@ public class PurchaseIncomeFragment extends Fragment {
     LinearLayout llList;
     @BindView(R.id.tv_error)
     TextView tvError;
+    List<PurchaseListBean> mList = new ArrayList<>();
     @BindView(R.id.iv_bar_search)
     RelativeLayout ivBarSearch;
     @BindView(R.id.et_serch)
@@ -92,7 +90,7 @@ public class PurchaseIncomeFragment extends Fragment {
     LinearLayout llSeach;
     @BindView(R.id.img_commodity_list_saoma)
     ImageView imgCommodityListSaoma;
-    private PurchaseSwitchListAdapter adapter;
+    private SalesSwitchListAdapter adapter;
     int pagenum = 1;
     String limit = "20";
     String shopname = "";
@@ -103,25 +101,25 @@ public class PurchaseIncomeFragment extends Fragment {
     private String shopid = "";
     private String SHOP_ID = "";
     private boolean isPause = false;
-    private PurchaseListActivity activity;
+    private SalesListActivity activity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.purchase_out_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        activity = (PurchaseListActivity) getActivity();
         awayKetBordUtils = new AwayKetBordUtils(getActivity(), getActivity().getWindow());
         mList.clear();
-        for (int i = 0; i < 20; i++) {
-            Random runnable = new Random();
-            int i1 = runnable.nextInt(3);
+
+        for (int i1 = 0; i1 < 20; i1++) {
+            Random random = new Random();
+            int i = random.nextInt(3);
             PurchaseListBean bean = new PurchaseListBean();
-            bean.setCode(i + "09090" + i);
-            bean.setMoney(i + "000" + i);
-            bean.setName(i + "订单名称" + i);
-            bean.setTimer(i + "09090" + i);
-            bean.setState(i1 + "");
+            bean.setCode(i1 + "09090" + i);
+            bean.setMoney(i1 + "000" + i);
+            bean.setName(i1 + "订单名称" + i);
+            bean.setTimer(i1 + "09090" + i);
+            bean.setState(i + "");
             mList.add(bean);
         }
         cid = PreferencesUtils.getInt(getActivity(), InvoicingConstants.QY_ID, 0);
@@ -171,7 +169,7 @@ public class PurchaseIncomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent expendintent = new Intent();
                 Bundle expendbundle = new Bundle();
-                expendbundle.putString(InvoicingConstants.check_type, InvoicingConstants.check_purchases);
+                expendbundle.putString(InvoicingConstants.check_type, InvoicingConstants.check_sales_out);
                 expendintent.setClass(getContext(), SeeOrdersActivity.class);
                 expendintent.putExtras(expendbundle);
                 startActivity(expendintent);
@@ -207,27 +205,16 @@ public class PurchaseIncomeFragment extends Fragment {
         };
         purchaseListRecyclerView.setMenuCreator(creator);
         purchaseListRecyclerView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-
+        activity = (SalesListActivity) getActivity();
         purchaseListRecyclerView.setNestedpParent(activity.getIncomeSwitchOverVp());
-        adapter = new PurchaseSwitchListAdapter(getContext(), mList, "0");
+        adapter = new SalesSwitchListAdapter(getContext(), mList, "1");
         purchaseListRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
         return view;
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            LogUtils.i(isVisibleToUser + "====刷新页面");
-
-            if (smartRefreshLayout != null) {
-                smartRefreshLayout.autoRefresh();
-            }
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -547,4 +534,6 @@ public class PurchaseIncomeFragment extends Fragment {
 //                    }
 //                });
 //    }
+
+
 }

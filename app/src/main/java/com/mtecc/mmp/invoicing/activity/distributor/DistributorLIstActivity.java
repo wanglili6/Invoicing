@@ -27,6 +27,8 @@ import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
 import com.mtecc.mmp.invoicing.activity.distributor.bean.DistributionListBean;
 import com.mtecc.mmp.invoicing.activity.distributor.adapter.DistributorlistAdapter;
+import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
+import com.mtecc.mmp.invoicing.activity.sales.AddSalesActivity;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.AwayKetBordUtils;
@@ -112,7 +114,8 @@ public class DistributorLIstActivity extends BaseActivity {
     private int cid = 0;
     private int pagenum = 1;
     private boolean isPause;
-    private String merchants_distributor_type;
+    private String merchants_distributor_type = "";
+    private String merchants_type = "";
 
     @Override
     public void widgetClick(View v) {
@@ -136,19 +139,31 @@ public class DistributorLIstActivity extends BaseActivity {
         mList.clear();
         if (merchants_distributor_type.equals(InvoicingConstants.Distributor_TYPE)) {
             tvTitle.setText("分销商管理");
+            merchants_type = parms.getString(InvoicingConstants.Distributor_TYPE);
             requestNetCommodityList(pagenum + "", mername, entregno, cid + "", InvoicingConstants.Distributor_mertype);
             distributorlistAdapter = new DistributorlistAdapter(this, mList, InvoicingConstants.Distributor_TYPE);
             distributionListRecyclerView.setAdapter(distributorlistAdapter);
             distributorlistAdapter.notifyDataSetChanged();
         } else if (merchants_distributor_type.equals(InvoicingConstants.Merchants_TYPE)) {
+            merchants_type = parms.getString(InvoicingConstants.Merchants_TYPE);
             tvTitle.setText("进货商管理");
             requestNetCommodityList(pagenum + "", mername, entregno, cid + "", InvoicingConstants.Merchants_mertype);
             distributorlistAdapter = new DistributorlistAdapter(this, mList, InvoicingConstants.Merchants_TYPE);
             distributionListRecyclerView.setAdapter(distributorlistAdapter);
             distributorlistAdapter.notifyDataSetChanged();
         }
+        if (!merchants_type.equals(InvoicingConstants.Distributor_Select) && !merchants_type.equals(InvoicingConstants.Merchants_Select)) {
+            setSwipeMenuListViewCreater();
+        }
 
+    }
 
+    /**
+     * 设置SwipeMenuListView的SwipeMenuCreator
+     * <p>
+     * 是否侧滑
+     */
+    private void setSwipeMenuListViewCreater() {
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -178,7 +193,6 @@ public class DistributorLIstActivity extends BaseActivity {
         };
         distributionListRecyclerView.setMenuCreator(creator);
         distributionListRecyclerView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-
     }
 
     @Override
@@ -234,7 +248,6 @@ public class DistributorLIstActivity extends BaseActivity {
                 DistributionListBean.DataBean dataBean = mList.get(position);
                 if (title.equals("编辑")) {
                     //跳转编辑页面
-
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     if (merchants_distributor_type.equals(InvoicingConstants.Distributor_TYPE)) {
@@ -268,16 +281,39 @@ public class DistributorLIstActivity extends BaseActivity {
                 Intent intentemployee = new Intent();
                 Bundle bundle = new Bundle();
                 if (merchants_distributor_type.equals(InvoicingConstants.Distributor_TYPE)) {
-                    bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Distributor_TYPE);
-                    bundle.putString(InvoicingConstants.Distributor_ID, dataBean.getMerid() + "");
+                    if (merchants_type.equals(InvoicingConstants.Distributor_Select)) {
+                        bundle.putString(InvoicingConstants.Distributor_Name, dataBean.getMername() + "");
+                        bundle.putString(InvoicingConstants.Distributor_ID, dataBean.getMerid() + "");
+                        intentemployee.setClass(DistributorLIstActivity.this, AddSalesActivity.class);
+                        intentemployee.putExtras(bundle);
+                        setResult(3, intentemployee);
+                        finish();
+                    } else {
+                        bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Distributor_TYPE);
+                        bundle.putString(InvoicingConstants.Distributor_ID, dataBean.getMerid() + "");
+                        intentemployee.setClass(DistributorLIstActivity.this, SeeDistributorActivity.class);
+                        intentemployee.putExtras(bundle);
+                        startActivity(intentemployee);
+                    }
+
                 } else if (merchants_distributor_type.equals(InvoicingConstants.Merchants_TYPE)) {
-                    bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Merchants_TYPE);
-                    bundle.putString(InvoicingConstants.Merchants_ID, dataBean.getMerid() + "");
+                    if (merchants_type.equals(InvoicingConstants.Merchants_Select)) {
+                        bundle.putString(InvoicingConstants.Merchants_Name, dataBean.getMername() + "");
+                        bundle.putString(InvoicingConstants.Merchants_ID, dataBean.getMerid() + "");
+                        intentemployee.setClass(DistributorLIstActivity.this, AddPurchaseActivity.class);
+                        intentemployee.putExtras(bundle);
+                        setResult(3, intentemployee);
+                        finish();
+                    } else {
+                        bundle.putString(InvoicingConstants.Merchants_Distributor_type, InvoicingConstants.Merchants_TYPE);
+                        bundle.putString(InvoicingConstants.Merchants_ID, dataBean.getMerid() + "");
+                        intentemployee.setClass(DistributorLIstActivity.this, SeeDistributorActivity.class);
+                        intentemployee.putExtras(bundle);
+                        startActivity(intentemployee);
+                    }
                 }
 
-                intentemployee.setClass(DistributorLIstActivity.this, SeeDistributorActivity.class);
-                intentemployee.putExtras(bundle);
-                startActivity(intentemployee);
+
             }
         });
     }

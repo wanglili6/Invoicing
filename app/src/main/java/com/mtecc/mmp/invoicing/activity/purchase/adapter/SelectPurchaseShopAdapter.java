@@ -1,4 +1,4 @@
-package com.mtecc.mmp.invoicing.activity.login.adapter;
+package com.mtecc.mmp.invoicing.activity.purchase.adapter;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
+import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 
 import java.util.List;
 
@@ -22,19 +23,12 @@ import butterknife.ButterKnife;
  * 选择商铺的适配器
  */
 
-public class SelectShopAdapter extends BaseAdapter {
+public class SelectPurchaseShopAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ShopSelectBean.ShoplistBean> batchBeenList;
+    private List<ShopListBean.DataBean>  batchBeenList;
     private AlertDialog alertDialog;
-    private boolean isuseradmin;
 
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog, boolean isuseradmin) {
-        this.mContext = mContext;
-        this.batchBeenList = batchBeenList;
-        this.alertDialog = alertDialog;
-        this.isuseradmin = isuseradmin;
-    }
-    public SelectShopAdapter(Context mContext, List<ShopSelectBean.ShoplistBean> batchBeenList, AlertDialog alertDialog) {
+    public SelectPurchaseShopAdapter(Context mContext, List<ShopListBean.DataBean>  batchBeenList, AlertDialog alertDialog) {
         this.mContext = mContext;
         this.batchBeenList = batchBeenList;
         this.alertDialog = alertDialog;
@@ -67,9 +61,9 @@ public class SelectShopAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final ShopSelectBean.ShoplistBean shoplistBean = batchBeenList.get(position);
-
-        holder.shopTvName.setText(shoplistBean.getShopname());
+        ShopListBean.DataBean dataBean = batchBeenList.get(position);
+        holder.shopTvName.setTextSize(14);
+        holder.shopTvName.setText(dataBean.getShopname());
 
         return convertView;
     }

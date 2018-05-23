@@ -240,13 +240,13 @@
             android:paddingBottom="10dp">
 
             <TextView
-                android:drawablePadding="5dp"
-                android:drawableLeft="@mipmap/jinggao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:drawableLeft="@mipmap/jinggao"
+                android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="确认证件照片上的信息清晰可见"
                 android:textColor="@color/text_money_color"
