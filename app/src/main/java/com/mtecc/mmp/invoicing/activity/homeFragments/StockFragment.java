@@ -1,5 +1,6 @@
 package com.mtecc.mmp.invoicing.activity.homeFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.inStock.StockCommodityListActivity;
+import com.mtecc.mmp.invoicing.activity.transfer.TransferListActivity;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +91,6 @@ public class StockFragment extends Fragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -99,12 +102,40 @@ public class StockFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.stock_rl_commodity:
+                //库存预警
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                intent.setClass(getContext(), StockCommodityListActivity.class);
+                bundle.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.STOCK_WORING);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case R.id.stock_rl_supplier:
+                Intent intentSee = new Intent();
+                Bundle bundleSee = new Bundle();
+                intentSee.setClass(getContext(), StockCommodityListActivity.class);
+                bundleSee.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.STOCK_SEE);
+                intentSee.putExtras(bundleSee);
+                startActivity(intentSee);
+                //库存查看
                 break;
             case R.id.stock_rl_client:
+                //商品出库
+                Intent intentOutBound = new Intent();
+                Bundle bundleOutBound = new Bundle();
+                intentOutBound.setClass(getContext(), TransferListActivity.class);
+                bundleOutBound.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.STOCK_OutBound);
+                intentOutBound.putExtras(bundleOutBound);
+                startActivity(intentOutBound);
                 break;
             case R.id.stock_rl_depot:
+                //调拨管理
+                Intent transferInter = new Intent();
+                Bundle bundleTransfer = new Bundle();
+                transferInter.setClass(getContext(), TransferListActivity.class);
+                bundleTransfer.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.STOCK_Transfer);
+                transferInter.putExtras(bundleTransfer);
+                startActivity(transferInter);
                 break;
         }
     }

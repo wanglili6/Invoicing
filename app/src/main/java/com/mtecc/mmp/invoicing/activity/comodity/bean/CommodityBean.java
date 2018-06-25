@@ -17,10 +17,19 @@ public class CommodityBean {
     private String trademark;//商品品牌
     private String meaunit;  //单位
     private String mernameorplace;//生产商产地
+    private String mernameorCode;//生产许可证号
     private String probzq;  //保质期
     private String bzqunit;  //保质期单位
     private String remark;  //备注
     private String state;   //状态 （0不可用，1可用）
+
+    public String getMernameorCode() {
+        return mernameorCode;
+    }
+
+    public void setMernameorCode(String mernameorCode) {
+        this.mernameorCode = mernameorCode;
+    }
 
     public Integer getProId() {
         return proId;

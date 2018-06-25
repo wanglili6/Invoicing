@@ -68,8 +68,8 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     LinearLayout llRight;
     @BindView(R.id.rl_title_bg)
     RelativeLayout rlTitleBg;
-    @BindView(R.id.textView)
-    TextView textView;
+    @BindView(R.id.tv_login)
+    TextView tvLogin;
     @BindView(R.id.resgister_et_name)
     EditText resgisterEtName;
     @BindView(R.id.resgister_et_pname)
@@ -146,7 +146,7 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_back, R.id.register_tv_register})
+    @OnClick({R.id.rl_back, R.id.register_tv_register, R.id.tv_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
@@ -159,6 +159,12 @@ public class ShortRegistrationInfoActivity extends BaseActivity {
                 View view1 = ShowDalogUtils.showCustomizeDialog(this, R.layout.send_customize);
                 this.alertDialog = ShowDalogUtils.showDialog(this, false, view1);
                 judgmentValueIsEmpty();
+
+                break;
+            case R.id.tv_login:
+                Intent in = new Intent(this, LoginActivity.class);
+                startActivity(in);
+                finish();
 
                 break;
         }

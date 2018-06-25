@@ -171,34 +171,150 @@
             android:name=".activity.SaoMaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.comodity.AddBatchActivity" />
-        <activity android:name=".activity.employee.SelectEmployeeListActivity" />
-        <activity android:name=".activity.shop.SelectShopListActivity" />
-        <activity android:name=".activity.role.RoleListActivity" />
-        <activity android:name=".activity.shop.ShopEmployeeActivity" />
-        <activity android:name=".activity.comodity.SwipeActivity" />
-        <activity android:name=".activity.comodity.AddCommodityActivity" />
-        <activity android:name=".activity.comodity.SeeCommodityActivity" />
-        <activity android:name=".activity.comodity.SeeImgActivity" />
-        <activity android:name=".activity.login.ShortRegistrationInfoActivity" />
-        <activity android:name=".activity.approve.ApproveActivity" />
-        <activity android:name=".activity.comodity.BatchListActivity" />
-        <activity android:name=".activity.comodity.SeeBatchMsgActivity" />
-        <activity android:name=".activity.distributor.AddDistributorActivity" />
-        <activity android:name=".activity.distributor.AddDocumentActivity" />
-        <activity android:name=".activity.distributor.SeeDistributorActivity" />
-        <activity android:name=".activity.distributor.DistributorLIstActivity" />
-        <activity android:name=".activity.purchase.PurchaseListActivity" />
-        <activity android:name=".activity.purchase.AddPurchaseActivity" />
-        <activity android:name=".activity.purchase.SelectCommodityListActivity" />
-        <activity android:name=".activity.purchase.SelectBatchListActivity" />
-        <activity android:name=".activity.sales.AddSalesActivity" />
-        <activity android:name=".activity.sales.SalesListActivity" />
-        <activity android:name=".activity.sales.SelectSalesBatchListActivity" />
-        <activity android:name=".activity.sales.SelectSalesCommodityListActivity" />
-        <activity android:name=".activity.check.CheckActivity" />
-        <activity android:name=".activity.check.CheckListActivity" />
-        <activity android:name=".activity.check.SeeOrdersActivity"></activity>
+        <activity
+            android:name=".activity.comodity.AddBatchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.employee.SelectEmployeeListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.shop.SelectShopListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.role.RoleListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.shop.ShopEmployeeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.SwipeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.AddCommodityActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.SeeCommodityActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.SeeImgActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.login.ShortRegistrationInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.approve.ApproveActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.BatchListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.comodity.SeeBatchMsgActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.distributor.AddDistributorActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.distributor.AddDocumentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.distributor.SeeDistributorActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.distributor.DistributorLIstActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.AddPurchaseActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.SelectCommodityListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.SelectBatchListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.AddSalesActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.check.CheckActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.check.CheckListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.check.SeeOrdersActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.inStock.StockBatchListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.inStock.StockCommodityListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.transfer.TransferommodityListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.transfer.TransferBatchListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.transfer.TransferListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.transfer.TransferBatchSeeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.transfer.AddTransferActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.AddReturnsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.PurchaseOrderListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.ReturnsListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.ReturnsBatchListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.purchaseOrSales.ReturnsCommodityListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

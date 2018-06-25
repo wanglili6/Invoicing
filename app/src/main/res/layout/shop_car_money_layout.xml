@@ -27,17 +27,19 @@
             android:background="@mipmap/shop_car" />
 
         <TextView
+            android:padding="5dp"
             android:id="@+id/img_select_num"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/img_shop_car"
             android:background="@mipmap/red_bg"
             android:gravity="center"
             android:textColor="@color/color_white"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <TextView
+
         android:id="@+id/tv_select_names"
         android:layout_width="0dp"
         android:layout_height="match_parent"

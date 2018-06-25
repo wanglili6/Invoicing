@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,16 +40,21 @@ public class BatchListAdapter extends BaseAdapter {
     private Context mContext;
     private List<BatchPicListBean.CardBean> mList;
     private List<DicBean.DataBean> mDiclist;
+    private RelativeLayout rlAddCardList;
+    private ImageView batchImgAddIteam;
+
     private TextView commondityTvCommit;
     IBatchImgOnClickListerner iBatchImgOnClickListerner;
     IBatchSeeImgListerner iBatchSeeImgListerner;
     IAddBatchOnClickListerner iAddBatchOnClickListerner;
     private final UseSystemUtils userSystemutils;
 
-    public BatchListAdapter(Context mContext, List<BatchPicListBean.CardBean> mList, TextView commondityTvCommit, List<DicBean.DataBean> mDiclist) {
+    public BatchListAdapter(Context mContext, List<BatchPicListBean.CardBean> mList, TextView commondityTvCommit, List<DicBean.DataBean> mDiclist, RelativeLayout rlAddCardList, ImageView batchImgAddIteam) {
         this.mContext = mContext;
         this.mList = mList;
         this.mDiclist = mDiclist;
+        this.rlAddCardList = rlAddCardList;
+        this.batchImgAddIteam = batchImgAddIteam;
         this.commondityTvCommit = commondityTvCommit;
         userSystemutils = new UseSystemUtils(mContext);
 
@@ -82,7 +89,6 @@ public class BatchListAdapter extends BaseAdapter {
         holder.commodityDialogEtType.setTag(position);
         holder.commodityDialogEtCode.setTag(position);
         holder.commodityDialogEtTimer.setTag(position);
-        holder.commodityDialogEtRemark.setTag(position);
         final ViewHolder finalHolder = holder;
         holder.commodityDialogEtType.setText(mList.get(position).getCardtypeName());
         holder.commodityDialogEtType.addTextChangedListener(new TextWatcher() {
@@ -118,7 +124,7 @@ public class BatchListAdapter extends BaseAdapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int pos = (int) finalHolder.commodityDialogEtCode.getTag();
-                mList.get(pos).setCardnum(s + "");
+                mList.get(pos).setCardnum(s.toString());
             }
 
             @Override
@@ -135,7 +141,7 @@ public class BatchListAdapter extends BaseAdapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int pos = (int) finalHolder.commodityDialogEtTimer.getTag();
-                mList.get(pos).setCharddate(s + "");
+                mList.get(pos).setCharddate(s.toString());
             }
 
             @Override
@@ -143,23 +149,7 @@ public class BatchListAdapter extends BaseAdapter {
 
             }
         });
-        holder.commodityDialogEtRemark.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtRemark.getTag();
-                mList.get(pos).setRemark(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
 
         holder.commodityDialogEtTimer.setText(mList.get(position).getCharddate());
@@ -193,28 +183,32 @@ public class BatchListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 BatchPicListBean.CardBean cardBean = new BatchPicListBean.CardBean();
-                cardBean.setCardnum("");
-                cardBean.setCharddate("");
-                cardBean.setCardtype("");
                 mList.add(cardBean);
                 notifyDataSetChanged();
-
+                if (mList.size() == 0) {
+                    rlAddCardList.setVisibility(View.VISIBLE);
+                } else {
+                    rlAddCardList.setVisibility(View.GONE);
+                }
 
             }
         });
         holder.batchImgDelIteam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mList.size() == 1) {
-                    Toast.makeText(mContext, "至少一条信息!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                mList.set(position, null);
                 mList.remove(position);
                 notifyDataSetChanged();
+                if (mList.size() == 0) {
+                    rlAddCardList.setVisibility(View.VISIBLE);
+                } else {
+                    rlAddCardList.setVisibility(View.GONE);
+                }
 
 
             }
         });
+
 
         commondityTvCommit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +220,20 @@ public class BatchListAdapter extends BaseAdapter {
 
             }
         });
+        batchImgAddIteam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BatchPicListBean.CardBean cardBean = new BatchPicListBean.CardBean();
+                mList.add(cardBean);
+                notifyDataSetChanged();
+                if (mList.size() == 0) {
+                    rlAddCardList.setVisibility(View.VISIBLE);
+                } else {
+                    rlAddCardList.setVisibility(View.GONE);
+                }
 
+            }
+        });
         holder.tvSelxectPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -330,8 +337,7 @@ public class BatchListAdapter extends BaseAdapter {
         EditText commodityDialogEtCode;
         @BindView(R.id.commodity_dialog_et_timer)
         EditText commodityDialogEtTimer;
-        @BindView(R.id.commodity_dialog_et_remark)
-        EditText commodityDialogEtRemark;
+
         @BindView(R.id.tv_select_pic)
         TextView tvSelxectPic;
         @BindView(R.id.img_zhangjian)

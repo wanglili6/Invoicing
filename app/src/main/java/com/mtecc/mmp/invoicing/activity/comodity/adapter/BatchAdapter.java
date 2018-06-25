@@ -56,8 +56,8 @@ public class BatchAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         BatchBean.DataBean dataBean = batchBeenList.get(position);
-        holder.batchMsgTvName.setText(dataBean.getBatchnum());
-        holder.batchMsgTvtimer.setText(dataBean.getBatchdateStr());
+        holder.batchMsgTvName.setText(dataBean.getBatchdateStr());
+        holder.batchMsgTvtimer.setText(dataBean.getBatchnum());
         String enterprice = dataBean.getEnterprice();
         String saleprice = dataBean.getSaleprice();
         String sellprice = dataBean.getSellprice();

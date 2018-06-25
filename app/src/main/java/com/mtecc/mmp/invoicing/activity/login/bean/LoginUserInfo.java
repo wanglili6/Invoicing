@@ -17,8 +17,48 @@ public class LoginUserInfo {
     private int result;
     private ShopBean shop;
     private boolean isuseradmin;
+    private boolean isUseCGAuidt  ;
+    private boolean isHaveCGAuidt  ;
+    private boolean isUseXSAuidt  ;
+    private boolean isHaveXSAuidt ;
     private UserBean user;
     private int ishavemoreshop;
+
+    public boolean isuseradmin() {
+        return isuseradmin;
+    }
+
+    public boolean isUseCGAuidt() {
+        return isUseCGAuidt;
+    }
+
+    public void setUseCGAuidt(boolean useCGAuidt) {
+        isUseCGAuidt = useCGAuidt;
+    }
+
+    public boolean isHaveCGAuidt() {
+        return isHaveCGAuidt;
+    }
+
+    public void setHaveCGAuidt(boolean haveCGAuidt) {
+        isHaveCGAuidt = haveCGAuidt;
+    }
+
+    public boolean isUseXSAuidt() {
+        return isUseXSAuidt;
+    }
+
+    public void setUseXSAuidt(boolean useXSAuidt) {
+        isUseXSAuidt = useXSAuidt;
+    }
+
+    public boolean isHaveXSAuidt() {
+        return isHaveXSAuidt;
+    }
+
+    public void setHaveXSAuidt(boolean haveXSAuidt) {
+        isHaveXSAuidt = haveXSAuidt;
+    }
 
     public int getResult() {
         return result;

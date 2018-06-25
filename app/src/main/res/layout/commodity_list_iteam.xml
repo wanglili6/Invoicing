@@ -6,6 +6,11 @@
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/xian_color" />
+
     <LinearLayout
         android:id="@+id/commodity_list_ll"
         android:layout_width="match_parent"
@@ -161,6 +166,31 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_snum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="剩余库存:"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/commodity_msg_tv_snum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -220,8 +250,7 @@
                 android:drawableTop="@mipmap/batch"
                 android:text="添加批次"
                 android:textColor="@color/text_money_color"
-                android:textSize="14sp"
-                 />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/commodity_money"
@@ -229,8 +258,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:drawableLeft="@mipmap/money_icon"
                 android:layout_toLeftOf="@+id/select_commodity_cbox"
+                android:drawableLeft="@mipmap/money_icon"
                 android:drawablePadding="5dp"
                 android:text="0.0"
                 android:textColor="@color/text_money_color"
@@ -248,9 +277,4 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/xian_color" />
 </LinearLayout>

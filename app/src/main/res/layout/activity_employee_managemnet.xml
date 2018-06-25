@@ -432,7 +432,6 @@
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg"
                         android:hint="请输入地址"
-                        android:inputType="number"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
@@ -549,7 +548,6 @@
                         android:background="@drawable/login_btn_bg"
                         android:hint="请输入员工登录密码"
                         android:padding="8dp"
-                        android:password="true"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -596,7 +594,6 @@
                         android:background="@drawable/login_btn_bg"
                         android:hint="请确认员工登录密码"
                         android:padding="8dp"
-                        android:password="true"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
                 </LinearLayout>

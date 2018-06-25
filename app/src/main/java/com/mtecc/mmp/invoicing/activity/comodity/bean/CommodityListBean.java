@@ -1,10 +1,9 @@
 package com.mtecc.mmp.invoicing.activity.comodity.bean;
 
-import com.mtecc.mmp.invoicing.activity.purchase.bean.SelectBatchBean;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.bean.SelectBatchBean;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wll on 2018/5/8.
@@ -52,6 +51,7 @@ public class CommodityListBean implements Serializable {
         private String proCode;
         private String barcode;
         private String protype;
+        private String bzqunit;
         private String mernameorplace;
 
         private String trademark;
@@ -65,6 +65,14 @@ public class CommodityListBean implements Serializable {
         private List<SelectBatchBean> mSelectMap;
         private double mSelectMoney;
         private int mSelectNum;
+
+        public String getBzqunit() {
+            return bzqunit;
+        }
+
+        public void setBzqunit(String bzqunit) {
+            this.bzqunit = bzqunit;
+        }
 
         public int getmSelectNum() {
             return mSelectNum;

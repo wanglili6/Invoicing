@@ -49,8 +49,17 @@ public class BatchBean implements Serializable {
         private String enterprice;
         private int pbatchid;
         private int num;
+        private int bhid;
         private String sellprice;
         private Object updatedate;
+
+        public int getBhid() {
+            return bhid;
+        }
+
+        public void setBhid(int bhid) {
+            this.bhid = bhid;
+        }
 
         public int getNum() {
             return num;

@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-
+            android:drawableLeft="@mipmap/code_msg_icon"
+            android:drawablePadding="5dp"
             android:gravity="center_vertical"
             android:text="证件信息"
             android:textColor="@color/text_color"
@@ -47,7 +48,6 @@
         android:layout_height="1px"
         android:background="@color/xian_color" />
 
-    =
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,6 +92,7 @@
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -113,7 +114,6 @@
                 android:textColor="@color/text_red"
                 android:textSize="14sp" />
         </LinearLayout>
-
 
 
         <EditText
@@ -165,39 +165,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:gravity="center"
-            android:text="备注:"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-
-        <EditText
-            android:id="@+id/commodity_dialog_et_remark"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/login_btn_bg"
-            android:hint="请输入备注"
-            android:padding="8dp"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

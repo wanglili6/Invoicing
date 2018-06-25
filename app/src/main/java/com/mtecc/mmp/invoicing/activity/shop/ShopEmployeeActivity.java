@@ -27,6 +27,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
+import com.mtecc.mmp.invoicing.activity.employee.EmployeeListActivity;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeSeeActivity;
 import com.mtecc.mmp.invoicing.activity.employee.adapter.SelectEmployeedialogListAdapter;
 import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
@@ -149,6 +150,17 @@ public class ShopEmployeeActivity extends BaseActivity {
                 openItem.setTitleColor(Color.WHITE);
                 // 将创建的菜单项添加进菜单中
                 menu.addMenuItem(openItem);
+
+                // 创建“删除”项
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.parseColor("#FD3B31")));
+                deleteItem.setWidth(dp2px(100));
+                deleteItem.setTitle("移除");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                // 将创建的菜单项添加进菜单中
+                menu.addMenuItem(deleteItem);
             }
         };
         shopListRecyclerView.setMenuCreator(creator);
@@ -210,6 +222,10 @@ public class ShopEmployeeActivity extends BaseActivity {
                     AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopEmployeeActivity.this, false, customizeDialog);
                     bindRoleClick(customizeDialog, alertDialog, dataBean);
 
+                } else if (title.equals("移除")) {
+                    View customizeDialog = ShowDalogUtils.showCustomizeDialog(ShopEmployeeActivity.this, R.layout.exit_dialog);
+                    AlertDialog alertDialog = ShowDalogUtils.showDialog(ShopEmployeeActivity.this, false, customizeDialog);
+                    dialogClick(customizeDialog, alertDialog, dataBean.getUserid() + "");
                 }
                 return false;
             }
@@ -588,5 +604,90 @@ public class ShopEmployeeActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    /**
+     * 删除对话框
+     *
+     * @param customizeDialog
+     * @param alertDialog
+     * @param userId
+     */
+    private void dialogClick(View customizeDialog, final AlertDialog alertDialog, final String userId) {
+        TextView tvDiss = customizeDialog.findViewById(R.id.tv_diss);
+        TextView tvSure = customizeDialog.findViewById(R.id.tv_sure);
+        TextView tvContant = customizeDialog.findViewById(R.id.dialog_tv_contant);
+        tvContant.setText("是否删除员工?");
+        tvDiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:点击的否
+                alertDialog.dismiss();
+            }
+        });
+
+        tvSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:点击的是
+                alertDialog.dismiss();
+                requestNetShopEmployeeList(userId, shopId);
+
+            }
+        });
+    }
+
+    /**
+     * 删除员工
+     *
+     * @param userid
+     * @param shopid
+     */
+    private void requestNetShopEmployeeList(String userid, String shopid) {
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.unbindMan_URL;
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + userid);
+        LogUtils.d("登陆的url" + shopid);
+        OkHttpUtils.post().tag(this)
+                .addParams("userid", userid)
+                .addParams("shopid", shopid)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            LogUtils.d("错误信息EmployeeSeeActivity" + e.toString());
+                            Toast.makeText(ShopEmployeeActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeSeeActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            LogUtils.d("返回值信息EmployeeSeeActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    Toast.makeText(ShopEmployeeActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                    smartRefreshLayout.autoRefresh();
+                                } else {
+                                    Toast.makeText(ShopEmployeeActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(ShopEmployeeActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息EmployeeSeeActivity" + e1.toString());
+                            Toast.makeText(ShopEmployeeActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
 }

@@ -413,8 +413,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-
-            <include layout="@layout/edit_delete_layout" />
         </LinearLayout>
     </ScrollView>
 

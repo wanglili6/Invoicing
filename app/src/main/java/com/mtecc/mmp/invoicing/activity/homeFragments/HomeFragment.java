@@ -18,21 +18,18 @@ import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.MainActivity;
-import com.mtecc.mmp.invoicing.activity.login.LoginActivity;
 import com.mtecc.mmp.invoicing.activity.login.adapter.SelectShopAdapter;
 import com.mtecc.mmp.invoicing.activity.login.bean.ShopSelectBean;
-import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
-import com.mtecc.mmp.invoicing.activity.purchase.PurchaseListActivity;
-import com.mtecc.mmp.invoicing.activity.sales.AddSalesActivity;
-import com.mtecc.mmp.invoicing.activity.sales.SalesListActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.AddPurchaseActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.AddSalesActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.PurchaseOrderListActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.ReturnsListActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.DataTimerUtils;
 import com.mtecc.mmp.invoicing.activity.incomeExpend.InComeExpendActivity;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 import com.mtecc.mmp.invoicing.utils.ShowDalogUtils;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -167,6 +164,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShopSelectBean.ShoplistBean shoplistBean = shoplist.get(position);
                 PreferencesUtils.putString(getContext(), InvoicingConstants.SHOP_ID, shoplistBean.getShopid() + "");
+                PreferencesUtils.putString(getContext(), InvoicingConstants.SHOP_Name, shoplistBean.getShopname() + "");
                 tvShopName.setText(shoplistBean.getShopname());
                 alertDialog.dismiss();
             }
@@ -271,41 +269,55 @@ public class HomeFragment extends Fragment {
                 //采购单
                 Intent intent = new Intent(getContext(), AddPurchaseActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("type", "income");
+                bundle.putString(InvoicingConstants.TYPE, "add");
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             case R.id.home_pudchase_note:
                 //采购订单
-                startActivity(new Intent(getContext(), PurchaseListActivity.class));
+                Intent purchaseInt = new Intent(getContext(), PurchaseOrderListActivity.class);
+                Bundle purchasebundle = new Bundle();
+                purchasebundle.putString(InvoicingConstants.TYPE, InvoicingConstants.PURCHASE);
+                purchasebundle.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.NoADDRETURN);
+                purchaseInt.putExtras(purchasebundle);
+                startActivity(purchaseInt);
                 break;
             case R.id.home_salse_return:
                 //采购退货单
-                Intent tuiintent = new Intent(getContext(), AddPurchaseActivity.class);
-                Bundle tuibundle = new Bundle();
-                tuibundle.putString("type", "out");
-                tuiintent.putExtras(tuibundle);
-                startActivity(tuiintent);
+                Intent intentOutBound = new Intent();
+                Bundle bundleOutBound = new Bundle();
+                intentOutBound.setClass(getContext(), ReturnsListActivity.class);
+                //采购退货
+                bundleOutBound.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.PURCHASE);
+                intentOutBound.putExtras(bundleOutBound);
+                startActivity(intentOutBound);
                 break;
             case R.id.home_sell:
                 //销售单
                 Intent salesintent = new Intent(getContext(), AddSalesActivity.class);
                 Bundle salesbundle = new Bundle();
-                salesbundle.putString("type", "income");
+                salesbundle.putString(InvoicingConstants.TYPE, "add");
                 salesintent.putExtras(salesbundle);
                 startActivity(salesintent);
                 break;
             case R.id.home_sell_note:
-                //销售订单
-                startActivity(new Intent(getContext(), SalesListActivity.class));
+                //销售历史
+                Intent salesInt = new Intent(getContext(), PurchaseOrderListActivity.class);
+                Bundle sellbundle = new Bundle();
+                sellbundle.putString(InvoicingConstants.TYPE, InvoicingConstants.SALES);
+                sellbundle.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.NoADDRETURN);
+                salesInt.putExtras(sellbundle);
+                startActivity(salesInt);
                 break;
             case R.id.home_sell_salse_return:
                 //销售退货单
-                Intent tuisalesintent = new Intent(getContext(), AddSalesActivity.class);
-                Bundle tuisalesbundle = new Bundle();
-                tuisalesbundle.putString("type", "out");
-                tuisalesintent.putExtras(tuisalesbundle);
-                startActivity(tuisalesintent);
+                Intent intentreturn = new Intent();
+                Bundle bundlerturn = new Bundle();
+                intentreturn.setClass(getContext(), ReturnsListActivity.class);
+                //销售退货
+                bundlerturn.putString(InvoicingConstants.STOCK_TYPE, InvoicingConstants.SALES);
+                intentreturn.putExtras(bundlerturn);
+                startActivity(intentreturn);
                 break;
         }
     }

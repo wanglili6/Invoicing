@@ -91,10 +91,6 @@ public class SeeCommodityActivity extends BaseActivity {
     TextView commoditySeeAddress;
     @BindView(R.id.commodity_see_start_code)
     TextView commoditySeeStartCode;
-    @BindView(R.id.see_edit)
-    TextView seeEdit;
-    @BindView(R.id.see_delete)
-    TextView seeDelete;
     private String proid;
     private AlertDialog showDialog;
     private Gson gson;
@@ -143,24 +139,11 @@ public class SeeCommodityActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_batch, R.id.rl_back, R.id.see_edit, R.id.see_delete})
+    @OnClick({R.id.rl_batch, R.id.rl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
-                break;
-            case R.id.see_edit:
-                Intent roleintent = new Intent(this, AddCommodityActivity.class);
-                Bundle rolebundle = new Bundle();
-                rolebundle.putString(InvoicingConstants.COMMODITY_TYPE, InvoicingConstants.COMMODITY_EDIT);
-                rolebundle.putString(InvoicingConstants.COMMODITY_Id, proid);
-                roleintent.putExtras(rolebundle);
-                startActivity(roleintent);
-                break;
-            case R.id.see_delete:
-                View exitView = ShowDalogUtils.showCustomizeDialog(this, R.layout.exit_dialog);
-                AlertDialog dialog = ShowDalogUtils.showDialog(this, false, exitView);
-                editClick(exitView, dialog);
                 break;
             case R.id.rl_batch:
                 Intent intent = new Intent(SeeCommodityActivity.this, BatchListActivity.class);
@@ -172,34 +155,7 @@ public class SeeCommodityActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 是否返回
-     *
-     * @param exitView
-     * @param dialog
-     */
-    private void editClick(View exitView, final AlertDialog dialog) {
-        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
-        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
-        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
-        contactTV.setText("是否删除此商品?");
-        dissTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
 
-            }
-        });
-        sureTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-                requestNetdelCommodity(proid);
-
-            }
-        });
-    }
 
     /**
      * 商品查询
@@ -291,58 +247,6 @@ public class SeeCommodityActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * 刪除
-     */
-    private void requestNetdelCommodity(final String proid) {
-        String url = InvoicingConstants.BASE_URL + InvoicingConstants.deleteGood_URL;
-        LogUtils.d("登陆的url" + url);
-        LogUtils.d("登陆的url" + proid);
-        OkHttpUtils
-                .post()
-                .tag(this)
-                .addParams("proid", proid)
-                .url(url)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        try {
-                            showDialog.dismiss();
-                            LogUtils.d("错误信息SeeCommodityActivity" + e.toString());
-                            Toast.makeText(SeeCommodityActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
-                        } catch (Exception e1) {
-                            LogUtils.d("错误信息SeeCommodityActivity" + e1.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        try {
-                            showDialog.dismiss();
-                            LogUtils.d("返回值信息SeeCommodityActivity" + response.toString());
-                            JSONObject jsonObject = new JSONObject(response);
-                            int result = jsonObject.optInt("result");
-                            if (result != 0) {
-                                String reslut = result + "";
-                                if (reslut.equals("200")) {
-                                    showToast("编辑商品成功!");
-                                    finish();
-                                } else {
-                                    showToast("编辑商品失败!");
-                                }
-                            } else {
-                                Toast.makeText(SeeCommodityActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        } catch (Exception e1) {
-                            LogUtils.d("错误信息SeeCommodityActivity" + e1.toString());
-                            Toast.makeText(SeeCommodityActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
 
     @Override
     protected void onPause() {

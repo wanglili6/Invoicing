@@ -150,18 +150,6 @@ public class ApproveActivity extends BaseActivity {
 
     @Override
     public void setListener() {
-        approveEtCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if (TextUtils.isEmpty(codeType)) {
-                        showToast("请选择证件类型!");
-                    }
-                }
-
-            }
-        });
-
         rgSelect.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -467,28 +455,30 @@ public class ApproveActivity extends BaseActivity {
                         uri = photoUri;
                     }
                 }
-                String[] pojo = {MediaStore.Images.Media.DATA};
-                Cursor cursor = this.getContentResolver().query(uri,
-                        pojo, null, null, null);
-                if (cursor != null) {
-                    ContentResolver cr = this.getContentResolver();
-                    int colunm_index = cursor
-                            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    String path = cursor.getString(colunm_index);
-                    // 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
-                    // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
-                    if (path.endsWith("jpg") || path.endsWith("png")) {
-                        //压缩
-                        picPath = CompressionPhotoUtils.compressImage(path, path, 50);
-                        LogUtils.d("更换的数据" + picPath);
-                        Glide.with(this)
-                                .load(picPath)
-                                .centerCrop()
-                                .skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .into(imgZhengjian);
+                if (uri != null) {
+                    String[] pojo = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = this.getContentResolver().query(uri,
+                            pojo, null, null, null);
+                    if (cursor != null) {
+                        ContentResolver cr = this.getContentResolver();
+                        int colunm_index = cursor
+                                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        String path = cursor.getString(colunm_index);
+                        // 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
+                        // 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
+                        if (path.endsWith("jpg") || path.endsWith("png")) {
+                            //压缩
+                            picPath = CompressionPhotoUtils.compressImage(path, path, 50);
+                            LogUtils.d("更换的数据" + picPath);
+                            Glide.with(this)
+                                    .load(picPath)
+                                    .centerCrop()
+                                    .skipMemoryCache(true)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .into(imgZhengjian);
 
+                        }
                     }
                 }
                 break;
@@ -666,7 +656,11 @@ public class ApproveActivity extends BaseActivity {
                                     approveEtRange.setText(qyrange);
                                     approveTvValidUntil.setText(qyUntilTimer);
                                     CompanySeeBean.DataBean.FilecardidBean filecardid = data.getFilecardid();
-                                    picPath = InvoicingConstants.IMAGEURL + filecardid.getParentpath() + "/" + filecardid.getPath();
+                                    if (filecardid != null) {
+                                        picPath = InvoicingConstants.IMAGEURL + filecardid.getParentpath() + "/" + filecardid.getPath();
+                                    } else {
+                                        picPath = "";
+                                    }
                                     Glide.with(ApproveActivity.this)
                                             .load(picPath)
                                             .centerCrop()

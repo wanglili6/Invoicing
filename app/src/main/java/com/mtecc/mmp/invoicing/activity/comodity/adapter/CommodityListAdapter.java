@@ -92,18 +92,7 @@ public class CommodityListAdapter extends BaseAdapter {
             }
         });
 
-        holder.commodityListLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //查看商品
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("proid", dataBean.getProId() + "");
-                intent.setClass(mContext, SeeCommodityActivity.class);
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
-        });
+
         return convertView;
     }
 

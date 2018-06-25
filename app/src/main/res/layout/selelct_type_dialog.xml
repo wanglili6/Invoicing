@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/search_ll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_color"
@@ -46,7 +45,6 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/dialog_tv_xk"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="1dp"

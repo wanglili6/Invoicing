@@ -116,9 +116,10 @@ public class BatchListActivity extends BaseActivity {
         imgSelect.setVisibility(View.VISIBLE);
         imgSelect.setVisibility(View.VISIBLE);
         imgLeftSelect.setVisibility(View.VISIBLE);
-        imgSelect.setBackgroundResource(R.mipmap.add_select);
         imgLeftSelect.setBackgroundResource(R.mipmap.filter);
+        imgSelect.setBackgroundResource(R.mipmap.add_select);
         tvTitle.setText("批次信息");
+        etSerch.setHint("请输入查询的批号");
         parms = getIntent().getExtras();
         useSystemUtils = new UseSystemUtils(BatchListActivity.this);
         goodsid = parms.getString(InvoicingConstants.COMMODITY_Id);

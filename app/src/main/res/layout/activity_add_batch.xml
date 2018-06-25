@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical"
     tools:context="com.mtecc.mmp.invoicing.activity.comodity.AddBatchActivity">
 
@@ -242,6 +243,76 @@
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.4"
+                    android:gravity="center"
+                    android:text="备注:"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+
+                <EditText
+                    android:id="@+id/commodity_dialog_et_remark"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_btn_bg"
+                    android:hint="请输入备注"
+                    android:padding="8dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/rl_add_card_list"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:drawableLeft="@mipmap/code_msg_icon"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="证件信息"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/batch_img_add_iteam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@mipmap/add_batch"
+                    android:clickable="true" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/xian_color" />
 
             <com.mtecc.mmp.invoicing.views.NoScrollListView
 

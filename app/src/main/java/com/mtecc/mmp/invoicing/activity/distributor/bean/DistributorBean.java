@@ -11,6 +11,7 @@ import java.util.Map;
 public class DistributorBean implements Serializable {
 
     private Integer merid;
+    private Integer cid;
     private String mername;
     private String entregno;//营业执照号
     private String cardcode;//身份证
@@ -29,6 +30,14 @@ public class DistributorBean implements Serializable {
     private Integer createuser;//创建人//是否是个人
     private List<CardBean> cardBeanList;       //备注
     private Map<String, String> picmap;
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
+    }
 
     public Integer getCreateuser() {
         return createuser;

@@ -81,8 +81,12 @@ public class AddBatchActivity extends BaseActivity {
     TextView CommondityTvCommit;
     @BindView(R.id.img_select)
     ImageButton imgSelect;
+    @BindView(R.id.batch_img_add_iteam)
+    ImageView batchImgAddIteam;
     @BindView(R.id.rl_select)
     RelativeLayout rlSelect;
+    @BindView(R.id.rl_add_card_list)
+    RelativeLayout rlAddCardList;
     @BindView(R.id.ll_right)
     LinearLayout llRight;
     @BindView(R.id.rl_title_bg)
@@ -99,7 +103,8 @@ public class AddBatchActivity extends BaseActivity {
     EditText commodityDialogEtJhuojia;
     @BindView(R.id.commodity_dialog_et_pfjia)
     EditText commodityDialogEtPfjia;
-
+    @BindView(R.id.commodity_dialog_et_remark)
+    EditText commodityDialogEtRemark;
     private String name = "";
     private String pihaoNum = "";
     private String lshougj = "";
@@ -160,7 +165,7 @@ public class AddBatchActivity extends BaseActivity {
         }
 
 
-        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit, mDiclist);
+        batchListAdapter = new BatchListAdapter(this, mlist, CommondityTvCommit, mDiclist, rlAddCardList, batchImgAddIteam);
         addBatchListView.setAdapter(batchListAdapter);
         batchListAdapter.notifyDataSetChanged();
 
@@ -204,6 +209,7 @@ public class AddBatchActivity extends BaseActivity {
         batchListAdapter.setiAddBatchOnClickListerner(new BatchListAdapter.IAddBatchOnClickListerner() {
             @Override
             public void onAddBatchClick(final List<BatchPicListBean.CardBean> mPicimgList) {
+
                 requestCommit(mPicimgList);
 
 
@@ -237,15 +243,25 @@ public class AddBatchActivity extends BaseActivity {
         batchPicListBean.setSaleprice(pfajia);
         batchPicListBean.setSellprice(lshougj);
         batchPicListBean.setEnterprice(jhuojia);
-        batchPicListBean.setCardBeanlist(mPicimgList);
+        List<BatchPicListBean.CardBean> mselectPicimgList = new ArrayList<>();
         Map<String, String> imgMap = new HashMap<String, String>();
         if (mPicimgList != null) {
             int size = mPicimgList.size();
             for (int i = 0; i < size; i++) {
                 BatchPicListBean.CardBean cardBean = mPicimgList.get(i);
-                imgMap.put(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png");
+                if (!TextUtils.isEmpty(cardBean.getCardnum())) {
+                    if (!TextUtils.isEmpty(cardBean.getImgUrl())) {
+                        imgMap.put(cardBean.getCardnum(), cid + user_id + cardBean.getCardnum() + ".png");
+                    }
+                    mselectPicimgList.add(cardBean);
+                }
             }
+
             batchPicListBean.setpicmap(imgMap);
+            batchPicListBean.setCardBeanlist(mselectPicimgList);
+        } else {
+            mPicimgList = new ArrayList<>();
+            batchPicListBean.setCardBeanlist(mPicimgList);
         }
 
 //                //从列表添加
@@ -295,7 +311,9 @@ public class AddBatchActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * 拍照
+     */
     private void picPhoto() {
         Intent intent = new Intent();
         // 指定开启系统相机的Action
@@ -373,7 +391,6 @@ public class AddBatchActivity extends BaseActivity {
                 exitClick(exitView, dialog);
                 break;
             case R.id.commodity_dialog_et_name:
-
                 useSystemUtils.useSystemTimeNoHms(commodityDialogEtName);
                 break;
         }
@@ -616,30 +633,57 @@ public class AddBatchActivity extends BaseActivity {
                             Gson gson = new Gson();
                             SeeBatchMsgBean seeBatchMsgBean = gson.fromJson(response, SeeBatchMsgBean.class);
                             if (seeBatchMsgBean != null) {
+                                SeeBatchMsgBean.BatchBean batchBean = seeBatchMsgBean.getBatch();
+                                commodityDialogEtName.setText(batchBean.getBatchdateStr());
+                                commodityDialogEtNum.setText(batchBean.getBatchnum());
+                                commodityDialogEtLshoujia.setText(batchBean.getSellprice());
+                                commodityDialogEtJhuojia.setText(batchBean.getEnterprice());
+                                commodityDialogEtPfjia.setText(batchBean.getSaleprice());
+                                commodityDialogEtRemark.setText(batchBean.getRemark());
                                 List<SeeBatchMsgBean.CardListBean> cardList = seeBatchMsgBean.getCardList();
+                                List<SeeBatchMsgBean.DiclistBean> diclist = seeBatchMsgBean.getDiclist();
                                 int size = cardList.size();
                                 mlist.clear();
-                                List<SeeBatchMsgBean.DiclistBean> diclist = seeBatchMsgBean.getDiclist();
-                                for (int i = 0; i < size; i++) {
-                                    SeeBatchMsgBean.CardListBean cardListBean = cardList.get(i);
-                                    commodityDialogEtName.setText(cardListBean.getPbatchid().getBatchdateStr());
-                                    commodityDialogEtNum.setText(cardListBean.getPbatchid().getBatchnum());
-                                    commodityDialogEtLshoujia.setText(cardListBean.getPbatchid().getSellprice());
-                                    commodityDialogEtJhuojia.setText(cardListBean.getPbatchid().getEnterprice());
-                                    commodityDialogEtPfjia.setText(cardListBean.getPbatchid().getSaleprice());
-                                    BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
-                                    picBean.setCardnum(cardListBean.getCardnum());
-                                    int diclistsize = diclist.size();
-                                    for (int j = 0; j < diclistsize; j++) {
-                                        if (cardListBean.getCardtype().equals(diclist.get(j).getBUSINID() + "")) {
-                                            picBean.setCardtypeName(diclist.get(j).getBUSINNAME());
+                                if (size > 0) {
+                                    for (int i = 0; i < size; i++) {
+                                        SeeBatchMsgBean.CardListBean cardListBean = cardList.get(i);
+                                        BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
+                                        picBean.setCardnum(cardListBean.getCardnum());
+                                        int diclistsize = diclist.size();
+                                        for (int j = 0; j < diclistsize; j++) {
+                                            if (cardListBean.getCardtype().equals(diclist.get(j).getBUSINID() + "")) {
+                                                picBean.setCardtypeName(diclist.get(j).getBUSINNAME());
+                                            }
                                         }
+                                        picBean.setCharddate(cardListBean.getCharddateStr());
+                                        picBean.setRemark(cardListBean.getRemark());
+                                        SeeBatchMsgBean.CardListBean.FilecardidBean filecardid = cardListBean.getFilecardid();
+                                        if (filecardid != null) {
+                                            picBean.setImgUrl(InvoicingConstants.IMAGEURL + cardListBean.getFilecardid().getParentpath() + "/" + cardListBean.getFilecardid().getPath());
+                                        }
+                                        mlist.add(picBean);
+                                        batchListAdapter.notifyDataSetChanged();
                                     }
-                                    picBean.setCharddate(cardListBean.getCharddateStr());
-                                    picBean.setRemark(cardListBean.getRemark());
-                                    picBean.setImgUrl(InvoicingConstants.IMAGEURL + cardListBean.getFilecardid().getParentpath() + "/" + cardListBean.getFilecardid().getPath());
-                                    mlist.add(picBean);
-                                    batchListAdapter.notifyDataSetChanged();
+                                } else if (size == 0) {
+                                    if (mlist.size() == 0) {
+                                        rlAddCardList.setVisibility(View.VISIBLE);
+                                        batchImgAddIteam.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
+                                                mlist.add(picBean);
+                                                batchListAdapter.notifyDataSetChanged();
+                                                if (mlist.size() == 0) {
+                                                    rlAddCardList.setVisibility(View.VISIBLE);
+                                                } else {
+                                                    rlAddCardList.setVisibility(View.GONE);
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        rlAddCardList.setVisibility(View.GONE);
+                                    }
+
                                 }
 
                             }

@@ -156,9 +156,18 @@ public class LoginActivity extends BaseActivity {
                                 int result = loginUserInfo.getResult();
                                 if (result == 200) {
                                     boolean isuseradmin = loginUserInfo.isIsuseradmin();
+                                    boolean isHaveCGAuidt = loginUserInfo.isHaveCGAuidt();
+                                    boolean isHaveXSAuidt = loginUserInfo.isHaveXSAuidt();
+                                    boolean isUseCGAuidt = loginUserInfo.isUseCGAuidt();
+                                    boolean isUseXSAuidt = loginUserInfo.isUseXSAuidt();
                                     PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isuseradmin, isuseradmin);
+                                    PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isHaveCGAuidt, isHaveCGAuidt);
+                                    PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isHaveXSAuidt, isHaveXSAuidt);
+                                    PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isUseCGAuidt, isUseCGAuidt);
+                                    PreferencesUtils.putBoolean(LoginActivity.this, InvoicingConstants.isUseXSAuidt, isUseXSAuidt);
                                     if (isuseradmin) {
                                         PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, "");
+                                        PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_Name, "");
                                         storageMsg(loginUserInfo, userPwd);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.putExtra("isuseradmin", isuseradmin);
@@ -175,11 +184,13 @@ public class LoginActivity extends BaseActivity {
                                             intent.putExtra("ishavemoreshop", "1");
                                             intent.putExtra("shopname", loginUserInfo.getShop().getShopname());
                                             PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, loginUserInfo.getShop().getShopid() + "");
+                                            PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_Name, loginUserInfo.getShop().getShopname() + "");
                                             startActivity(intent);
                                             finish();
                                         } else if (ishavemoreshop == 0) {
                                             showToast("您当前没有绑定店铺,请联系管理员进行绑定!");
                                             PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, "");
+                                            PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_Name, "");
                                         } else {
                                             storageMsg(loginUserInfo, userPwd);
                                             requestNetShops(loginUserInfo.getUser().getUserid() + "", "2", isuseradmin);
@@ -272,6 +283,7 @@ public class LoginActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShopSelectBean.ShoplistBean shoplistBean = shoplist.get(position);
                 PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_ID, shoplistBean.getShopid() + "");
+                PreferencesUtils.putString(LoginActivity.this, InvoicingConstants.SHOP_Name, shoplistBean.getShopname() + "");
                 alertDialog.dismiss();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("isuseradmin", isuseradmin);

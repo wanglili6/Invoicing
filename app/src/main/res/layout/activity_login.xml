@@ -34,7 +34,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/touxiang" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="还未注册？"
+                    android:text="没有账号？去注册"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
             </RelativeLayout>

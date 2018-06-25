@@ -103,6 +103,7 @@ public class PersonMsgActivity extends BaseActivity {
     private int cid = 0;
     private String userId = "";
     private AlertDialog showDialog;
+    private boolean isuseradmin;
 
     @Override
     public void widgetClick(View v) {
@@ -129,11 +130,16 @@ public class PersonMsgActivity extends BaseActivity {
         address = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ADDRESS, "");
         cardNum = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_CARDNUM, "");
         email = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_EMAIL, "");
-        role = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ROLE, "");
         age = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_AGE, "");
         sex = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_SEX, "");
         cid = PreferencesUtils.getInt(PersonMsgActivity.this, InvoicingConstants.QY_ID, 0);
         userId = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ID, "");
+        isuseradmin = PreferencesUtils.getBoolean(PersonMsgActivity.this, InvoicingConstants.isuseradmin, false);
+        if (isuseradmin) {
+            role = "商户管理员";
+        }else {
+            role = PreferencesUtils.getString(PersonMsgActivity.this, InvoicingConstants.USER_ROLE, "");
+        }
         if (TextUtils.isEmpty(name)) {
             personMsgName.setText("暂无");
         } else {
@@ -217,12 +223,12 @@ public class PersonMsgActivity extends BaseActivity {
         cardNum = personMsgCode.getText().toString().trim();
         sex = personMsgSex.getText().toString().trim();
 
-        if (phone.length()!=11){
+        if (phone.length() != 11) {
             showDialog.dismiss();
             showToast("手机号格式不正确!");
             return;
         }
-        if (cardNum.length()!=18){
+        if (cardNum.length() != 18) {
             showDialog.dismiss();
             showToast("身份证格式不正确!");
             return;

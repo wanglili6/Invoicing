@@ -167,10 +167,10 @@ public class AddDistributorActivity extends BaseActivity {
             if (merchants_distributor_type.equals(InvoicingConstants.Merchants_TYPE)) {
                 distributorType = parms.getString(InvoicingConstants.Merchants_TYPE);
                 if (distributorType.equals(InvoicingConstants.Merchants_ADD)) {
-                    tvTitle.setText("添加进货商");
+                    tvTitle.setText("添加供货商");
 
                 } else if (distributorType.equals(InvoicingConstants.Merchants_EDIT)) {
-                    tvTitle.setText("修改进货商");
+                    tvTitle.setText("修改供货商");
                     merId = parms.getString(InvoicingConstants.Merchants_ID);
                     requestNetSeeDistribution(merId);
                 }
@@ -311,6 +311,8 @@ public class AddDistributorActivity extends BaseActivity {
             distributorBean.setMertype(InvoicingConstants.Merchants_mertype);
         }
         distributorBean.setQqnum(qq);
+
+        distributorBean.setCid(cid);
         distributorBean.setWxnum(wexin);
         distributorBean.setContacts(faren);
         distributorBean.setCardcode(carCode);
@@ -454,10 +456,10 @@ public class AddDistributorActivity extends BaseActivity {
                             if (result != 0) {
                                 String reslut = result + "";
                                 if (reslut.equals("200")) {
-                                    showToast("添加分销商成功!");
+                                    showToast("添加成功!");
                                     finish();
                                 } else {
-                                    showToast("添加分销商失败!");
+                                    showToast("添加失败!");
                                 }
                             } else {
                                 Toast.makeText(AddDistributorActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
@@ -517,10 +519,10 @@ public class AddDistributorActivity extends BaseActivity {
                             if (result != 0) {
                                 String reslut = result + "";
                                 if (reslut.equals("200")) {
-                                    showToast("修改分销商成功!");
+                                    showToast("修改成功!");
                                     finish();
                                 } else {
-                                    showToast("修改分销商失败!");
+                                    showToast("修改失败!");
                                 }
                             } else {
                                 Toast.makeText(AddDistributorActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();

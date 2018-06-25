@@ -27,8 +27,9 @@ import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
 import com.mtecc.mmp.invoicing.activity.distributor.bean.DistributionListBean;
 import com.mtecc.mmp.invoicing.activity.distributor.adapter.DistributorlistAdapter;
-import com.mtecc.mmp.invoicing.activity.purchase.AddPurchaseActivity;
-import com.mtecc.mmp.invoicing.activity.sales.AddSalesActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.AddPurchaseActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.AddReturnsActivity;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.AddSalesActivity;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.AwayKetBordUtils;
@@ -56,7 +57,7 @@ import okhttp3.Call;
 import static com.scwang.smartrefresh.layout.util.DensityUtil.dp2px;
 
 /**
- * 分销商/进货商的列表
+ * 分销商/供货商的列表
  */
 public class DistributorLIstActivity extends BaseActivity {
 
@@ -116,6 +117,7 @@ public class DistributorLIstActivity extends BaseActivity {
     private boolean isPause;
     private String merchants_distributor_type = "";
     private String merchants_type = "";
+    private String type;
 
     @Override
     public void widgetClick(View v) {
@@ -127,6 +129,7 @@ public class DistributorLIstActivity extends BaseActivity {
     public void initParms(Bundle parms) {
         parms = getIntent().getExtras();
         merchants_distributor_type = parms.getString(InvoicingConstants.Merchants_Distributor_type);
+        type = parms.getString(InvoicingConstants.TYPE);
         cid = PreferencesUtils.getInt(DistributorLIstActivity.this, InvoicingConstants.QY_ID, 0);
         awayKetBordUtils = new AwayKetBordUtils(this, getWindow());
         ivBack.setVisibility(View.VISIBLE);
@@ -146,7 +149,7 @@ public class DistributorLIstActivity extends BaseActivity {
             distributorlistAdapter.notifyDataSetChanged();
         } else if (merchants_distributor_type.equals(InvoicingConstants.Merchants_TYPE)) {
             merchants_type = parms.getString(InvoicingConstants.Merchants_TYPE);
-            tvTitle.setText("进货商管理");
+            tvTitle.setText("供货商管理");
             requestNetCommodityList(pagenum + "", mername, entregno, cid + "", InvoicingConstants.Merchants_mertype);
             distributorlistAdapter = new DistributorlistAdapter(this, mList, InvoicingConstants.Merchants_TYPE);
             distributionListRecyclerView.setAdapter(distributorlistAdapter);
@@ -284,7 +287,13 @@ public class DistributorLIstActivity extends BaseActivity {
                     if (merchants_type.equals(InvoicingConstants.Distributor_Select)) {
                         bundle.putString(InvoicingConstants.Distributor_Name, dataBean.getMername() + "");
                         bundle.putString(InvoicingConstants.Distributor_ID, dataBean.getMerid() + "");
-                        intentemployee.setClass(DistributorLIstActivity.this, AddSalesActivity.class);
+                        if (TextUtils.isEmpty(type)) {
+                            intentemployee.setClass(DistributorLIstActivity.this, AddSalesActivity.class);
+                        } else {
+                            if (type.equals(InvoicingConstants.SALES)) {
+                                intentemployee.setClass(DistributorLIstActivity.this, AddReturnsActivity.class);
+                            }
+                        }
                         intentemployee.putExtras(bundle);
                         setResult(3, intentemployee);
                         finish();
@@ -300,7 +309,13 @@ public class DistributorLIstActivity extends BaseActivity {
                     if (merchants_type.equals(InvoicingConstants.Merchants_Select)) {
                         bundle.putString(InvoicingConstants.Merchants_Name, dataBean.getMername() + "");
                         bundle.putString(InvoicingConstants.Merchants_ID, dataBean.getMerid() + "");
-                        intentemployee.setClass(DistributorLIstActivity.this, AddPurchaseActivity.class);
+                        if (TextUtils.isEmpty(type)) {
+                            intentemployee.setClass(DistributorLIstActivity.this, AddPurchaseActivity.class);
+                        } else {
+                            if (type.equals(InvoicingConstants.PURCHASE)) {
+                                intentemployee.setClass(DistributorLIstActivity.this, AddReturnsActivity.class);
+                            }
+                        }
                         intentemployee.putExtras(bundle);
                         setResult(3, intentemployee);
                         finish();
@@ -500,7 +515,7 @@ public class DistributorLIstActivity extends BaseActivity {
                                                 tvError.setText("无符合条件的数据!");
                                                 showToast("无符合条件的数据!");
                                             } else {
-                                                showToast("暂无分销商,请进行添加!");
+                                                showToast("暂无数据,请进行添加!");
                                             }
                                         }
                                     }

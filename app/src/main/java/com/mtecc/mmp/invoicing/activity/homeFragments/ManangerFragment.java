@@ -16,6 +16,7 @@ import com.mtecc.mmp.invoicing.activity.check.CheckListActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.CommodityListActivity;
 import com.mtecc.mmp.invoicing.activity.distributor.DistributorLIstActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
+import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +72,31 @@ public class ManangerFragment extends Fragment {
      * 初始化数据
      */
     private void initData() {
+        //是否使用销售审核
+        boolean isUseXSAuidt = PreferencesUtils.getBoolean(getActivity(), InvoicingConstants.isUseXSAuidt);
+        boolean isHaveXSAuidt = PreferencesUtils.getBoolean(getActivity(), InvoicingConstants.isHaveXSAuidt);
+        if (isUseXSAuidt) {
+            if (isHaveXSAuidt) {
+                manageRlExpend.setVisibility(View.VISIBLE);
+            } else {
+                manageRlExpend.setVisibility(View.GONE);
+            }
+        } else {
+            manageRlExpend.setVisibility(View.GONE);
+        }
+        //是否使用采购审核
+        boolean isUseCGAuidt = PreferencesUtils.getBoolean(getActivity(), InvoicingConstants.isUseCGAuidt);
+        boolean isHaveCGAuidt = PreferencesUtils.getBoolean(getActivity(), InvoicingConstants.isHaveCGAuidt);
+        if (isUseCGAuidt) {
+            if (isHaveCGAuidt) {
+                manageRlIncome.setVisibility(View.VISIBLE);
+            } else {
+                manageRlIncome.setVisibility(View.GONE);
+            }
+        } else {
+            manageRlIncome.setVisibility(View.GONE);
+        }
+
 
     }
 

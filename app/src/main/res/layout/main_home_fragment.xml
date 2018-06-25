@@ -294,7 +294,7 @@
                         android:drawablePadding="5dp"
                         android:drawableTop="@mipmap/salse_return"
                         android:gravity="center"
-                        android:text="采购退货单"
+                        android:text="采购退货记录"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 
@@ -375,7 +375,6 @@
         android:paddingBottom="15dp">
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="14dp"
@@ -456,7 +455,7 @@
                         android:drawablePadding="5dp"
                         android:drawableTop="@mipmap/sell_salse_return"
                         android:gravity="center"
-                        android:text="销售退货单"
+                        android:text="销售退货记录"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 

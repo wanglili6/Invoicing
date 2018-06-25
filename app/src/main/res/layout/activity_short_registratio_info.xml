@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="100"
         android:fadeScrollbars="true"
         android:focusableInTouchMode="true">
 
@@ -126,7 +127,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg"
-                        android:hint="请输入真实姓名"
+                        android:hint="请输入密码"
                         android:inputType="textPassword"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
@@ -174,7 +175,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_btn_bg"
-                        android:hint="请输入手机号"
+                        android:hint="请保持两次密码一致"
                         android:inputType="textPassword"
                         android:padding="8dp"
                         android:textColor="@color/text_color"
@@ -350,7 +351,7 @@
                 android:id="@+id/register_tv_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="25dp"
@@ -359,6 +360,24 @@
                 android:text="注册"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="已注册过!去登录"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
+            </RelativeLayout>
         </LinearLayout>
 
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <include layout="@layout/base_title" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,14 +44,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.mtecc.mmp.invoicing.views.MySwipeMenuListView
+                <com.baoyz.swipemenulistview.SwipeMenuListView
                     android:id="@+id/purchase_list_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@null"
                     android:scrollbars="none">
 
-                </com.mtecc.mmp.invoicing.views.MySwipeMenuListView>
+                </com.baoyz.swipemenulistview.SwipeMenuListView>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

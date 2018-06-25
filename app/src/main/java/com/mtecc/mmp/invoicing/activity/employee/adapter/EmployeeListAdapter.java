@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.employee.EmployeeSeeActivity;
 import com.mtecc.mmp.invoicing.activity.employee.bean.EmployeeListBean;
+import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import java.util.List;
@@ -25,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by wll on 2018/4/18.
  */
 
-public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapter.ViewHolder> {
+public class EmployeeListAdapter extends BaseAdapter {
     private Context mContext;
     private List<EmployeeListBean.DataBean> mList;
 
@@ -35,14 +37,32 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         this.mList = mList;
     }
 
+
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.employee_list_iteam, parent, false);
-        return new ViewHolder(view);
+    public int getCount() {
+        return mList != null ? mList.size() : 0;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public Object getItem(int position) {
+        return mList != null ? mList.get(position) : null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.employee_list_iteam, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
         final EmployeeListBean.DataBean dataBean = mList.get(position);
         holder.employeeTvName.setText(dataBean.getUsername());
         holder.employeeTvCode.setText(dataBean.getCardnum());
@@ -55,29 +75,12 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         }
         holder.employeeTvShop.setText(dataBean.getShopname());
 
-        holder.shopListLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(InvoicingConstants.selectuserid, dataBean);
-                bundle.putString(InvoicingConstants.Employee_List_TYPE, InvoicingConstants.companyEmployeeAdd);
-                //TODO:跳转查看员工详情
-                intent.setClass(mContext, EmployeeSeeActivity.class);
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
 
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList != null ? mList.size() : 0;
+        return convertView;
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder {
         @BindView(R.id.employee_img)
         ImageView employeeImg;
         @BindView(R.id.employee_tv_name)
@@ -94,7 +97,6 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         LinearLayout shopListLl;
 
         ViewHolder(View view) {
-            super(view);
             ButterKnife.bind(this, view);
         }
     }

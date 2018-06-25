@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/search_ll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_color"
@@ -13,7 +12,6 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center"
@@ -167,7 +165,6 @@
 
 
             <EditText
-                android:id="@+id/commodity_dialog_et_pinpai"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

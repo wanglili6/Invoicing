@@ -85,7 +85,6 @@ public class DoucumentListAdapter extends BaseAdapter {
         holder.commodityDialogEtType.setTag(position);
         holder.commodityDialogEtCode.setTag(position);
         holder.commodityDialogEtTimer.setTag(position);
-        holder.commodityDialogEtRemark.setTag(position);
         final ViewHolder finalHolder = holder;
         holder.commodityDialogEtType.setText(mList.get(position).getCardtypeName());
         holder.commodityDialogEtType.addTextChangedListener(new TextWatcher() {
@@ -147,23 +146,7 @@ public class DoucumentListAdapter extends BaseAdapter {
 
             }
         });
-        holder.commodityDialogEtRemark.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int pos = (int) finalHolder.commodityDialogEtRemark.getTag();
-                mList.get(pos).setRemark(s + "");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         if (type.equals(InvoicingConstants.DOUCUMENT_EDIT)) {
             holder.batchImgAddIteam.setVisibility(View.GONE);
@@ -175,7 +158,6 @@ public class DoucumentListAdapter extends BaseAdapter {
 
         holder.commodityDialogEtTimer.setText(mList.get(position).getEnddate());
         holder.commodityDialogEtCode.setText(mList.get(position).getMercardnum());
-        holder.commodityDialogEtRemark.setText(mList.get(position).getRemark());
         Glide.with(mContext)
                 .load(mList.get(position).getImgUrl())
                 .skipMemoryCache(true)
@@ -348,8 +330,6 @@ public class DoucumentListAdapter extends BaseAdapter {
         EditText commodityDialogEtCode;
         @BindView(R.id.commodity_dialog_et_timer)
         EditText commodityDialogEtTimer;
-        @BindView(R.id.commodity_dialog_et_remark)
-        EditText commodityDialogEtRemark;
         @BindView(R.id.tv_select_pic)
         TextView tvSelxectPic;
         @BindView(R.id.img_zhangjian)

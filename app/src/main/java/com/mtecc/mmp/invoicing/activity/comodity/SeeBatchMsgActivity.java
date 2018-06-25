@@ -162,18 +162,18 @@ public class SeeBatchMsgActivity extends BaseActivity {
                             Gson gson = new Gson();
                             SeeBatchMsgBean seeBatchMsgBean = gson.fromJson(response, SeeBatchMsgBean.class);
                             if (seeBatchMsgBean != null) {
+                                SeeBatchMsgBean.BatchBean batchBean = seeBatchMsgBean.getBatch();
+                                commoditySeeEtName.setText(batchBean.getBatchdateStr());
+                                commoditySeeEtNum.setText(batchBean.getBatchnum());
+                                commoditySeeEtLshoujia.setText(batchBean.getSellprice());
+                                commoditySeeEtJhuojia.setText(batchBean.getEnterprice());
+                                commoditySeeEtPfjia.setText(batchBean.getSaleprice());
                                 List<SeeBatchMsgBean.CardListBean> cardList = seeBatchMsgBean.getCardList();
                                 int size = cardList.size();
                                 mList.clear();
-
                                 List<SeeBatchMsgBean.DiclistBean> diclist = seeBatchMsgBean.getDiclist();
                                 for (int i = 0; i < size; i++) {
                                     SeeBatchMsgBean.CardListBean cardListBean = cardList.get(i);
-                                    commoditySeeEtName.setText(cardListBean.getPbatchid().getBatchdateStr());
-                                    commoditySeeEtNum.setText(cardListBean.getPbatchid().getBatchnum());
-                                    commoditySeeEtLshoujia.setText(cardListBean.getPbatchid().getSellprice());
-                                    commoditySeeEtJhuojia.setText(cardListBean.getPbatchid().getEnterprice());
-                                    commoditySeeEtPfjia.setText(cardListBean.getPbatchid().getSaleprice());
                                     BatchPicListBean.CardBean picBean = new BatchPicListBean.CardBean();
                                     picBean.setCardnum(cardListBean.getCardnum());
                                     int diclistsize = diclist.size();
@@ -194,7 +194,10 @@ public class SeeBatchMsgActivity extends BaseActivity {
                                     }
                                     picBean.setCharddate(cardListBean.getCharddateStr());
                                     picBean.setRemark(cardListBean.getRemark());
-                                    picBean.setImgUrl(InvoicingConstants.IMAGEURL + cardListBean.getFilecardid().getParentpath() + "/" + cardListBean.getFilecardid().getPath());
+                                    SeeBatchMsgBean.CardListBean.FilecardidBean filecardid = cardListBean.getFilecardid();
+                                    if (filecardid != null) {
+                                        picBean.setImgUrl(InvoicingConstants.IMAGEURL + cardListBean.getFilecardid().getParentpath() + "/" + cardListBean.getFilecardid().getPath());
+                                    }
                                     mList.add(picBean);
                                 }
                                 SeeBatchPicListAdapter seeBatchPicListAdapter = new SeeBatchPicListAdapter(SeeBatchMsgActivity.this, mList, mDicList);

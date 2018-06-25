@@ -2,10 +2,13 @@ package com.mtecc.mmp.invoicing.activity.comodity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,11 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.mtecc.mmp.invoicing.R;
 import com.mtecc.mmp.invoicing.activity.SaoMaActivity;
 import com.mtecc.mmp.invoicing.activity.comodity.adapter.CommodityListAdapter;
 import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityListBean;
+import com.mtecc.mmp.invoicing.activity.shop.ShopEmployeeActivity;
+import com.mtecc.mmp.invoicing.activity.shop.ShopListActivity;
+import com.mtecc.mmp.invoicing.activity.shop.adapter.ShopSwitchListAdapter;
+import com.mtecc.mmp.invoicing.activity.shop.bean.ShopListBean;
 import com.mtecc.mmp.invoicing.base.BaseActivity;
 import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 import com.mtecc.mmp.invoicing.utils.PreferencesUtils;
@@ -33,6 +44,8 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +53,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.scwang.smartrefresh.layout.util.DensityUtil.dp2px;
 
 /**
  * 商品列表
@@ -92,7 +107,7 @@ public class CommodityListActivity extends BaseActivity {
     @BindView(R.id.tv_error)
     TextView tvError;
     @BindView(R.id.commodity_list_recycle_view)
-    ListView commodityListRecycleView;
+    SwipeMenuListView commodityListRecycleView;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     private CommodityListAdapter commodityListAdapter;
@@ -106,6 +121,7 @@ public class CommodityListActivity extends BaseActivity {
     String shopid = "";
     private boolean isPause;
     private EditText commodityDialogEtBarCode;
+    private AlertDialog showDialog;
 
 
     @Override
@@ -130,10 +146,9 @@ public class CommodityListActivity extends BaseActivity {
         } else {
             isuseradmin = "false";
         }
-        requestNetCommodityList(pagenum + "", isuseradmin, proCode, proName, barcode, cid, shopid);
-        commodityListAdapter = new CommodityListAdapter(this, mList);
-        commodityListRecycleView.setAdapter(commodityListAdapter);
-        commodityListAdapter.notifyDataSetChanged();
+        View view1 = ShowDalogUtils.showCustomizeDialog(CommodityListActivity.this, R.layout.send_customize);
+        showDialog = ShowDalogUtils.showDialog(CommodityListActivity.this, false, view1);
+        showDialog.dismiss();
 
 
     }
@@ -176,12 +191,79 @@ public class CommodityListActivity extends BaseActivity {
             }
         });
 
+        commodityListRecycleView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                String title = menu.getMenuItem(index).getTitle();
+                CommodityListBean.DataBean dataBean = mList.get(position);
+                if (title.equals("编辑")) {
+                    Intent roleintent = new Intent(CommodityListActivity.this, AddCommodityActivity.class);
+                    Bundle rolebundle = new Bundle();
+                    rolebundle.putString(InvoicingConstants.COMMODITY_TYPE, InvoicingConstants.COMMODITY_EDIT);
+                    rolebundle.putString(InvoicingConstants.COMMODITY_Id, dataBean.getProId() + "");
+                    roleintent.putExtras(rolebundle);
+                    startActivity(roleintent);
+
+                } else if (title.equals("删除")) {
+                    View exitView = ShowDalogUtils.showCustomizeDialog(CommodityListActivity.this, R.layout.exit_dialog);
+                    AlertDialog dialog = ShowDalogUtils.showDialog(CommodityListActivity.this, false, exitView);
+                    editClick(exitView, dialog, dataBean.getProId());
+                }
+                return false;
+            }
+        });
+        commodityListRecycleView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //查看商品
+                CommodityListBean.DataBean dataBean = mList.get(position);
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("proid", dataBean.getProId() + "");
+                intent.setClass(CommodityListActivity.this, SeeCommodityActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
     @Override
     public void doBusiness(Context mContext) {
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
 
+            @Override
+            public void create(SwipeMenu menu) {
+                // 创建“打开”项
+                SwipeMenuItem openItem = new SwipeMenuItem(
+                        getApplicationContext());
+                openItem.setBackground(new ColorDrawable(Color.parseColor("#0099FF")));
+                openItem.setWidth(dp2px(100));
+                openItem.setTitle("编辑");
+                openItem.setTitleSize(18);
+                openItem.setTitleColor(Color.WHITE);
+                // 将创建的菜单项添加进菜单中
+                menu.addMenuItem(openItem);
+
+                // 创建“删除”项
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.parseColor("#FD3B31")));
+                deleteItem.setWidth(dp2px(100));
+                deleteItem.setTitle("删除");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                // 将创建的菜单项添加进菜单中
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        commodityListRecycleView.setMenuCreator(creator);
+        commodityListRecycleView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        requestNetCommodityList(pagenum + "", isuseradmin, proCode, proName, barcode, cid, shopid);
+        commodityListAdapter = new CommodityListAdapter(this, mList);
+        commodityListRecycleView.setAdapter(commodityListAdapter);
+        commodityListAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.rl_back, R.id.img_select, R.id.img_left_select, R.id.iv_bar_search, R.id.iv_serch, R.id.tv_search, R.id.img_commodity_list_saoma})
@@ -246,13 +328,16 @@ public class CommodityListActivity extends BaseActivity {
                         if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                             final String result = bundle.getString(CodeUtils.RESULT_STRING);
                             LogUtils.i("onActivityResult: " + result);
-                            commodityDialogEtBarCode.setText(result);
-                            requestNetCommodityList(pagenum + "", isuseradmin, proCode, proName, result, cid, shopid);
+                            barcode = result;
+                            requestNetCommodityList(pagenum + "", isuseradmin, proCode, proName, barcode, cid, shopid);
                             commodityListAdapter.notifyDataSetChanged();
                         } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                             Toast.makeText(CommodityListActivity.this, "解析二维码失败!", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+                    break;
+
             }
         }
     }
@@ -271,6 +356,7 @@ public class CommodityListActivity extends BaseActivity {
         final EditText commodityDialogEtCode = customizeDialogView.findViewById(R.id.commodity_dialog_et_code);
         proName = etSerch.getText().toString().trim();
         commodityDialogEtName.setText(proName);
+        commodityDialogEtBarCode.setText(barcode);
         tvDiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -401,5 +487,88 @@ public class CommodityListActivity extends BaseActivity {
         if (isPause) {
             smartRefreshLayout.autoRefresh();
         }
+    }
+
+    /**
+     * 是否返回
+     *
+     * @param exitView
+     * @param dialog
+     * @param proId
+     */
+    private void editClick(View exitView, final AlertDialog dialog, final int proId) {
+        TextView contactTV = (TextView) exitView.findViewById(R.id.dialog_tv_contant);
+        TextView dissTV = (TextView) exitView.findViewById(R.id.tv_diss);
+        TextView sureTV = (TextView) exitView.findViewById(R.id.tv_sure);
+        contactTV.setText("是否删除此商品?");
+        dissTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        sureTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showDialog.show();
+                requestNetdelCommodity(proId + "");
+
+            }
+        });
+    }
+
+    /**
+     * 刪除
+     */
+    private void requestNetdelCommodity(final String proid) {
+        String url = InvoicingConstants.BASE_URL + InvoicingConstants.deleteGood_URL;
+        LogUtils.d("登陆的url" + url);
+        LogUtils.d("登陆的url" + proid);
+        OkHttpUtils
+                .post()
+                .tag(this)
+                .addParams("proid", proid)
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("错误信息SeeCommodityActivity" + e.toString());
+                            Toast.makeText(CommodityListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息SeeCommodityActivity" + e1.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            showDialog.dismiss();
+                            LogUtils.d("返回值信息SeeCommodityActivity" + response.toString());
+                            JSONObject jsonObject = new JSONObject(response);
+                            int result = jsonObject.optInt("result");
+                            if (result != 0) {
+                                String reslut = result + "";
+                                if (reslut.equals("200")) {
+                                    showToast("删除商品成功!");
+                                    smartRefreshLayout.autoRefresh();
+                                } else {
+                                    showToast("删除商品失败!");
+                                }
+                            } else {
+                                Toast.makeText(CommodityListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        } catch (Exception e1) {
+                            LogUtils.d("错误信息SeeCommodityActivity" + e1.toString());
+                            Toast.makeText(CommodityListActivity.this, R.string.net_error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

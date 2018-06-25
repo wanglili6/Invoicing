@@ -10,11 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.apkfuns.logutils.LogUtils;
 import com.mtecc.mmp.invoicing.R;
-import com.mtecc.mmp.invoicing.activity.check.bean.SeeOrdersBean;
-import com.mtecc.mmp.invoicing.activity.comodity.bean.CommodityListBean;
-import com.mtecc.mmp.invoicing.activity.purchase.bean.SelectBatchBean;
+import com.mtecc.mmp.invoicing.activity.purchaseOrSales.bean.SeePurchaserBean;
+import com.mtecc.mmp.invoicing.base.InvoicingConstants;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,14 +26,16 @@ import butterknife.ButterKnife;
 
 public class SeeCommpdityExAdapter extends BaseExpandableListAdapter {
     private Context mContext;
-    private List<SeeOrdersBean.MSelectCommodityMapBean> mSelectCommodityList;
+    private List<SeePurchaserBean.DataBean> mSelectCommodityList;
     private OnDelListerner ondelListerner;
     private OnEditBtachListerner onEditBtachLIsterner;
     private OnDelBtachListerner onDelBtachLIsterner;
+    private String checkType;
 
-    public SeeCommpdityExAdapter(Context mContext, List<SeeOrdersBean.MSelectCommodityMapBean> mSelectCommodityList) {
+    public SeeCommpdityExAdapter(Context mContext, List<SeePurchaserBean.DataBean> mSelectCommodityList, String checkType) {
         this.mContext = mContext;
         this.mSelectCommodityList = mSelectCommodityList;
+        this.checkType = checkType;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SeeCommpdityExAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mSelectCommodityList.get(groupPosition).getMSelectMap() != null ? mSelectCommodityList.get(groupPosition).getMSelectMap().size() : 0;
+        return mSelectCommodityList.get(groupPosition).getPclist() != null ? mSelectCommodityList.get(groupPosition).getPclist().size() : 0;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SeeCommpdityExAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mSelectCommodityList.get(groupPosition).getMSelectMap().get(childPosition);
+        return mSelectCommodityList.get(groupPosition).getPclist().get(childPosition);
     }
 
     @Override
@@ -83,13 +83,35 @@ public class SeeCommpdityExAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
-        final SeeOrdersBean.MSelectCommodityMapBean dataBean = mSelectCommodityList.get(groupPosition);
+        SeePurchaserBean.DataBean dataBean = mSelectCommodityList.get(groupPosition);
 
-        groupViewHolder.commodityTvName.setText(dataBean.getProName() + "");
-        groupViewHolder.commodityTvCoding.setText(dataBean.getProCode() + "");
-        groupViewHolder.commodityTvNorm.setText(dataBean.getMeas() + "/" + dataBean.getMeaunit());
-        groupViewHolder.commoditytvNum.setText(dataBean.getmSelectNum() + "");
-        groupViewHolder.commodityTvTotalNum.setText(dataBean.getmSelectMoney() + "");
+        groupViewHolder.commodityTvName.setText(dataBean.getGood().getProName() + "");
+        groupViewHolder.commodityTvCoding.setText(dataBean.getGood().getProCode() + "");
+        groupViewHolder.commodityTvNorm.setText(dataBean.getGood().getMeas() + "/" + dataBean.getGood().getMeaunit());
+        List<SeePurchaserBean.DataBean.PclistBean> pclist = dataBean.getPclist();
+        int size = pclist.size();
+        int selelctNum = 0;
+        double totalmoney = 0.0;
+        for (int i = 0; i < size; i++) {
+            SeePurchaserBean.DataBean.PclistBean pclistBean = pclist.get(i);
+            String enterprice = pclistBean.getEnterprice();
+            int enterqty = Integer.parseInt(pclistBean.getEnterqty());
+            selelctNum += enterqty;
+            if (!TextUtils.isEmpty(enterprice) && !enterprice.equals("0")) {
+                double entermoney = Double.parseDouble(enterprice);
+                double selectNum = Double.parseDouble(String.valueOf(pclistBean.getEnterqty()));
+                BigDecimal selectNumBigDecimal = new BigDecimal(Double.toString(selectNum));
+                BigDecimal enterBigDecimal = new BigDecimal(Double.toString(entermoney));
+                BigDecimal selectNum_Money = enterBigDecimal.multiply(selectNumBigDecimal);
+                BigDecimal totalmoneyBigDecimal = new BigDecimal(Double.toString(totalmoney));
+                BigDecimal add = totalmoneyBigDecimal.add(selectNum_Money);
+                totalmoney = add.doubleValue();
+            } else {
+                totalmoney = totalmoney + enterqty * 0.0;
+            }
+        }
+        groupViewHolder.commoditytvNum.setText(selelctNum + "");
+        groupViewHolder.commodityTvTotalNum.setText(totalmoney + "");
         groupViewHolder.commodityImgUpDown.setVisibility(View.GONE);
         return convertView;
     }
@@ -104,18 +126,22 @@ public class SeeCommpdityExAdapter extends BaseExpandableListAdapter {
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
-        final SeeOrdersBean.MSelectCommodityMapBean.MSelectMapBean mSelectMapBean = mSelectCommodityList.get(groupPosition).getMSelectMap().get(childPosition);
-        childViewHolder.batchExTvName.setText(mSelectMapBean.getBatchnum());
-        childViewHolder.batchExTvNum.setText("数量: " + mSelectMapBean.getNum());
-        childViewHolder.batchExTvMoney.setText("进货价: " + mSelectMapBean.getEnterprice());
-        String enterprice = mSelectMapBean.getEnterprice();
+        SeePurchaserBean.DataBean.PclistBean pclistBean = mSelectCommodityList.get(groupPosition).getPclist().get(childPosition);
+        childViewHolder.batchExTvName.setText(pclistBean.getPbatchid().getBatchdateStr());
+        childViewHolder.batchExTvNum.setText("数量: " + pclistBean.getEnterqty());
+        if (checkType.equals(InvoicingConstants.check_purchases)) {
+            childViewHolder.batchExTvMoney.setText("进货价: " + pclistBean.getEnterprice());
+        } else if (checkType.equals(InvoicingConstants.check_sales)) {
+            childViewHolder.batchExTvMoney.setText("零售价: " + pclistBean.getEnterprice());
+        }
+        String enterprice = pclistBean.getEnterprice();
         double entermoney = 0.0;
         if (TextUtils.isEmpty(enterprice)) {
             entermoney = 0.0;
         } else {
             entermoney = Double.parseDouble(enterprice);
         }
-        double selectNum = Double.parseDouble(String.valueOf(mSelectMapBean.getNum()));
+        double selectNum = Double.parseDouble(String.valueOf(pclistBean.getEnterqty()));
         BigDecimal enterBigDecimal = new BigDecimal(Double.toString(entermoney));
         BigDecimal selectNumBigDecimal = new BigDecimal(Double.toString(selectNum));
         BigDecimal multiply = enterBigDecimal.multiply(selectNumBigDecimal);

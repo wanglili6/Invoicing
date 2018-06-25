@@ -525,6 +525,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
@@ -598,7 +599,6 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <include layout="@layout/edit_delete_layout" />
         </LinearLayout>
     </ScrollView>
 

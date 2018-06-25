@@ -7,7 +7,7 @@ package com.mtecc.mmp.invoicing.base;
 
 public class InvoicingConstants {
     //基础地址
-    public static final String BASE_URL = "http://192.168.1.114:8080/SSMSAPP";
+    public static final String BASE_URL = "http://192.168.1.144:8080/SSMSAPP";
     //图片地址
     public static final String IMAGEURL = "http://192.168.1.144:8080/image/";
     //登陆
@@ -65,6 +65,8 @@ public class InvoicingConstants {
     public static final String addBatch_URL = "/app/goodbatch/addBatch.htm";
     //修改批次
     public static final String editBatch_URL = "/app/goodbatch/editBatch.htm";
+    //编辑删除
+    public static final String removeGoodsToList_URL = "/app/entergoods/removeGoodsToList.htm";
     //删除
     public static final String deleteBatch_URL = "/app/goodbatch/deleteBatch.htm";
     //查看
@@ -107,9 +109,59 @@ public class InvoicingConstants {
     public static final String employeedelete_URL = "/app/employee/delete.htm";
 
 
+    //库存查看
+    public static final String goodsStockList_URL = "/app/stock/goodsStockList.htm";
+    //查看批次
+    public static final String goodsBatchList_URL = "/app/stock/goodsBatchList.htm";
+    //调拨列表
+    public static final String forTranGoods_URL = "/app/stock/forTranGoods.htm";
+    //调拨批次
+    public static final String tranBatchList_URL = "/app/stock/tranBatchList.htm";
+    //调拨商品
+    public static final String stockGoods_URL = "/app/stock/stockGoods.htm";
+    //调拨批次
+    public static final String forMoveGoods_URL = "/app/stock/forMoveGoods.htm";
+    //出库商品
+    public static final String stockGoodsBatch_URL = "/app/stock/stockGoodsBatch.htm";
+    //出库批次
+    public static final String moveBatchList_URL = "/app/stock/moveBatchList.htm";
+
+    //订购历史
+    public static final String listfortable_URL = "/app/entergoods/listfortable.htm";
+    //销售历史
+    public static final String outlistfortable_URL = "/app/outgoods/listfortable.htm";
+    //订单详情
+    public static final String LookBargin_URL = "/app/entergoods/LookBargin.htm";
+    //保存订单
+    public static final String SaveBargin_URL = "/app/entergoods/SaveBargin.htm";
+    //编辑订单
+    public static final String EditBargin_URL = "/app/entergoods/EditBargin.htm";
+    //保存审核销售订单
+    public static final String SaveAudit_URL = "/app/outgoods/Audit.htm";
+    //保存审核采购订单
+    public static final String SaveenterAudit_URL = "/app/entergoods/Audit.htm";
+    //销货订单
+    public static final String outSaveBargin_URL = "/app/outgoods/SaveBargin.htm";
+    //销货退货提交
+    public static final String moveSaleBack_URL = "/app/saleback/moveSaleBack.htm";
+    //采购退货提交
+    public static final String moveTenter_URL = "/app/saleback/moveTenter.htm";
+
+    //提交调拨
+    public static final String tranStockGoods_URL = "/app/stock/tranStockGoods.htm";
+    //提交出库
+    public static final String moveStockGoods_URL = "/app/stock/moveStockGoods.htm";
+    //退货历史
+    public static final String forSaleBack_URL = "/app/saleback/forSaleBack.htm";
+    //采购
+    public static final String tenterRecords_URL = "/app/tentergoods/tenterRecords.htm";
     //用户信息
     public static final String USER_NAME = "USER_NAME";//用户名
-    public static final String isuseradmin = "isuseradmin";//用户名
+    public static final String isuseradmin = "isuseradmin";//是否是用户管理员
+    public static final String isUseCGAuidt = "isUseCGAuidt";//系统是启用采购审核
+    public static final String isHaveCGAuidt = "isHaveCGAuidt";//当前用户是否有采购审核权限
+    public static final String isUseXSAuidt = "isUseXSAuidt";//系统是否启用销售审核
+    public static final String isHaveXSAuidt = "isHaveXSAuidt";//当前用户是否有销售审核权限
     public static final String USER_PWD = "USER_PWD";//用户密码
     public static final String USER_ID = "USER_ID";//用户id
     public static final String USER_CRESTER_TIMER_STR = "USER_CRESTER_TIMER_STR";//注册时间
@@ -133,6 +185,9 @@ public class InvoicingConstants {
 
 
     public static final String SHOP_ID = "SHOP_ID";//企业id
+    public static final String SHOP_Name = "SHOP_Name";//企业id
+    public static final String goodsid = "goodsid";//企业id
+    public static final String goodsName = "goodsName";//企业id
 
 
     //跳转基础信息界面的type
@@ -197,11 +252,10 @@ public class InvoicingConstants {
     public static final String Distributor_TYPE = "Distributor_TYPE";//类型
     public static final String Distributor_ADD = "Distributor_ADD";//添加
     public static final String Distributor_Select = "Distributor_Select";//选择
-    public static final String  Distributor_Name= "Distributor_Name";//选择
+    public static final String Distributor_Name = "Distributor_Name";//选择
     public static final String Distributor_EDIT = "Distributor_EDIT";//编辑
 
     //进货商
-
     public static final String Merchants_ID = "Merchants_ID";//分销商的id
     public static final String Merchants_TYPE = "Merchants_TYPE";//类型
     public static final String Merchants_ADD = "Merchants_ADD";//添加
@@ -213,12 +267,30 @@ public class InvoicingConstants {
 
     //审核
     public static final String check_type = "check_type";//进货商的type
+    public static final String hdid = "hdid";//订单号
     public static final String check_id = "check_id";//进货商的type
     public static final String check_purchases = "check_purchases";//进货商的type
     public static final String check_sales = "check_sales";//进货商的type
     public static final String check_purchases_out = "check_purchases_out";//进货商的type
     public static final String check_sales_out = "check_sales_out";//进货商的type
 
+    //库存
+    public static final String STOCK_TYPE = "STOCK_TYPE";//库存type
+    public static final String STOCK_SEE = "STOCK_SEE";//查看库存type
+    public static final String STOCK_WORING = "STOCK_WORING";//库存预警
+    public static final String STOCK_OutBound = "STOCK_OutBound";//库存出库
+    public static final String STOCK_Transfer = "STOCK_Transfer";//调拨
+    public static final String STOCK_return_purchase = "STOCK_return_purchase";//采购退货
+    public static final String STOCK_returns_sales = "STOCK_returns_sales";//销售采购
 
+    //历史的跳转type
+    public static final String TYPE = "TYPE";
+    public static final String PURCHASE = "PURCHASE";//采购
+    public static final String SALES = "SALES";//销售
+    public static final String ADDRETURN = "ADDRETURN";//选择退货的订单
+    public static final String NoADDRETURN = "NoADDRETURN";//不是选择退货的订单
 
+    public static final String SEAL_Shehe = "YWXS";//销售审核
+
+    public static final String SHOP_Shehe = "YWCG";//采购审核
 }

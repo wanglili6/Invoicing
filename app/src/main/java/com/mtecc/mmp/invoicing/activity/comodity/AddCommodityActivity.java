@@ -268,7 +268,6 @@ public class AddCommodityActivity extends BaseActivity {
                 if (TextUtils.isEmpty(imgUrl)) {
                     if (picPathlist.size() < 4) {
                         picPhoto();
-
                     } else {
                         showToast("商品图片最多为3张!");
                         return;
@@ -328,6 +327,8 @@ public class AddCommodityActivity extends BaseActivity {
                     case R.id.radio_btn_ybz:
                         //预包装
                         genre = "1";
+                        code = "";//编码
+                        commodityEtCode.setText("");
                         llCode.setVisibility(View.GONE);
                         llBarCode.setVisibility(View.VISIBLE);
 
@@ -336,6 +337,8 @@ public class AddCommodityActivity extends BaseActivity {
                     case R.id.radio_btn_sz:
                         //散装
                         genre = "0";
+                        barcode = "";//条形码
+                        commodityEtBarCode.setText("");
                         llCode.setVisibility(View.VISIBLE);
                         llBarCode.setVisibility(View.GONE);
                         break;
@@ -654,11 +657,11 @@ public class AddCommodityActivity extends BaseActivity {
 //            showDialog.dismiss();
 //            return;
 //        }
-        if (TextUtils.isEmpty(commodityUserCode) || commodityUserCode.equals("")) {
-            showToast("生产许可证号不能为空!");
-            showDialog.dismiss();
-            return;
-        }
+//        if (TextUtils.isEmpty(commodityUserCode) || commodityUserCode.equals("")) {
+//            showToast("生产许可证号不能为空!");
+//            showDialog.dismiss();
+//            return;
+//        }
         //TODO:提交逻辑
         CommodityBean commodityBean = new CommodityBean();
         commodityBean.setProName(name);
@@ -672,7 +675,7 @@ public class AddCommodityActivity extends BaseActivity {
         commodityBean.setProtype(genre);
         commodityBean.setTrademark(trademark);
         commodityBean.setBzqunit(bzqdanwei);
-        commodityBean.setBzqunit(bzqdanwei);
+        commodityBean.setMernameorCode(commodityUserCode);
         commodityBean.setMernameorplace(commodityUser);
 
 
@@ -736,8 +739,8 @@ public class AddCommodityActivity extends BaseActivity {
                         if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                             final String result = bundle.getString(CodeUtils.RESULT_STRING);
                             LogUtils.i("onActivityResult: " + result);
-                            commodityEtBarCode.setText(result);
-                            requestNetGetCommodity(result, cid + "", "");
+                            barcode = result;
+                            requestNetGetCommodity(barcode, cid + "", "");
 
                         } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                             Toast.makeText(AddCommodityActivity.this, "解析二维码失败!", Toast.LENGTH_SHORT).show();

@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9cdab1</color>
-    <color name="colorPrimaryDark">#64b37e</color>
+    <color name="colorPrimary">#02baa9</color>
+    <color name="colorPrimaryDark">#009688</color>
     <color name="colorAccent">#458B7D</color>
     <color name="color_green">#009688</color>
 
+    <color name="text_gray_color">#939393</color>
     <color name="bg_color">#f1f4fb</color>
-    <color name="bg_green_color">#EDF8F7</color>
     <color name="color_white">#ffffff</color>
+    <color name="text_black_color">#222222</color>
     <color name="color_huise">#F0EFF5</color>
     <color name="color_gray">#D0D0D0</color>
-    <color name="color_gray_code">#d2d0d0</color>
     <color name="color_black">#000000</color>
-    <color name="text_black_color">#222222</color>
     <color name="text_color">#333333</color>
-    <color name="text_gray_color">#939393</color>
     <color name="text_red">#fa0505</color>
     <color name="text_hint_red">#88cc0000</color>
     <color name="text_money_color">#FE4401</color>
-    <color name="text_surplus_color">#3485E4</color>
     <color name="xian_color">#e6e4e4</color>
+    <color name="text_surplus_color">#3485E4</color>
     <color name="salse_red_color">#CD5E5E</color>
     <color name="check_yellow_color">#ff9933</color>
     <color name="check_green_color">#339966</color>
     <color name="check_red_color">#FF3333</color>
+    <color name="line_gray_color">#cdcdcd</color>
 </resources>

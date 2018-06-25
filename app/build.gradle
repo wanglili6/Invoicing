@@ -56,4 +56,5 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.github.baoyachi:StepView:1.9'
 }
